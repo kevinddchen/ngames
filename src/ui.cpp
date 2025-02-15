@@ -16,10 +16,9 @@ void print_board(const mines::Board& board)
 {
     const auto& cells = board.getCells();
     for (int row = 0; row < board.rows; ++row) {
-        std::vector<char> chars(2 * board.cols);
+        std::vector<char> chars(board.cols);
         for (int col = 0; col < board.cols; ++col) {
-            chars[2 * col] = cells[row][col] + char('0');
-            chars[2 * col + 1] = ' ';
+            chars[col] = cells[row][col] + char('0');
         }
         std::string row_string(chars.begin(), chars.end());
         mvprintw(row, 0, row_string.c_str());
@@ -32,18 +31,33 @@ void print_board(const mines::Board& board)
 namespace mines
 {
 
-UserInterface::UserInterface(Board& board) : board(board) {}
+UserInterface::UserInterface(Board& board) : cursor_y(0), cursor_x(0), board(board) {}
 
 void UserInterface::run()
 {
     initscr();
 
-    print_board(board);
-    refresh();
-    move(0, 0);
-
-    getch();
+    while (true) {
+        print_board(board);
+        move(cursor_y, cursor_x);
+        refresh();
+        const char key = getch();
+        handle_keystroke(key);
+    }
     endwin();
+}
+
+void UserInterface::handle_keystroke(char key)
+{
+    if (key == 'h' && cursor_x > 0) {
+        --cursor_x;
+    } else if (key == 'l' && cursor_x < board.cols - 1) {
+        ++cursor_x;
+    } else if (key == 'j' && cursor_y < board.rows - 1) {
+        ++cursor_y;
+    } else if (key == 'k' && cursor_y > 0) {
+        --cursor_y;
+    }
 }
 
 }  // namespace mines

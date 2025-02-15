@@ -22,6 +22,13 @@ public:
     void run();
 
 private:
+    /**
+     * Perform action associated with given keystroke.
+     */
+    void handle_keystroke(char key);
+
+    int cursor_y;
+    int cursor_x;
     Board& board;
 };
 

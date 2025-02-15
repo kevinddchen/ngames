@@ -4,15 +4,15 @@ BIN := bin
 SRC := src
 OBJ := objects
 
-app     := $(BIN)/main
+app     := $(BIN)/app
 sources := $(wildcard $(SRC)/*.cpp)
 objects := $(subst $(SRC),$(OBJ),$(sources:.cpp=.o))
 deps    := $(objects:.o=.d)
 
 CXX := g++
-CPPFLAGS := -MMD -MP
+CPPFLAGS :=
 CXXFLAGS := -std=c++20 -Wall -O3
-LDFLAGS  := 
+LDFLAGS  :=
 LDLIBS   := -lncurses
 
 $(app) : $(objects)

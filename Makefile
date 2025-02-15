@@ -1,15 +1,27 @@
-CC = g++
-CFLAGS = -I./src -Wall -std=c++20 -O3
-SRC = ./src
-BIN = ./bin
+# https://stackoverflow.com/a/25966957
 
-$(BIN)/%.o: $(SRC)/%.cpp
-	@mkdir -p $(@D)
-	$(CC) -c -o $@ $(CFLAGS) $<
+BIN := bin
+SRC := src
+OBJ := objects
 
-$(BIN)/main: $(SRC)/main.cpp $(BIN)/board.o
-	$(CC) -o $@ $(CFLAGS) -lncurses $^
+app     := $(BIN)/main
+sources := $(wildcard $(SRC)/*.cpp)
+objects := $(subst $(SRC),$(OBJ),$(sources:.cpp=.o))
+deps    := $(objects:.o=.d)
+
+CXX := g++
+CPPFLAGS := -MMD -MP
+CXXFLAGS := -std=c++20 -Wall -O3
+LDFLAGS  := 
+LDLIBS   := -lncurses
+
+$(app) : $(objects)
+	$(CXX) $(LDFLAGS) $^ $(LDLIBS) -o $@
+
+$(OBJ)/%.o: $(SRC)/%.cpp
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $^ -o $@
 
 .PHONY: clean
-clean:
-	rm -rf $(BIN)
+clean: ; $(RM) $(objects) $(deps) $(app)
+
+-include $(deps)

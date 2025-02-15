@@ -12,7 +12,7 @@ namespace
  * @param cells Board state, initially blank.
  * @param num_mines Number of mines to create.
  */
-void populate_mines(std::vector<std::vector<uint8_t>>& cells, int num_mines)
+void populate_mines(mines::cells_t& cells, int num_mines)
 {
     // seed RNG with current time
     std::srand(time(0));
@@ -64,6 +64,11 @@ void Board::print() const
         }
         printf("\n");
     }
+}
+
+const cells_t& Board::getCells() const
+{
+    return cells;
 }
 
 }  // namespace mines

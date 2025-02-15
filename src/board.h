@@ -5,6 +5,8 @@
 namespace mines
 {
 
+using cells_t = std::vector<std::vector<uint8_t>>;
+
 class Board
 {
 public:
@@ -21,11 +23,14 @@ public:
      */
     void print() const;
 
-    int rows;
-    int cols;
-    int mines;
+    const int rows;
+    const int cols;
+    const int mines;
+    const cells_t& getCells() const;
+
+private:
     /* Array with shape (h, w) representing the state of each cell. */
-    std::vector<std::vector<uint8_t>> cells;
+    cells_t cells;
 };
 
 }  // namespace mines

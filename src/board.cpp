@@ -34,7 +34,7 @@ void populate_mines(mines::cells_t& cells, int num_mines)
         // create mine
         const int row = idx / num_cols;
         const int col = idx % num_cols;
-        cells[row][col] = 1;
+        cells[row][col] = mines::MINE;
         // put drawn index after all undrawn indices
         idxs[i] = idxs[num_undrawn_idxs - 1];
         idxs[num_undrawn_idxs - 1] = idx;
@@ -47,12 +47,14 @@ void populate_mines(mines::cells_t& cells, int num_mines)
 namespace mines
 {
 
-Board::Board(int rows, int cols, int mines) : rows(rows), cols(cols), mines(mines)
+Board::Board(int rows, int cols, int mines) : rows(rows), cols(cols), mines(mines), active(true)
 {
+    // create empty cells
     cells.reserve(rows);
     for (int i = 0; i < rows; ++i) {
         cells.emplace_back(cols, 0);
     }
+
     populate_mines(cells, mines);
 }
 
@@ -66,9 +68,32 @@ void Board::print() const
     }
 }
 
-const cells_t& Board::getCells() const
+int Board::open(int row, int col)
 {
-    return cells;
+    if (!active) {
+        return 1;
+    }
+    auto& cell_state = cells[row][col];
+    if (cell_state & OPEN) {
+        return 2;
+    } else if (cell_state & FLAG) {
+        return 3;
+    }
+    cell_state |= OPEN;
+    return 0;
+}
+
+int Board::toggleFlag(int row, int col)
+{
+    if (!active) {
+        return 1;
+    }
+    auto& cell_state = cells[row][col];
+    if (cell_state & OPEN) {
+        return 2;
+    }
+    cell_state ^= FLAG;
+    return 0;
 }
 
 }  // namespace mines

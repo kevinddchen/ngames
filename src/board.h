@@ -37,11 +37,6 @@ public:
     inline cell_t getCell(int row, int col) const { return cells[row][col]; }
 
     /**
-     * Returns true if cell has been opened.
-     */
-    inline bool isOpened(int row, int col) const { return cells[row][col] & OPEN; }
-
-    /**
      * Open a cell.
      *
      * Return values:
@@ -51,11 +46,6 @@ public:
      *   3 - failure; cell has been flagged.
      */
     int open(int row, int col);
-
-    /**
-     * Returns true if cell has been flagged.
-     */
-    inline bool isFlagged(int row, int col) const { return cells[row][col] & FLAG; }
 
     /**
      * Toggle the flag for a cell.
@@ -87,5 +77,29 @@ private:
     // Array with shape (h, w) representing the state of all cells.
     cells_t cells;
 };
+
+/**
+ * Returns true if cell contains a mine.
+ */
+inline bool isMine(cell_t cell_state)
+{
+    return cell_state & MINE;
+}
+
+/**
+ * Returns true if cell has been opened.
+ */
+inline bool isOpened(cell_t cell_state)
+{
+    return cell_state & OPEN;
+}
+
+/**
+ * Returns true if cell has been flagged.
+ */
+inline bool isFlagged(cell_t cell_state)
+{
+    return cell_state & FLAG;
+}
 
 }  // namespace mines

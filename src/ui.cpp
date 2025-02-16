@@ -2,6 +2,7 @@
 
 #include <ncurses.h>
 
+#include "board.h"
 #include "common.h"
 
 #include "ui.h"
@@ -11,6 +12,28 @@ namespace
 
 // 1 char padding to window due to border
 constexpr int PAD = 1;
+
+/**
+ * Convert cell state to printable character.
+ */
+chtype cell_state_to_char(mines::cell_t cell_state)
+{
+    // if flagged, print flag
+    if (mines::isFlagged(cell_state)) {
+        return 'F';
+    }
+    // if not opened, print square
+    if (!(mines::isOpened(cell_state))) {
+        return '#';
+    }
+    // if mine, print 'X'
+    if (mines::isMine(cell_state)) {
+        return 'X';
+    }
+    // otherwise, print empty space
+    // TODO: print number of adjacent mines
+    return ' ';
+}
 
 }  // namespace
 
@@ -47,8 +70,8 @@ void UserInterface::print_board() const
     const auto& cells = board.getCells();
     for (int row = 0; row < board.rows; ++row) {
         wmove(board_win, row + PAD, PAD);
-        for (auto el : cells[row]) {
-            waddch(board_win, el + '0');
+        for (auto cell_state : cells[row]) {
+            waddch(board_win, cell_state_to_char(cell_state));
         }
     }
     wrefresh(board_win);

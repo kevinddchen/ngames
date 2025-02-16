@@ -4,7 +4,7 @@
 
 int main(int argc, char** argv)
 {
-    mines::Board board(10, 8, 10);
+    mines::Board board(8, 10, 10);
     mines::UserInterface ui(board);
 
     ui.run();

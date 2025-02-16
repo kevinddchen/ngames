@@ -9,20 +9,22 @@
 namespace
 {
 
+// 1 char padding to window due to border
+constexpr int PAD = 1;
+
 /**
  * Print board in the window.
  */
-void print_board(const mines::Board& board)
+void print_board(WINDOW* win, const mines::Board& board)
 {
     const auto& cells = board.getCells();
     for (int row = 0; row < board.rows; ++row) {
-        std::vector<char> chars(board.cols);
-        for (int col = 0; col < board.cols; ++col) {
-            chars[col] = cells[row][col] + char('0');
+        wmove(win, row + PAD, PAD);
+        for (auto el : cells[row]) {
+            waddch(win, el + '0');
         }
-        std::string row_string(chars.begin(), chars.end());
-        mvprintw(row, 0, row_string.c_str());
     }
+    wrefresh(win);
 }
 
 }  // namespace
@@ -36,12 +38,18 @@ UserInterface::UserInterface(Board& board) : cursor_y(0), cursor_x(0), board(boa
 void UserInterface::run()
 {
     initscr();
+    cbreak();
+    noecho();
+
+    // create window with 1 char padding for the border
+    WINDOW* board_win = newwin(board.rows + 2 * PAD, board.cols + 2 * PAD, 1, 1);
+    box(board_win, 0, 0);
+
+    print_board(board_win, board);
 
     while (true) {
-        print_board(board);
-        move(cursor_y, cursor_x);
-        refresh();
-        const char key = getch();
+        wmove(board_win, cursor_y + PAD, cursor_x + PAD);
+        const char key = wgetch(board_win);
         handle_keystroke(key);
     }
     endwin();

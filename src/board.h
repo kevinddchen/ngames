@@ -81,25 +81,25 @@ private:
 /**
  * Returns true if cell contains a mine.
  */
-inline bool isMine(cell_t cell_state)
+inline bool isMine(cell_t cell)
 {
-    return cell_state & MINE;
+    return cell & MINE;
 }
 
 /**
  * Returns true if cell has been opened.
  */
-inline bool isOpened(cell_t cell_state)
+inline bool isOpened(cell_t cell)
 {
-    return cell_state & OPEN;
+    return cell & OPEN;
 }
 
 /**
  * Returns true if cell has been flagged.
  */
-inline bool isFlagged(cell_t cell_state)
+inline bool isFlagged(cell_t cell)
 {
-    return cell_state & FLAG;
+    return cell & FLAG;
 }
 
 }  // namespace mines

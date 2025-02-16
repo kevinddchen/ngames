@@ -16,18 +16,18 @@ constexpr int PAD = 1;
 /**
  * Convert cell state to printable character.
  */
-chtype cell_state_to_char(mines::cell_t cell_state)
+chtype cell_to_char(mines::cell_t cell)
 {
     // if flagged, print flag
-    if (mines::isFlagged(cell_state)) {
+    if (mines::isFlagged(cell)) {
         return 'F';
     }
     // if not opened, print square
-    if (!(mines::isOpened(cell_state))) {
+    if (!(mines::isOpened(cell))) {
         return '#';
     }
     // if mine, print 'X'
-    if (mines::isMine(cell_state)) {
+    if (mines::isMine(cell)) {
         return 'X';
     }
     // otherwise, print empty space
@@ -70,8 +70,8 @@ void UserInterface::print_board() const
     const auto& cells = board.getCells();
     for (int row = 0; row < board.rows; ++row) {
         wmove(board_win, row + PAD, PAD);
-        for (auto cell_state : cells[row]) {
-            waddch(board_win, cell_state_to_char(cell_state));
+        for (auto cell : cells[row]) {
+            waddch(board_win, cell_to_char(cell));
         }
     }
     wrefresh(board_win);

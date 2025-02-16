@@ -61,8 +61,8 @@ Board::Board(int rows, int cols, int mines) : rows(rows), cols(cols), mines(mine
 void Board::print() const
 {
     for (const auto& row : cells) {
-        for (auto el : row) {
-            printf("%u ", el);
+        for (auto cell : row) {
+            printf("%u ", cell);
         }
         printf("\n");
     }
@@ -73,13 +73,13 @@ int Board::open(int row, int col)
     if (!active) {
         return 1;
     }
-    auto& cell_state = cells[row][col];
-    if (cell_state & OPEN) {
+    auto& cell = cells[row][col];
+    if (isOpened(cell)) {
         return 2;
-    } else if (cell_state & FLAG) {
+    } else if (isFlagged(cell)) {
         return 3;
     }
-    cell_state |= OPEN;
+    cell |= OPEN;
     return 0;
 }
 
@@ -88,11 +88,11 @@ int Board::toggleFlag(int row, int col)
     if (!active) {
         return 1;
     }
-    auto& cell_state = cells[row][col];
-    if (cell_state & OPEN) {
+    auto& cell = cells[row][col];
+    if (isOpened(cell)) {
         return 2;
     }
-    cell_state ^= FLAG;
+    cell ^= FLAG;
     return 0;
 }
 

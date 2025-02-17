@@ -69,6 +69,13 @@ public:
     inline bool is_active() const { return active; }
 
     /**
+     * Count the number of mines neighboring a cell.
+     * @param row Cell row.
+     * @param col Cell col.
+     */
+    int count_neighbor_mines(int row, int col) const;
+
+    /**
      * Print board state to console.
      */
     void print() const;

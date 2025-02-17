@@ -15,10 +15,13 @@ constexpr int PAD = 1;
 
 /**
  * Convert cell state to printable character.
- * @param cell Cell state.
+ * @param board Game board.
+ * @param row Cell row.
+ * @param col Cell col.
  */
-chtype cell_to_char(mines::cell_t cell)
+chtype cell_to_char(const mines::Board& board, int row, int col)
 {
+    const mines::cell_t cell = board.get_cell(row, col);
     // if flagged, print flag
     if (mines::is_flagged(cell)) {
         return 'F';
@@ -31,9 +34,14 @@ chtype cell_to_char(mines::cell_t cell)
     if (mines::is_mine(cell)) {
         return 'X';
     }
-    // otherwise, print empty space
-    // TODO: print number of adjacent mines
-    return ' ';
+    // otherwise, empty space. print number of neighboring mines
+    const int neighbor_mines = board.count_neighbor_mines(row, col);
+    if (neighbor_mines == 0) {
+        return ' ';
+    } else {
+        // convert digit (as int) to char
+        return neighbor_mines + '0';
+    }
 }
 
 }  // namespace
@@ -68,11 +76,10 @@ void UserInterface::run()
 
 void UserInterface::print_board() const
 {
-    const auto& cells = board.get_cells();
     for (int row = 0; row < board.rows; ++row) {
         wmove(board_win, row + PAD, PAD);
-        for (auto cell : cells[row]) {
-            waddch(board_win, cell_to_char(cell));
+        for (int col = 0; col < board.cols; ++col) {
+            waddch(board_win, cell_to_char(board, row, col));
         }
     }
     wrefresh(board_win);

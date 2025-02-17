@@ -23,6 +23,7 @@ void populate_mines(mines::cells_t& cells, int num_mines)
     assert(num_mines <= num_cells);
 
     // create list of indices
+    // NOTE: we encode the pair (row, col) as a single integer: row * num_cols + col
     std::vector<int> idxs(num_cells);
     std::iota(idxs.begin(), idxs.end(), 0);
 
@@ -94,6 +95,29 @@ int Board::toggle_flag(int row, int col)
     }
     cell ^= FLAG;
     return 0;
+}
+
+int Board::count_neighbor_mines(int row, int col) const
+{
+    int count = 0;
+    for (int dy : {-1, 0, 1}) {
+        for (int dx : {-1, 0, 1}) {
+            // skip case where not actually neighbor
+            if (dy == 0 && dx == 0) {
+                continue;
+            }
+            const int nb_row = row + dy;
+            const int nb_col = col + dx;
+            // check bounds
+            if (nb_row < 0 || nb_row >= rows || nb_col < 0 || nb_col > cols) {
+                continue;
+            }
+            if (is_mine(get_cell(nb_row, nb_col))) {
+                ++count;
+            }
+        }
+    }
+    return count;
 }
 
 }  // namespace mines

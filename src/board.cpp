@@ -1,71 +1,28 @@
-#include <numeric>
-
 #include "common.h"
 
 #include "board.h"
-
-namespace
-{
-
-/**
- * Randomly populate mines on the board.
- * @param cells Board state, initially blank.
- * @param num_mines Number of mines to create.
- */
-void populate_mines(mines::cells_t& cells, int num_mines)
-{
-    // seed RNG with current time
-    std::srand(time(0));
-
-    const int num_rows = cells.size();
-    const int num_cols = cells[0].size();
-    const int num_cells = num_rows * num_cols;
-    assert(num_mines <= num_cells);
-
-    // create list of indices
-    // NOTE: we encode the pair (row, col) as a single integer: row * num_cols + col
-    std::vector<int> idxs(num_cells);
-    std::iota(idxs.begin(), idxs.end(), 0);
-
-    // we draw indices at random to populate mines, and put drawn indices at the back of the list
-    for (int num_undrawn_idxs = num_cells; num_cells - num_undrawn_idxs < num_mines; --num_undrawn_idxs) {
-        // pick random element from first `num_undrawn_idxs` elements of `idxs`
-        const int i = std::rand() % num_undrawn_idxs;
-        const int idx = idxs[i];
-        // create mine
-        const int row = idx / num_cols;
-        const int col = idx % num_cols;
-        cells[row][col] = mines::MINE;
-        // put drawn index after all undrawn indices
-        idxs[i] = idxs[num_undrawn_idxs - 1];
-        idxs[num_undrawn_idxs - 1] = idx;
-    }
-}
-
-}  // namespace
 
 
 namespace mines
 {
 
-Board::Board(int rows, int cols, int mines) : rows(rows), cols(cols), mines(mines), active(true)
+Board::Board(int rows, int cols, int mines)
+    : rows(rows),
+      cols(cols),
+      mines(mines),
+      game(rows, cols, mines),
+      active(true)
 {
-    // create empty cells
-    cells.reserve(rows);
+    // create empty data structures
+    is_known_mine_array.reserve(rows);
+    is_opened_array.reserve(rows);
+    is_flagged_array.reserve(rows);
+    neighbor_mine_counts.reserve(rows);
     for (int i = 0; i < rows; ++i) {
-        cells.emplace_back(cols, 0);
-    }
-
-    populate_mines(cells, mines);
-}
-
-void Board::print() const
-{
-    for (const auto& row : cells) {
-        for (auto cell : row) {
-            printf("%u ", cell);
-        }
-        printf("\n");
+        is_known_mine_array.emplace_back(cols, false);
+        is_opened_array.emplace_back(cols, false);
+        is_flagged_array.emplace_back(cols, false);
+        neighbor_mine_counts.emplace_back(cols, -1);  // sentinel value for unset value
     }
 }
 
@@ -73,14 +30,25 @@ int Board::open(int row, int col)
 {
     if (!active) {
         return 1;
-    }
-    auto& cell = cells[row][col];
-    if (is_opened(cell)) {
+    } else if (is_opened(row, col)) {
         return 2;
-    } else if (is_flagged(cell)) {
+    } else if (is_flagged(row, col)) {
         return 3;
     }
-    cell |= OPEN;
+
+    // interact with backend
+    bool is_mine;
+    int neighbor_mine_count;
+    int retval = game.open(row, col, is_mine, neighbor_mine_count);
+    assert(retval == 0);
+
+    is_opened_array[row][col] = true;
+    if (is_mine) {
+        is_known_mine_array[row][col] = true;
+        active = false;  // game has ended once a mine has been opened
+    } else {
+        neighbor_mine_counts[row][col] = neighbor_mine_count;
+    }
     return 0;
 }
 
@@ -88,36 +56,12 @@ int Board::toggle_flag(int row, int col)
 {
     if (!active) {
         return 1;
-    }
-    auto& cell = cells[row][col];
-    if (is_opened(cell)) {
+    } else if (is_opened(row, col)) {
         return 2;
     }
-    cell ^= FLAG;
-    return 0;
-}
 
-int Board::count_neighbor_mines(int row, int col) const
-{
-    int count = 0;
-    for (int dy : {-1, 0, 1}) {
-        for (int dx : {-1, 0, 1}) {
-            // skip case where not actually neighbor
-            if (dy == 0 && dx == 0) {
-                continue;
-            }
-            const int nb_row = row + dy;
-            const int nb_col = col + dx;
-            // check bounds
-            if (nb_row < 0 || nb_row >= rows || nb_col < 0 || nb_col > cols) {
-                continue;
-            }
-            if (is_mine(get_cell(nb_row, nb_col))) {
-                ++count;
-            }
-        }
-    }
-    return count;
+    is_flagged_array[row][col] = !is_flagged_array[row][col];
+    return 0;
 }
 
 }  // namespace mines

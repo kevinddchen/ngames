@@ -2,7 +2,6 @@
 
 #include <ncurses.h>
 
-#include "board.h"
 #include "common.h"
 
 #include "ui.h"
@@ -21,21 +20,20 @@ constexpr int PAD = 1;
  */
 chtype cell_to_char(const mines::Board& board, int row, int col)
 {
-    const mines::cell_t cell = board.get_cell(row, col);
     // if flagged, print flag
-    if (mines::is_flagged(cell)) {
+    if (board.is_flagged(row, col)) {
         return 'F';
     }
     // if not opened, print square
-    if (!(mines::is_opened(cell))) {
+    if (!(board.is_opened(row, col))) {
         return '#';
     }
-    // if mine, print 'X'
-    if (mines::is_mine(cell)) {
+    // if known mine, print 'X'
+    if (board.is_known_mine(row, col)) {
         return 'X';
     }
     // otherwise, empty space. print number of neighboring mines
-    const int neighbor_mines = board.count_neighbor_mines(row, col);
+    const int neighbor_mines = board.get_neighbor_mine_count(row, col);
     if (neighbor_mines == 0) {
         return ' ';
     } else {

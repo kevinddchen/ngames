@@ -2,24 +2,21 @@
 
 #include <vector>
 
+#include "game.h"
+
+
 namespace mines
 {
 
-using cell_t = uint8_t;
-using cells_t = std::vector<std::vector<cell_t>>;
-
-// Binary flag indicating cell contains a mine.
-constexpr cell_t MINE = 1;
-// Binary flag indicating cell has been opened, i.e. is revealed to the user.
-constexpr cell_t OPEN = 2;
-// Binary flag indicating cell has been flagged.
-constexpr cell_t FLAG = 4;
-
+/**
+ * Front-end for the Minesweeper game. Contains information about the game
+ * known by the player, e.g. neighboring mine counts and flags.
+ */
 class Board
 {
 public:
     /**
-     * Minesweeper board.
+     * Create new Minesweeper game.
      * @param rows Number of rows.
      * @param cols Number of columns.
      * @param mines Number of mines.
@@ -27,16 +24,18 @@ public:
     Board(int rows, int cols, int mines);
 
     /**
-     * Get state of all cells.
-     */
-    inline const cells_t& get_cells() const { return cells; }
-
-    /**
-     * Get state of a cell.
+     * Returns true if cell is known to contain a mine.
      * @param row Cell row.
      * @param col Cell column.
      */
-    inline cell_t get_cell(int row, int col) const { return cells[row][col]; }
+    inline bool is_known_mine(int row, int col) const { return is_known_mine_array[row][col]; }
+
+    /**
+     * Returns true if cell has been opened.
+     * @param row Cell row.
+     * @param col Cell column.
+     */
+    inline bool is_opened(int row, int col) const { return is_opened_array[row][col]; }
 
     /**
      * Open a cell.
@@ -50,6 +49,13 @@ public:
      *   3: cell has been flagged.
      */
     int open(int row, int col);
+
+    /**
+     * Returns true if cell has been flagged.
+     * @param row Cell row.
+     * @param col Cell column.
+     */
+    inline bool is_flagged(int row, int col) const { return is_flagged_array[row][col]; }
 
     /**
      * Toggle the flag for a cell.
@@ -69,53 +75,31 @@ public:
     inline bool is_active() const { return active; }
 
     /**
-     * Count the number of mines neighboring a cell.
+     * Count the number of mines neighboring a cell. Returns -1 if the cell
+     * has not been opened or contains a mine.
      * @param row Cell row.
      * @param col Cell col.
      */
-    int count_neighbor_mines(int row, int col) const;
-
-    /**
-     * Print board state to console.
-     */
-    void print() const;
+    inline int get_neighbor_mine_count(int row, int col) const { return neighbor_mine_counts[row][col]; }
 
     const int rows;
     const int cols;
     const int mines;
 
 private:
-    // Whether game is active.
+    // Game back-end.
+    Game game;
+    // Array with shape (rows, cols) tracking which cells are known to contain a mine.
+    std::vector<std::vector<bool>> is_known_mine_array;
+    // Array with shape (rows, cols) tracking which cells have been opened.
+    std::vector<std::vector<bool>> is_opened_array;
+    // Array with shape (rows, cols) tracking which cells have been flagged.
+    std::vector<std::vector<bool>> is_flagged_array;
+    // Array with shape (rows, cols) tracking neighbor mine counts for opened cells.
+    std::vector<std::vector<int>> neighbor_mine_counts;
+    // Whether the game is active.
     bool active;
-    // Array with shape (h, w) representing the state of all cells.
-    cells_t cells;
 };
 
-/**
- * Returns true if cell contains a mine.
- * @param cell Cell state.
- */
-inline bool is_mine(cell_t cell)
-{
-    return cell & MINE;
-}
-
-/**
- * Returns true if cell has been opened.
- * @param cell Cell state.
- */
-inline bool is_opened(cell_t cell)
-{
-    return cell & OPEN;
-}
-
-/**
- * Returns true if cell has been flagged.
- * @param cell Cell state.
- */
-inline bool is_flagged(cell_t cell)
-{
-    return cell & FLAG;
-}
 
 }  // namespace mines

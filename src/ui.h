@@ -29,6 +29,7 @@ private:
 
     /**
      * Perform action associated with given keystroke.
+     * @param key Key pressed.
      */
     void handle_keystroke(char key);
 

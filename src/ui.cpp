@@ -15,6 +15,7 @@ constexpr int PAD = 1;
 
 /**
  * Convert cell state to printable character.
+ * @param cell Cell state.
  */
 chtype cell_to_char(mines::cell_t cell)
 {

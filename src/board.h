@@ -33,27 +33,33 @@ public:
 
     /**
      * Get state of a cell.
+     * @param row Cell row.
+     * @param col Cell column.
      */
     inline cell_t get_cell(int row, int col) const { return cells[row][col]; }
 
     /**
      * Open a cell.
+     * @param row Cell row.
+     * @param col Cell column.
      *
-     * Return values:
-     *   0 - success.
-     *   1 - failure; game is inactive.
-     *   2 - failure; cell has already been opened.
-     *   3 - failure; cell has been flagged.
+     * @returns Return code. A non-zero value means that an error occurred and
+     * the game state was not been changed. The possible error codes are
+     *   1: game is inactive.
+     *   2: cell has already been opened.
+     *   3: cell has been flagged.
      */
     int open(int row, int col);
 
     /**
      * Toggle the flag for a cell.
+     * @param row Cell row.
+     * @param col Cell column.
      *
-     * Return values:
-     *   0 - success.
-     *   1 - failure; game is inactive.
-     *   2 - failure; cell has already been opened.
+     * @returns Return code. A non-zero value means that an error occurred and
+     * the game state was not been changed. The possible error codes are
+     *   1: game is inactive.
+     *   2: cell has already been opened.
      */
     int toggle_flag(int row, int col);
 
@@ -80,6 +86,7 @@ private:
 
 /**
  * Returns true if cell contains a mine.
+ * @param cell Cell state.
  */
 inline bool is_mine(cell_t cell)
 {
@@ -88,6 +95,7 @@ inline bool is_mine(cell_t cell)
 
 /**
  * Returns true if cell has been opened.
+ * @param cell Cell state.
  */
 inline bool is_opened(cell_t cell)
 {
@@ -96,6 +104,7 @@ inline bool is_opened(cell_t cell)
 
 /**
  * Returns true if cell has been flagged.
+ * @param cell Cell state.
  */
 inline bool is_flagged(cell_t cell)
 {

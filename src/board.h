@@ -29,12 +29,12 @@ public:
     /**
      * Get state of all cells.
      */
-    inline const cells_t& getCells() const { return cells; }
+    inline const cells_t& get_cells() const { return cells; }
 
     /**
      * Get state of a cell.
      */
-    inline cell_t getCell(int row, int col) const { return cells[row][col]; }
+    inline cell_t get_cell(int row, int col) const { return cells[row][col]; }
 
     /**
      * Open a cell.
@@ -55,12 +55,12 @@ public:
      *   1 - failure; game is inactive.
      *   2 - failure; cell has already been opened.
      */
-    int toggleFlag(int row, int col);
+    int toggle_flag(int row, int col);
 
     /**
      * Returns true if game is active.
      */
-    inline bool isActive() const { return active; }
+    inline bool is_active() const { return active; }
 
     /**
      * Print board state to console.
@@ -81,7 +81,7 @@ private:
 /**
  * Returns true if cell contains a mine.
  */
-inline bool isMine(cell_t cell)
+inline bool is_mine(cell_t cell)
 {
     return cell & MINE;
 }
@@ -89,7 +89,7 @@ inline bool isMine(cell_t cell)
 /**
  * Returns true if cell has been opened.
  */
-inline bool isOpened(cell_t cell)
+inline bool is_opened(cell_t cell)
 {
     return cell & OPEN;
 }
@@ -97,7 +97,7 @@ inline bool isOpened(cell_t cell)
 /**
  * Returns true if cell has been flagged.
  */
-inline bool isFlagged(cell_t cell)
+inline bool is_flagged(cell_t cell)
 {
     return cell & FLAG;
 }

@@ -74,22 +74,22 @@ int Board::open(int row, int col)
         return 1;
     }
     auto& cell = cells[row][col];
-    if (isOpened(cell)) {
+    if (is_opened(cell)) {
         return 2;
-    } else if (isFlagged(cell)) {
+    } else if (is_flagged(cell)) {
         return 3;
     }
     cell |= OPEN;
     return 0;
 }
 
-int Board::toggleFlag(int row, int col)
+int Board::toggle_flag(int row, int col)
 {
     if (!active) {
         return 1;
     }
     auto& cell = cells[row][col];
-    if (isOpened(cell)) {
+    if (is_opened(cell)) {
         return 2;
     }
     cell ^= FLAG;

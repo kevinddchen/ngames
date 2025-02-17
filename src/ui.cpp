@@ -19,15 +19,15 @@ constexpr int PAD = 1;
 chtype cell_to_char(mines::cell_t cell)
 {
     // if flagged, print flag
-    if (mines::isFlagged(cell)) {
+    if (mines::is_flagged(cell)) {
         return 'F';
     }
     // if not opened, print square
-    if (!(mines::isOpened(cell))) {
+    if (!(mines::is_opened(cell))) {
         return '#';
     }
     // if mine, print 'X'
-    if (mines::isMine(cell)) {
+    if (mines::is_mine(cell)) {
         return 'X';
     }
     // otherwise, print empty space
@@ -67,7 +67,7 @@ void UserInterface::run()
 
 void UserInterface::print_board() const
 {
-    const auto& cells = board.getCells();
+    const auto& cells = board.get_cells();
     for (int row = 0; row < board.rows; ++row) {
         wmove(board_win, row + PAD, PAD);
         for (auto cell : cells[row]) {
@@ -101,7 +101,7 @@ void UserInterface::handle_keystroke(char key)
             }
             break;
         case 'f':
-            board.toggleFlag(cursor_y, cursor_x);
+            board.toggle_flag(cursor_y, cursor_x);
             print_board();
             break;
         case ' ':

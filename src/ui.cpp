@@ -46,7 +46,10 @@ chtype cell_to_char(const mines::Board& board, int row, int col)
 namespace mines
 {
 
-UserInterface::UserInterface(Board& board) : cursor_y(0), cursor_x(0), board(board)
+UserInterface::UserInterface(Board& board)
+    : cursor_y((board.rows - 1) / 2),
+      cursor_x((board.cols - 1) / 2),
+      board(board)
 {
     initscr();
     cbreak();

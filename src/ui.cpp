@@ -10,34 +10,37 @@ namespace
 // 1 char padding to window due to border
 constexpr int PAD = 1;
 
+// new grey color macro
+constexpr short COLOR_GREY = 8;
+
+// color pair for mines
+constexpr short COLOR_PAIR_MINES = 9;
+
+// color pair for unopened cell
+constexpr short COLOR_PAIR_UNOPENED = 8;  // grey
+
 /**
- * Convert cell state to printable character.
- * @param board Game board.
- * @param row Cell row.
- * @param col Cell col.
+ * Setup ncurses colors.
  */
-chtype cell_to_char(const mines::Board& board, int row, int col)
+void setup_colors()
 {
-    // if flagged, print flag
-    if (board.is_flagged(row, col)) {
-        return 'F';
-    }
-    // if not opened, print square
-    if (!(board.is_opened(row, col))) {
-        return '#';
-    }
-    // if known mine, print 'X'
-    if (board.is_known_mine(row, col)) {
-        return 'X';
-    }
-    // otherwise, empty space. print number of neighboring mines
-    const int neighbor_mines = board.get_neighbor_mine_count(row, col);
-    if (neighbor_mines == 0) {
-        return ' ';
-    } else {
-        // convert digit (as int) to char
-        return neighbor_mines + '0';
-    }
+    start_color();
+
+    // define grey color
+    init_color(COLOR_GREY, 500, 500, 500);
+
+    // color pairs for cell numbers
+    init_pair(1, COLOR_BLUE, COLOR_BLACK);
+    init_pair(2, COLOR_GREEN, COLOR_BLACK);
+    init_pair(3, COLOR_RED, COLOR_BLACK);
+    init_pair(4, COLOR_YELLOW, COLOR_BLACK);
+    init_pair(5, COLOR_MAGENTA, COLOR_BLACK);
+    init_pair(6, COLOR_CYAN, COLOR_BLACK);
+    init_pair(7, COLOR_WHITE, COLOR_BLACK);
+    init_pair(8, COLOR_GREY, COLOR_BLACK);
+
+    // color pair for mines
+    init_pair(COLOR_PAIR_MINES, COLOR_WHITE, COLOR_RED);
 }
 
 }  // namespace
@@ -54,6 +57,8 @@ UserInterface::UserInterface(Board& board)
     initscr();
     cbreak();
     noecho();
+
+    setup_colors();
 
     // create window with 1 char padding for the border
     board_win = newwin(board.rows + 2 * PAD, board.cols + 2 * PAD, 1, 1);
@@ -73,12 +78,50 @@ void UserInterface::run()
     endwin();
 }
 
+void UserInterface::print_cell(int row, int col) const
+{
+    // if known mine, print 'X'
+    if (board.is_known_mine(row, col)) {
+        wattron(board_win, A_BOLD | A_BLINK | COLOR_PAIR(COLOR_PAIR_MINES));
+        waddch(board_win, '*');
+        wattroff(board_win, A_BOLD | A_BLINK | COLOR_PAIR(COLOR_PAIR_MINES));
+        return;
+    }
+    // if flagged, print flag
+    if (board.is_flagged(row, col)) {
+        wattron(board_win, A_BOLD);
+        waddch(board_win, 'F');
+        wattroff(board_win, A_BOLD);
+        return;
+    }
+    // if not opened, print opaque square
+    if (!(board.is_opened(row, col))) {
+        wattron(board_win, COLOR_PAIR(COLOR_PAIR_UNOPENED));
+        waddch(board_win, '#');
+        wattroff(board_win, COLOR_PAIR(COLOR_PAIR_UNOPENED));
+        return;
+    }
+    // otherwise, empty cell. print number of neighboring mines
+    const int neighbor_mines = board.get_neighbor_mine_count(row, col);
+    if (neighbor_mines == 0) {
+        waddch(board_win, ' ');
+        return;
+    } else {
+        // convert digit (as int) to char
+        const char digit = neighbor_mines + '0';
+        wattron(board_win, COLOR_PAIR(neighbor_mines));
+        waddch(board_win, digit);
+        wattroff(board_win, COLOR_PAIR(neighbor_mines));
+        return;
+    }
+}
+
 void UserInterface::print_board() const
 {
     for (int row = 0; row < board.rows; ++row) {
         wmove(board_win, row + PAD, PAD);
         for (int col = 0; col < board.cols; ++col) {
-            waddch(board_win, cell_to_char(board, row, col));
+            print_cell(row, col);
         }
     }
     wrefresh(board_win);

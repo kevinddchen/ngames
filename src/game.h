@@ -23,6 +23,9 @@ public:
 
     /**
      * Open a cell.
+     *
+     * First cell opened is guaranteed to not contain a mine.
+     *
      * @param row Cell row.
      * @param col Cell column.
      * @param is_mine Will be set to true if the cell contains a mine.
@@ -43,6 +46,8 @@ private:
     std::vector<std::vector<bool>> is_opened_array;
     // Whether the game is active.
     bool active;
+    // Number of opened cells.
+    int num_opened;
 };
 
 }  // namespace mines

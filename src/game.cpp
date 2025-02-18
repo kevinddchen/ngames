@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <numeric>
 
 #include "common.h"
@@ -9,7 +10,7 @@ namespace
 {
 
 /**
- * Randomly populate mines.
+ * Randomly populate mines. Cell (0, 0) is guaranteed to not contain a mine.
  * @param is_mine_array Array tracking which cells contain a mine, initially all false.
  * @param num_mines Number of mines to create.
  */
@@ -21,26 +22,35 @@ void populate_mines(std::vector<std::vector<bool>>& is_mine_array, int num_mines
     const int num_rows = is_mine_array.size();
     const int num_cols = is_mine_array[0].size();
     const int num_cells = num_rows * num_cols;
-    assert(num_mines <= num_cells);
 
     // create list of indices
     // NOTE: we encode the pair (row, col) as a single integer: row * num_cols + col
     std::vector<int> idxs(num_cells);
     std::iota(idxs.begin(), idxs.end(), 0);
 
-    // we draw indices at random to populate mines, and put drawn indices at the back of the list
-    for (int num_undrawn_idxs = num_cells; num_cells - num_undrawn_idxs < num_mines; --num_undrawn_idxs) {
-        // pick random element from first `num_undrawn_idxs` elements of `idxs`
-        const int i = std::rand() % num_undrawn_idxs;
-        const int idx = idxs[i];
+    // we draw indices at random to populate mines, removing drawn indices from
+    // the list to avoid drawing duplicates. we can remove an element in O(1)
+    // time by replacing it with the last element of the list. to guarantee
+    // index `0` not contain a mine, we remove it from the list.
+    idxs[0] = idxs[idxs.size() - 1];
+    idxs.pop_back();
+
+    assert(idxs.size() >= num_mines);  // number of mines cannot be too large
+
+    for (int draw = 0; draw < num_mines; ++draw) {
+        // pick random index from the list
+        const int idx_idx = std::rand() % idxs.size();
+        const int idx = idxs[idx_idx];
         // create mine
         const int row = idx / num_cols;
         const int col = idx % num_cols;
         is_mine_array[row][col] = true;
-        // put drawn index after all undrawn indices
-        idxs[i] = idxs[num_undrawn_idxs - 1];
-        idxs[num_undrawn_idxs - 1] = idx;
+        // remove drawn index from list
+        idxs[idx_idx] = idxs[idxs.size() - 1];
+        idxs.pop_back();
     }
+
+    assert(!is_mine_array[0][0]);  // sanity check (0, 0) does not contain a mine
 }
 
 /**
@@ -81,7 +91,7 @@ int count_neighbor_mines(const std::vector<std::vector<bool>>& is_mine_array, in
 namespace mines
 {
 
-Game::Game(int rows, int cols, int mines) : active(true)
+Game::Game(int rows, int cols, int mines) : active(true), num_opened(0)
 {
     // create empty data structures
     is_mine_array.reserve(rows);
@@ -102,7 +112,17 @@ int Game::open(int row, int col, bool& is_mine, int& neighbor_mine_count)
         return 2;
     }
 
+    // if first cell opened, guarantee no mine by shifting all cells down/right
+    // so that (0, 0) becomes the cell just clicked on
+    if (num_opened == 0) {
+        std::rotate(is_mine_array.rbegin(), is_mine_array.rbegin() + row, is_mine_array.rend());
+        for (auto& is_mine_row : is_mine_array) {
+            std::rotate(is_mine_row.rbegin(), is_mine_row.rbegin() + col, is_mine_row.rend());
+        }
+    }
+
     is_opened_array[row][col] = true;
+    ++num_opened;
     if (is_mine_array[row][col]) {
         is_mine = true;
         active = false;  // game has ended once a mine has been opened

@@ -38,7 +38,9 @@ public:
     inline bool is_opened(int row, int col) const { return is_opened_array[row][col]; }
 
     /**
-     * Open a cell.
+     * Open a cell. If the cell contains a mine, the game will end. If the cell
+     * has no neighboring mines, all neighboring mines will also be opened
+     * (this happens recursively).
      * @param row Cell row.
      * @param col Cell column.
      *

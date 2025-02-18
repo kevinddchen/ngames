@@ -1,5 +1,3 @@
-#include <string>
-
 #include <ncurses.h>
 
 #include "common.h"

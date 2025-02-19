@@ -61,7 +61,7 @@ int Board::open(int row, int col)
                 const int nb_row = row + dy;
                 const int nb_col = col + dx;
                 // check bounds
-                if (nb_row < 0 || nb_row >= rows || nb_col < 0 || nb_col > cols) {
+                if (nb_row < 0 || nb_row >= rows || nb_col < 0 || nb_col >= cols) {
                     continue;
                 }
                 open(nb_row, nb_col);

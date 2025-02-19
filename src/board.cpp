@@ -11,7 +11,8 @@ Board::Board(int rows, int cols, int mines)
       cols(cols),
       mines(mines),
       game(rows, cols, mines),
-      active(true)
+      active(true),
+      num_opened(0)
 {
     // create empty data structures
     is_known_mine_array.reserve(rows);
@@ -43,11 +44,15 @@ int Board::open(int row, int col)
     assert(retval == 0);
 
     is_opened_array[row][col] = true;
+    ++num_opened;
     if (is_mine) {
         is_known_mine_array[row][col] = true;
         active = false;  // game has ended once a mine has been opened
     } else {
         neighbor_mine_counts[row][col] = neighbor_mine_count;
+        if (num_opened + mines == rows * cols) {
+            active = false;  // game has ended once all non-mine cells have been opened
+        }
     }
 
     // if no neighboring mines, recursively open all neighboring cells

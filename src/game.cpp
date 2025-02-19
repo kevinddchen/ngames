@@ -91,7 +91,7 @@ int count_neighbor_mines(const std::vector<std::vector<bool>>& is_mine_array, in
 namespace mines
 {
 
-Game::Game(int rows, int cols, int mines) : active(true), num_opened(0)
+Game::Game(int rows, int cols, int mines) : rows(rows), cols(cols), mines(mines), active(true), num_opened(0)
 {
     // create empty data structures
     is_mine_array.reserve(rows);
@@ -129,6 +129,9 @@ int Game::open(int row, int col, bool& is_mine, int& neighbor_mine_count)
     } else {
         is_mine = false;
         neighbor_mine_count = count_neighbor_mines(is_mine_array, row, col);
+        if (num_opened + mines == rows * cols) {
+            active = false;  // game has ended once all non-mine cells have been opened
+        }
     }
     return 0;
 }

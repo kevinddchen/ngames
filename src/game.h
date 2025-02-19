@@ -40,14 +40,19 @@ public:
     int open(int row, int col, bool& is_mine, int& neighbor_mine_count);
 
 private:
-    // Array with shape (rows, cols) tracking which cells contain a mine.
-    std::vector<std::vector<bool>> is_mine_array;
-    // Array with shape (rows, cols) tracking which cells have been opened.
-    std::vector<std::vector<bool>> is_opened_array;
+    const int rows;
+    const int cols;
+    const int mines;
+
     // Whether the game is active.
     bool active;
     // Number of opened cells.
     int num_opened;
+
+    // Array with shape (rows, cols) tracking which cells contain a mine.
+    std::vector<std::vector<bool>> is_mine_array;
+    // Array with shape (rows, cols) tracking which cells have been opened.
+    std::vector<std::vector<bool>> is_opened_array;
 };
 
 }  // namespace mines

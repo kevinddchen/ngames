@@ -91,6 +91,12 @@ public:
 private:
     // Game back-end.
     Game game;
+
+    // Whether the game is active.
+    bool active;
+    // Number of opened cells.
+    int num_opened;
+
     // Array with shape (rows, cols) tracking which cells are known to contain a mine.
     std::vector<std::vector<bool>> is_known_mine_array;
     // Array with shape (rows, cols) tracking which cells have been opened.
@@ -99,8 +105,6 @@ private:
     std::vector<std::vector<bool>> is_flagged_array;
     // Array with shape (rows, cols) tracking neighbor mine counts for opened cells.
     std::vector<std::vector<int>> neighbor_mine_counts;
-    // Whether the game is active.
-    bool active;
 };
 
 

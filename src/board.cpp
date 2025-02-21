@@ -14,7 +14,8 @@ Board::Board(int rows, int cols, int mines, int start_y, int start_x)
       window(newwin(rows + 2 * BORDER_WIDTH, cols + 2 * BORDER_WIDTH, start_y, start_x)),
       game(rows, cols, mines),
       active(true),
-      num_opened(0)
+      num_opened(0),
+      num_flags(0)
 {
     // create window border
     box(window, 0, 0);
@@ -89,7 +90,13 @@ int Board::toggle_flag(int row, int col)
         return 2;
     }
 
-    is_flagged_array[row][col] = !is_flagged_array[row][col];
+    if (is_flagged_array[row][col]) {
+        is_flagged_array[row][col] = false;
+        --num_flags;
+    } else {
+        is_flagged_array[row][col] = true;
+        ++num_flags;
+    }
     return 0;
 }
 

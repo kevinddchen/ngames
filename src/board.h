@@ -81,6 +81,11 @@ public:
     inline bool is_active() const { return active; }
 
     /**
+     * Return number of flags used.
+     */
+    inline int get_num_flags() const { return num_flags; }
+
+    /**
      * Count the number of mines neighboring a cell. Returns -1 if the cell
      * has not been opened or contains a mine.
      * @param row Cell row.
@@ -115,6 +120,8 @@ private:
     bool active;
     // Number of opened cells.
     int num_opened;
+    // Number of flags used.
+    int num_flags;
 
     // Array with shape (rows, cols) tracking which cells are known to contain a mine.
     std::vector<std::vector<bool>> is_known_mine_array;

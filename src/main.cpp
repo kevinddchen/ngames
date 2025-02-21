@@ -2,6 +2,7 @@
 
 #include "board.h"
 #include "common.h"
+#include "text_top.h"
 #include "ui.h"
 
 
@@ -14,7 +15,8 @@ public:
     App(int rows, int cols, int mines)
         : cursor_y((rows - 1) / 2),
           cursor_x((cols - 1) / 2),
-          board(rows, cols, mines, 1, 1)
+          text_top(board, 1, 1),
+          board(rows, cols, mines, 2, 1)
     {
     }
 
@@ -23,6 +25,7 @@ public:
      */
     void run()
     {
+        text_top.refresh();
         board.refresh();
 
         while (true) {
@@ -63,6 +66,7 @@ public:
                 break;
             case 'f':
                 board.toggle_flag(cursor_y, cursor_x);
+                text_top.refresh();
                 board.refresh();
                 break;
             case ' ':
@@ -74,6 +78,7 @@ public:
 
     int cursor_y;
     int cursor_x;
+    mines::TextTop text_top;
     mines::Board board;
 };
 

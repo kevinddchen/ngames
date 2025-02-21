@@ -74,7 +74,7 @@ int count_neighbor_mines(const std::vector<std::vector<bool>>& is_mine_array, in
             const int nb_row = row + dy;
             const int nb_col = col + dx;
             // check bounds
-            if (nb_row < 0 || nb_row >= num_rows || nb_col < 0 || nb_col > num_cols) {
+            if (nb_row < 0 || nb_row >= num_rows || nb_col < 0 || nb_col >= num_cols) {
                 continue;
             }
             if (is_mine_array[nb_row][nb_col]) {

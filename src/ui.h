@@ -2,49 +2,48 @@
 
 #include <ncurses.h>
 
-#include "board.h"
 
 namespace mines
 {
 
-class UserInterface
+// Window borders are 1 px wide
+constexpr int BORDER_WIDTH = 1;
+
+// New grey color macro
+constexpr short COLOR_GREY = 8;
+
+// Color pair for mines
+constexpr short COLOR_PAIR_MINES = 9;
+
+// Color pair for unopened cell
+constexpr short COLOR_PAIR_UNOPENED = 8;  // same color as "8" cell
+
+/**
+ * Initialize ncurses.
+ */
+inline void init_ncurses()
 {
-public:
-    /**
-     * Viewer and controller for Minesweeper board.
-     * @param board Board instance.
-     */
-    UserInterface(Board& board);
+    initscr();
+    cbreak();
+    noecho();
 
-    /**
-     * Run the application.
-     */
-    void run();
+    start_color();
 
-private:
-    /**
-     * Print or update a cell at the current cursor location, and then advance
-     * the cursor.
-     * @param row Cell row.
-     * @param col Cell col.
-     */
-    void print_cell(int row, int col) const;
+    // define grey color
+    init_color(COLOR_GREY, 500, 500, 500);
 
-    /**
-     * Print or update the board viewed by the user.
-     */
-    void print_board() const;
+    // color pairs for cell numbers
+    init_pair(1, COLOR_BLUE, COLOR_BLACK);
+    init_pair(2, COLOR_GREEN, COLOR_BLACK);
+    init_pair(3, COLOR_RED, COLOR_BLACK);
+    init_pair(4, COLOR_YELLOW, COLOR_BLACK);
+    init_pair(5, COLOR_MAGENTA, COLOR_BLACK);
+    init_pair(6, COLOR_CYAN, COLOR_BLACK);
+    init_pair(7, COLOR_WHITE, COLOR_BLACK);
+    init_pair(8, COLOR_GREY, COLOR_BLACK);
 
-    /**
-     * Perform action associated with given keystroke.
-     * @param key Key pressed.
-     */
-    void handle_keystroke(char key);
-
-    int cursor_y;
-    int cursor_x;
-    Board& board;
-    WINDOW* board_win;
-};
+    // color pair for mines
+    init_pair(COLOR_PAIR_MINES, COLOR_WHITE, COLOR_RED);
+}
 
 }  // namespace mines

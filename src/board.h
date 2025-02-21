@@ -2,6 +2,8 @@
 
 #include <vector>
 
+#include <ncurses.h>
+
 #include "game.h"
 
 
@@ -20,8 +22,10 @@ public:
      * @param rows Number of rows.
      * @param cols Number of columns.
      * @param mines Number of mines.
+     * @param start_y y-coordinate of the top-left corner of the window.
+     * @param start_x x-coordinate of the top-left corner of the window.
      */
-    Board(int rows, int cols, int mines);
+    Board(int rows, int cols, int mines, int start_y, int start_x);
 
     /**
      * Returns true if cell is known to contain a mine.
@@ -80,15 +84,30 @@ public:
      * Count the number of mines neighboring a cell. Returns -1 if the cell
      * has not been opened or contains a mine.
      * @param row Cell row.
-     * @param col Cell col.
+     * @param col Cell column.
      */
     inline int get_neighbor_mine_count(int row, int col) const { return neighbor_mine_counts[row][col]; }
+
+    /**
+     * Refresh the board viewed by the user.
+     */
+    void refresh() const;
 
     const int rows;
     const int cols;
     const int mines;
 
+    WINDOW* const window;
+
 private:
+    /**
+     * Print the cell at the current cursor location, and then advance the
+     * cursor.
+     * @param row Cell row.
+     * @param col Cell column.
+     */
+    void print_cell(int row, int col) const;
+
     // Game back-end.
     Game game;
 
@@ -106,6 +125,5 @@ private:
     // Array with shape (rows, cols) tracking neighbor mine counts for opened cells.
     std::vector<std::vector<int>> neighbor_mine_counts;
 };
-
 
 }  // namespace mines

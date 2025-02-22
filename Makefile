@@ -7,7 +7,6 @@ OBJ := objects
 app     := $(BIN)/mines
 sources := $(wildcard $(SRC)/*.cpp)
 objects := $(subst $(SRC),$(OBJ),$(sources:.cpp=.o))
-deps    := $(objects:.o=.d)
 
 CXX 	 := g++
 CPPFLAGS :=
@@ -21,8 +20,9 @@ $(app): $(objects)
 $(OBJ)/%.o: $(SRC)/%.cpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $^ -o $@
 
+.PHONY: all
+all: $(objects) $(app)
+
 .PHONY: clean
 clean:
-	$(RM) $(objects) $(deps) $(app)
-
--include $(deps)
+	$(RM) $(objects) $(app)

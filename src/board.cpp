@@ -115,23 +115,26 @@ void Board::print_cell(int row, int col) const
 {
     // if known mine, print '*'
     if (is_known_mine(row, col)) {
-        wattron(window, A_BOLD | A_BLINK | COLOR_PAIR(COLOR_PAIR_MINES));
+        const auto attr = A_BOLD | A_BLINK | COLOR_PAIR(COLOR_PAIR_MINES);
+        wattron(window, attr);
         waddch(window, '*');
-        wattroff(window, A_BOLD | A_BLINK | COLOR_PAIR(COLOR_PAIR_MINES));
+        wattroff(window, attr);
         return;
     }
     // if flagged, print flag
     if (is_flagged(row, col)) {
-        wattron(window, A_BOLD);
+        const auto attr = A_BOLD;
+        wattron(window, attr);
         waddch(window, 'F');
-        wattroff(window, A_BOLD);
+        wattroff(window, attr);
         return;
     }
     // if not opened, print opaque square
     if (!(is_opened(row, col))) {
-        wattron(window, COLOR_PAIR(COLOR_PAIR_UNOPENED));
+        const auto attr = COLOR_PAIR(COLOR_PAIR_UNOPENED);
+        wattron(window, attr);
         waddch(window, '#');
-        wattroff(window, COLOR_PAIR(COLOR_PAIR_UNOPENED));
+        wattroff(window, attr);
         return;
     }
     // otherwise, empty cell. print number of neighboring mines
@@ -141,10 +144,11 @@ void Board::print_cell(int row, int col) const
         return;
     } else {
         // convert digit (as int) to char
+        const auto attr = COLOR_PAIR(neighbor_mines);
         const char digit = neighbor_mines + '0';
-        wattron(window, COLOR_PAIR(neighbor_mines));
+        wattron(window, attr);
         waddch(window, digit);
-        wattroff(window, COLOR_PAIR(neighbor_mines));
+        wattroff(window, attr);
         return;
     }
 }

@@ -19,13 +19,15 @@ void TextEndGame::refresh() const
     if (!board.is_active()) {
         // check if win
         if (board.is_win()) {
-            wattron(window, A_BOLD | COLOR_PAIR(COLOR_PAIR_WIN));
+            const auto attr = A_BOLD | COLOR_PAIR(COLOR_PAIR_WIN);
+            wattron(window, attr);
             mvwprintw(window, 0, 0, "YOU HAVE WON!");
-            wattroff(window, A_BOLD | COLOR_PAIR(COLOR_PAIR_WIN));
+            wattroff(window, attr);
         } else {
-            wattron(window, A_BOLD | COLOR_PAIR(COLOR_PAIR_LOSS));
+            const auto attr = A_BOLD | COLOR_PAIR(COLOR_PAIR_LOSS);
+            wattron(window, attr);
             mvwprintw(window, 0, 0, "YOU HAVE LOST...");
-            wattroff(window, A_BOLD | COLOR_PAIR(COLOR_PAIR_LOSS));
+            wattroff(window, attr);
         }
     }
     wrefresh(window);

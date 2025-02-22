@@ -53,8 +53,8 @@ void Board::open(int row, int col)
     assert(can_open(row, col));
 
     // interact with backend
-    bool is_mine = false;
-    int neighbor_mine_count = -1;
+    bool is_mine = false;          // will be overwritten by `game.open()`
+    int neighbor_mine_count = -1;  // may be overwritten by `game.open()`
     const int retval = game.open(row, col, is_mine, neighbor_mine_count);
     assert(retval == 0);
 

@@ -1,8 +1,7 @@
 #pragma once
 
-#include <ncurses.h>
-
 #include "board.h"
+#include "ui.h"
 
 
 namespace mines
@@ -11,7 +10,7 @@ namespace mines
 /**
  * Text displaying the number of mines remaining.
  */
-class TextMineCount
+class TextMineCount : public Component
 {
 public:
     /**
@@ -25,9 +24,7 @@ public:
     /**
      * Refresh the text viewed by the user.
      */
-    void refresh() const;
-
-    WINDOW* const window;
+    void refresh() const override;
 
 private:
     const Board& board;

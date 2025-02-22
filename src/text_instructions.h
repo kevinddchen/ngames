@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ncurses.h>
+#include "ui.h"
 
 
 namespace mines
@@ -9,7 +9,7 @@ namespace mines
 /**
  * Text displaying instructions.
  */
-class TextInstructions
+class TextInstructions : public Component
 {
 public:
     /**
@@ -22,9 +22,7 @@ public:
     /**
      * Refresh the text viewed by the user.
      */
-    void refresh() const;
-
-    WINDOW* const window;
+    void refresh() const override;
 };
 
 }  // namespace mines

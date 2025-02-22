@@ -2,9 +2,8 @@
 
 #include <vector>
 
-#include <ncurses.h>
-
 #include "game.h"
+#include "ui.h"
 
 
 namespace mines
@@ -15,7 +14,7 @@ namespace mines
  * known by the player, e.g. neighboring mine counts and flags, and maintains
  * the window viewed by the player.
  */
-class Board
+class Board : public Component
 {
 public:
     /**
@@ -104,13 +103,11 @@ public:
     /**
      * Refresh the board viewed by the user.
      */
-    void refresh() const;
+    void refresh() const override;
 
     const int rows;
     const int cols;
     const int mines;
-
-    WINDOW* const window;
 
 private:
     /**

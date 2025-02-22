@@ -1,5 +1,4 @@
 #include "common.h"
-#include "ui.h"
 
 #include "text_instructions.h"
 
@@ -7,7 +6,7 @@
 namespace mines
 {
 
-TextInstructions::TextInstructions(int start_y, int start_x) : window(newwin(6, 16, start_y, start_x)) {}
+TextInstructions::TextInstructions(int start_y, int start_x) : Component(newwin(6, 16, start_y, start_x)) {}
 
 void TextInstructions::refresh() const
 {

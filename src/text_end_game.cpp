@@ -1,5 +1,4 @@
 #include "common.h"
-#include "ui.h"
 
 #include "text_end_game.h"
 
@@ -8,7 +7,7 @@ namespace mines
 {
 
 TextEndGame::TextEndGame(const Board& board, int start_y, int start_x)
-    : window(newwin(1, 16, start_y, start_x)),
+    : Component(newwin(1, 16, start_y, start_x)),
       board(board)
 {
 }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <ncurses.h>
+
 
 namespace mines
 {
@@ -29,5 +31,25 @@ constexpr short COLOR_PAIR_INSTRUCTIONS = 8;  // grey text
  * Initialize ncurses.
  */
 void init_ncurses();
+
+/**
+ * Abstract base class for an interactive component.
+ */
+class Component
+{
+public:
+    /**
+     * Create component.
+     * @param window Window displaying text for the component.
+     */
+    Component(WINDOW* window) : window(window) {};
+
+    /**
+     * Refresh the text viewed by the user.
+     */
+    virtual void refresh() const = 0;
+
+    WINDOW* const window;
+};
 
 }  // namespace mines

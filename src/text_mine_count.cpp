@@ -7,7 +7,7 @@ namespace mines
 {
 
 TextMineCount::TextMineCount(const Board& board, int start_y, int start_x)
-    : window(newwin(1, 16, start_y, start_x)),
+    : Component(newwin(1, 16, start_y, start_x)),
       board(board)
 {
 }

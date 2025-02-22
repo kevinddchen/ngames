@@ -1,5 +1,4 @@
 #include "common.h"
-#include "ui.h"
 
 #include "board.h"
 
@@ -8,10 +7,10 @@ namespace mines
 {
 
 Board::Board(int rows, int cols, int mines, int start_y, int start_x)
-    : rows(rows),
+    : Component(newwin(rows + 2 * BORDER_WIDTH, cols + 2 * BORDER_WIDTH, start_y, start_x)),
+      rows(rows),
       cols(cols),
       mines(mines),
-      window(newwin(rows + 2 * BORDER_WIDTH, cols + 2 * BORDER_WIDTH, start_y, start_x)),
       game(rows, cols, mines),
       active(true),
       num_opened(0),

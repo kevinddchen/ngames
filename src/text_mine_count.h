@@ -11,7 +11,7 @@ namespace mines
 /**
  * Text above the Minesweeper game displaying the number of mines remaining.
  */
-class TextTop
+class TextMineCount
 {
 public:
     /**
@@ -20,7 +20,7 @@ public:
      * @param start_y y-coordinate of the top-left corner of the window.
      * @param start_x x-coordinate of the top-left corner of the window.
      */
-    TextTop(const Board& board, int start_y, int start_x);
+    TextMineCount(const Board& board, int start_y, int start_x);
 
     /**
      * Refresh the text viewed by the user.

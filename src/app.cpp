@@ -2,9 +2,12 @@
 
 #include "board.h"
 #include "common.h"
-#include "text_top.h"
+#include "text_mine_count.h"
 #include "ui.h"
 
+
+namespace mines
+{
 
 class App
 {
@@ -18,8 +21,8 @@ public:
     App(int rows, int cols, int mines)
         : cursor_y((rows - 1) / 2),
           cursor_x((cols - 1) / 2),
-          text_top(board, 1, 1),
-          board(rows, cols, mines, 2, 1)
+          text_mine_count(board, MARGIN_TOP, MARGIN_LEFT),       // height is 1
+          board(rows, cols, mines, MARGIN_TOP + 1, MARGIN_LEFT)  // height is rows + 2 * BORDER_WIDTH
     {
     }
 
@@ -28,11 +31,12 @@ public:
      */
     void run()
     {
-        text_top.refresh();
+        // Initial print
+        text_mine_count.refresh();
         board.refresh();
 
         while (true) {
-            wmove(board.window, cursor_y + mines::BORDER_WIDTH, cursor_x + mines::BORDER_WIDTH);
+            wmove(board.window, cursor_y + BORDER_WIDTH, cursor_x + BORDER_WIDTH);
             const char key = wgetch(board.window);
             handle_keystroke(key);
         }
@@ -69,7 +73,7 @@ public:
                 break;
             case 'f':
                 board.toggle_flag(cursor_y, cursor_x);
-                text_top.refresh();
+                text_mine_count.refresh();
                 board.refresh();
                 break;
             case ' ':
@@ -79,17 +83,23 @@ public:
         }
     }
 
+    // y-coordinate of cursor, relative to board window.
     int cursor_y;
+    // x-coordinate of cursor, relative to board window.
     int cursor_x;
-    mines::TextTop text_top;
-    mines::Board board;
+
+    TextMineCount text_mine_count;
+    Board board;
 };
+
+}  // namespace mines
+
 
 int main(int argc, char** argv)
 {
     mines::init_ncurses();
 
-    App app(8, 10, 10);
+    mines::App app(8, 10, 10);
     app.run();
 
     return 0;

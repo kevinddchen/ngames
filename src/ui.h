@@ -4,8 +4,14 @@
 namespace mines
 {
 
-// Window borders are 1 px wide
+// Window border width, in number of chars
 constexpr int BORDER_WIDTH = 1;
+
+// Top margin, in number of chars
+constexpr int MARGIN_TOP = 1;
+
+// Left margin, in number of chars
+constexpr int MARGIN_LEFT = 1;
 
 // New grey color macro
 constexpr short COLOR_GREY = 8;

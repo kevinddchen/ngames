@@ -56,7 +56,7 @@ int Board::open(int row, int col)
         active = false;  // game has ended once a mine has been opened
     } else {
         neighbor_mine_counts[row][col] = neighbor_mine_count;
-        if (num_opened + mines == rows * cols) {
+        if (is_win()) {
             active = false;  // game has ended once all non-mine cells have been opened
         }
     }

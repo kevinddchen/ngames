@@ -2,6 +2,7 @@
 
 #include "board.h"
 #include "common.h"
+#include "text_end_game.h"
 #include "text_mine_count.h"
 #include "ui.h"
 
@@ -21,8 +22,9 @@ public:
     App(int rows, int cols, int mines)
         : cursor_y((rows - 1) / 2),
           cursor_x((cols - 1) / 2),
-          text_mine_count(board, MARGIN_TOP, MARGIN_LEFT),       // height is 1
-          board(rows, cols, mines, MARGIN_TOP + 1, MARGIN_LEFT)  // height is rows + 2 * BORDER_WIDTH
+          text_mine_count(board, MARGIN_TOP, MARGIN_LEFT),        // height is 1
+          board(rows, cols, mines, MARGIN_TOP + 1, MARGIN_LEFT),  // height is rows + 2 * BORDER_WIDTH
+          text_end_game(board, MARGIN_TOP + 1 + rows + 2 * BORDER_WIDTH, MARGIN_LEFT)  // height is 1
     {
     }
 
@@ -79,6 +81,7 @@ public:
             case ' ':
                 board.open(cursor_y, cursor_x);
                 board.refresh();
+                text_end_game.refresh();
                 break;
         }
     }
@@ -90,6 +93,7 @@ public:
 
     TextMineCount text_mine_count;
     Board board;
+    TextEndGame text_end_game;
 };
 
 }  // namespace mines

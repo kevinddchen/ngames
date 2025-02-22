@@ -97,6 +97,11 @@ public:
     inline int get_neighbor_mine_count(int row, int col) const { return neighbor_mine_counts[row][col]; }
 
     /**
+     * Returns true if player has won the game.
+     */
+    inline bool is_win() const { return num_opened + mines == rows * cols; }
+
+    /**
      * Refresh the board viewed by the user.
      */
     void refresh() const;

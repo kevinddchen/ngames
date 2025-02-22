@@ -6,7 +6,7 @@
 namespace mines
 {
 
-TextInstructions::TextInstructions(int start_y, int start_x) : Component(newwin(6, 24, start_y, start_x)) {}
+TextInstructions::TextInstructions(int start_y, int start_x) : Component(newwin(7, 24, start_y, start_x)) {}
 
 void TextInstructions::refresh() const
 {
@@ -18,6 +18,7 @@ void TextInstructions::refresh() const
     mvwprintw(window, 3, 0, "l/right: move right");
     mvwprintw(window, 4, 0, "      f: place flag");
     mvwprintw(window, 5, 0, "  space: open cell");
+    mvwprintw(window, 6, 0, "      q: quit");
     wattroff(window, attr);
     wrefresh(window);
 }

@@ -47,7 +47,10 @@ public:
         while (true) {
             wmove(board.window, cursor_y + BORDER_WIDTH, cursor_x + BORDER_WIDTH);
             const int key = wgetch(board.window);
-            handle_keystroke(key);
+            const bool continue_ = handle_keystroke(key);
+            if (!continue_) {
+                break;
+            }
         }
 
         endwin();
@@ -56,8 +59,9 @@ public:
     /**
      * Perform action associated with given keystroke.
      * @param key Key pressed.
+     * @returns False when we want to quit.
      */
-    void handle_keystroke(int key)
+    bool handle_keystroke(int key)
     {
         switch (key) {
             case 'h':
@@ -94,7 +98,10 @@ public:
                 board.refresh();
                 text_end_game.refresh();
                 break;
+            case 'q':
+                return false;
         }
+        return true;
     }
 
     // y-coordinate of cursor, relative to board window.

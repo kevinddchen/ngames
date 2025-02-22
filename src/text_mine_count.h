@@ -9,7 +9,7 @@ namespace mines
 {
 
 /**
- * Text above the Minesweeper game displaying the number of mines remaining.
+ * Text displaying the number of mines remaining.
  */
 class TextMineCount
 {

@@ -3,6 +3,7 @@
 #include "board.h"
 #include "common.h"
 #include "text_end_game.h"
+#include "text_instructions.h"
 #include "text_mine_count.h"
 #include "ui.h"
 
@@ -24,7 +25,9 @@ public:
           cursor_x((cols - 1) / 2),
           text_mine_count(board, MARGIN_TOP, MARGIN_LEFT),        // height is 1
           board(rows, cols, mines, MARGIN_TOP + 1, MARGIN_LEFT),  // height is rows + 2 * BORDER_WIDTH
-          text_end_game(board, MARGIN_TOP + 1 + rows + 2 * BORDER_WIDTH, MARGIN_LEFT)  // height is 1
+          text_end_game(board, MARGIN_TOP + 1 + rows + 2 * BORDER_WIDTH, MARGIN_LEFT),  // height is 1
+          // 1 row buffer
+          text_instructions(MARGIN_TOP + 3 + rows + 2 * BORDER_WIDTH, MARGIN_LEFT)
     {
     }
 
@@ -36,6 +39,8 @@ public:
         // Initial print
         text_mine_count.refresh();
         board.refresh();
+        text_end_game.refresh();
+        text_instructions.refresh();
 
         while (true) {
             wmove(board.window, cursor_y + BORDER_WIDTH, cursor_x + BORDER_WIDTH);
@@ -94,6 +99,7 @@ public:
     TextMineCount text_mine_count;
     Board board;
     TextEndGame text_end_game;
+    TextInstructions text_instructions;
 };
 
 }  // namespace mines

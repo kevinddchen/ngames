@@ -17,7 +17,6 @@ void TextEndGame::refresh() const
 {
     // check if game has ended
     if (!board.is_active()) {
-        // check if win
         if (board.is_win()) {
             const auto attr = A_BOLD | COLOR_PAIR(COLOR_PAIR_WIN);
             wattron(window, attr);

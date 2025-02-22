@@ -22,7 +22,8 @@ constexpr short COLOR_PAIR_UNOPENED = 8;  // grey text
 constexpr short COLOR_PAIR_WIN = 2;  // green text
 // Color pair for losing text
 constexpr short COLOR_PAIR_LOSS = 3;  // red text
-
+// Color pair for instructions
+constexpr short COLOR_PAIR_INSTRUCTIONS = 8;  // grey text
 
 /**
  * Initialize ncurses.

@@ -28,23 +28,16 @@ public:
     Board(int rows, int cols, int mines, int start_y, int start_x);
 
     /**
-     * Returns true if cell is known to contain a mine.
-     * @param row Cell row.
-     * @param col Cell column.
-     */
-    inline bool is_known_mine(int row, int col) const { return is_known_mine_array[row][col]; }
-
-    /**
-     * Returns true if cell has been opened.
-     * @param row Cell row.
-     * @param col Cell column.
-     */
-    inline bool is_opened(int row, int col) const { return is_opened_array[row][col]; }
-
-    /**
-     * Open a cell. If the cell contains a mine, the game will end. If the cell
-     * has no neighboring mines, all neighboring mines will also be opened
-     * (this happens recursively).
+     * Click on a cell.
+     *
+     * If the cell is unopened, the cell will be opened. If the cell contains a
+     * mine, the game will end. If the cell has no neighboring mines, all
+     * neighboring unopened cells will also be opened (this happens
+     * recursively).
+     *
+     * If the cell has already been opened and the number of neighboring flags
+     * equals the number of neighboring mines, all neighboring unopened cells
+     * will be opened (this happens recursively). This is called "chording".
      *
      * @param row Cell row.
      * @param col Cell column.
@@ -52,17 +45,10 @@ public:
      * @returns Return code. A non-zero value means that an error occurred and
      * the game state was not been changed. The possible error codes are
      *   1: game is inactive.
-     *   2: cell has already been opened.
+     *   2: cell has already been opened, and cannot chord.
      *   3: cell has been flagged.
      */
-    int open(int row, int col);
-
-    /**
-     * Returns true if cell has been flagged.
-     * @param row Cell row.
-     * @param col Cell column.
-     */
-    inline bool is_flagged(int row, int col) const { return is_flagged_array[row][col]; }
+    int click_cell(int row, int col);
 
     /**
      * Toggle the flag for a cell.
@@ -88,14 +74,6 @@ public:
     inline int get_num_flags() const { return num_flags; }
 
     /**
-     * Count the number of mines neighboring a cell. Returns -1 if the cell
-     * has not been opened or contains a mine.
-     * @param row Cell row.
-     * @param col Cell column.
-     */
-    inline int get_neighbor_mine_count(int row, int col) const { return neighbor_mine_counts[row][col]; }
-
-    /**
      * Returns true if player has won the game.
      */
     inline bool is_win() const { return num_opened + mines == rows * cols; }
@@ -110,6 +88,23 @@ public:
     const int mines;
 
 private:
+    /**
+     * Open an unopened cell. If the cell contains a mine, the game will end.
+     * If the cell has no neighboring mines, all neighboring unopened mines
+     * will also be opened (this happens recursively).
+     * @param row Cell row.
+     * @param col Cell column.
+     */
+    void open(int row, int col);
+
+    inline bool is_known_mine(int row, int col) const { return is_known_mine_array[row][col]; }
+
+    inline bool is_opened(int row, int col) const { return is_opened_array[row][col]; }
+
+    inline bool is_flagged(int row, int col) const { return is_flagged_array[row][col]; }
+
+    inline int get_neighbor_mine_count(int row, int col) const { return neighbor_mine_counts[row][col]; }
+
     /**
      * Print the cell at the current cursor location, and then advance the
      * cursor.

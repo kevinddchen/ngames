@@ -32,7 +32,7 @@ Board::Board(int rows, int cols, int mines, int start_y, int start_x)
     }
 }
 
-int Board::open(int row, int col)
+int Board::click_cell(int row, int col)
 {
     if (!active) {
         return 1;
@@ -42,9 +42,17 @@ int Board::open(int row, int col)
         return 3;
     }
 
+    open(row, col);
+    return 0;
+}
+
+void Board::open(int row, int col)
+{
+    assert(!(is_opened(row, col)));
+
     // interact with backend
-    bool is_mine;
-    int neighbor_mine_count;
+    bool is_mine = false;
+    int neighbor_mine_count = -1;
     const int retval = game.open(row, col, is_mine, neighbor_mine_count);
     assert(retval == 0);
 
@@ -61,7 +69,7 @@ int Board::open(int row, int col)
     }
 
     // if no neighboring mines, recursively open all neighboring cells
-    if (neighbor_mine_count == 0) {
+    if (active && neighbor_mine_count == 0) {
         for (int dy : {-1, 0, 1}) {
             for (int dx : {-1, 0, 1}) {
                 // skip case where not actually neighbor
@@ -74,11 +82,14 @@ int Board::open(int row, int col)
                 if (nb_row < 0 || nb_row >= rows || nb_col < 0 || nb_col >= cols) {
                     continue;
                 }
+                // check not opened
+                if (is_opened(nb_row, nb_col)) {
+                    continue;
+                }
                 open(nb_row, nb_col);
             }
         }
     }
-    return 0;
 }
 
 int Board::toggle_flag(int row, int col)

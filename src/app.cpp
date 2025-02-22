@@ -94,7 +94,7 @@ public:
                 board.refresh();
                 break;
             case ' ':
-                board.open(cursor_y, cursor_x);
+                board.click_cell(cursor_y, cursor_x);
                 board.refresh();
                 text_end_game.refresh();
                 break;

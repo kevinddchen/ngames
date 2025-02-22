@@ -32,22 +32,33 @@ Board::Board(int rows, int cols, int mines, int start_y, int start_x)
     }
 }
 
-int Board::open(int row, int col)
+int Board::click_cell(int row, int col)
 {
     if (!active) {
         return 1;
-    } else if (is_opened(row, col)) {
-        return 2;
     } else if (is_flagged(row, col)) {
         return 3;
+    } else if (!is_opened(row, col)) {
+        open(row, col);
+    } else if (can_chord(row, col)) {
+        open_neighbors(row, col);
+    } else {
+        return 2;
     }
+    return 0;
+}
+
+void Board::open(int row, int col)
+{
+    assert(can_open(row, col));
 
     // interact with backend
-    bool is_mine;
-    int neighbor_mine_count;
+    bool is_mine = false;          // will be overwritten by `game.open()`
+    int neighbor_mine_count = -1;  // may be overwritten by `game.open()`
     const int retval = game.open(row, col, is_mine, neighbor_mine_count);
     assert(retval == 0);
 
+    // update state
     is_opened_array[row][col] = true;
     ++num_opened;
     if (is_mine) {
@@ -62,23 +73,29 @@ int Board::open(int row, int col)
 
     // if no neighboring mines, recursively open all neighboring cells
     if (neighbor_mine_count == 0) {
-        for (int dy : {-1, 0, 1}) {
-            for (int dx : {-1, 0, 1}) {
-                // skip case where not actually neighbor
-                if (dy == 0 && dx == 0) {
-                    continue;
-                }
-                const int nb_row = row + dy;
-                const int nb_col = col + dx;
-                // check bounds
-                if (nb_row < 0 || nb_row >= rows || nb_col < 0 || nb_col >= cols) {
-                    continue;
-                }
+        open_neighbors(row, col);
+    }
+}
+
+void Board::open_neighbors(int row, int col)
+{
+    for (int dy : {-1, 0, 1}) {
+        for (int dx : {-1, 0, 1}) {
+            // skip case where not actually neighbor
+            if (dy == 0 && dx == 0) {
+                continue;
+            }
+            const int nb_row = row + dy;
+            const int nb_col = col + dx;
+            // check bounds
+            if (nb_row < 0 || nb_row >= rows || nb_col < 0 || nb_col >= cols) {
+                continue;
+            }
+            if (can_open(nb_row, nb_col)) {
                 open(nb_row, nb_col);
             }
         }
     }
-    return 0;
 }
 
 int Board::toggle_flag(int row, int col)
@@ -99,6 +116,29 @@ int Board::toggle_flag(int row, int col)
     return 0;
 }
 
+int Board::get_neighbor_flag_count(int row, int col) const
+{
+    int count = 0;
+    for (int dy : {-1, 0, 1}) {
+        for (int dx : {-1, 0, 1}) {
+            // skip case where not actually neighbor
+            if (dy == 0 && dx == 0) {
+                continue;
+            }
+            const int nb_row = row + dy;
+            const int nb_col = col + dx;
+            // check bounds
+            if (nb_row < 0 || nb_row >= rows || nb_col < 0 || nb_col >= cols) {
+                continue;
+            }
+            if (is_flagged(nb_row, nb_col)) {
+                ++count;
+            }
+        }
+    }
+    return count;
+}
+
 void Board::refresh() const
 {
     for (int row = 0; row < rows; ++row) {
@@ -112,24 +152,19 @@ void Board::refresh() const
 
 void Board::print_cell(int row, int col) const
 {
-    // if known mine, print '*'
     if (is_known_mine(row, col)) {
         const auto attr = A_BOLD | A_BLINK | COLOR_PAIR(COLOR_PAIR_MINES);
         wattron(window, attr);
         waddch(window, '*');
         wattroff(window, attr);
         return;
-    }
-    // if flagged, print flag
-    if (is_flagged(row, col)) {
+    } else if (is_flagged(row, col)) {
         const auto attr = A_BOLD;
         wattron(window, attr);
         waddch(window, 'F');
         wattroff(window, attr);
         return;
-    }
-    // if not opened, print opaque square
-    if (!(is_opened(row, col))) {
+    } else if (!is_opened(row, col)) {
         const auto attr = COLOR_PAIR(COLOR_PAIR_UNOPENED);
         wattron(window, attr);
         waddch(window, '#');
@@ -143,8 +178,8 @@ void Board::print_cell(int row, int col) const
         return;
     } else {
         // convert digit (as int) to char
-        const auto attr = COLOR_PAIR(neighbor_mines);
         const char digit = neighbor_mines + '0';
+        const auto attr = COLOR_PAIR(neighbor_mines);
         wattron(window, attr);
         waddch(window, digit);
         wattroff(window, attr);

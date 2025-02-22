@@ -36,14 +36,17 @@ int Board::click_cell(int row, int col)
 {
     if (!active) {
         return 1;
-    } else if (is_opened(row, col)) {
-        return 2;
     } else if (is_flagged(row, col)) {
         return 3;
+    } else if (!is_opened(row, col)) {
+        open(row, col);
+        return 0;
+    } else if (can_chord(row, col)) {
+        open_neighbors(row, col);
+        return 0;
+    } else {
+        return 2;
     }
-
-    open(row, col);
-    return 0;
 }
 
 void Board::open(int row, int col)
@@ -70,22 +73,27 @@ void Board::open(int row, int col)
     }
 
     // if no neighboring mines, recursively open all neighboring cells
-    if (active && neighbor_mine_count == 0) {
-        for (int dy : {-1, 0, 1}) {
-            for (int dx : {-1, 0, 1}) {
-                // skip case where not actually neighbor
-                if (dy == 0 && dx == 0) {
-                    continue;
-                }
-                const int nb_row = row + dy;
-                const int nb_col = col + dx;
-                // check bounds
-                if (nb_row < 0 || nb_row >= rows || nb_col < 0 || nb_col >= cols) {
-                    continue;
-                }
-                if (can_open(nb_row, nb_col)) {
-                    open(nb_row, nb_col);
-                }
+    if (neighbor_mine_count == 0) {
+        open_neighbors(row, col);
+    }
+}
+
+void Board::open_neighbors(int row, int col)
+{
+    for (int dy : {-1, 0, 1}) {
+        for (int dx : {-1, 0, 1}) {
+            // skip case where not actually neighbor
+            if (dy == 0 && dx == 0) {
+                continue;
+            }
+            const int nb_row = row + dy;
+            const int nb_col = col + dx;
+            // check bounds
+            if (nb_row < 0 || nb_row >= rows || nb_col < 0 || nb_col >= cols) {
+                continue;
+            }
+            if (can_open(nb_row, nb_col)) {
+                open(nb_row, nb_col);
             }
         }
     }
@@ -107,6 +115,29 @@ int Board::toggle_flag(int row, int col)
         ++num_flags;
     }
     return 0;
+}
+
+int Board::get_neighbor_flag_count(int row, int col) const
+{
+    int count = 0;
+    for (int dy : {-1, 0, 1}) {
+        for (int dx : {-1, 0, 1}) {
+            // skip case where not actually neighbor
+            if (dy == 0 && dx == 0) {
+                continue;
+            }
+            const int nb_row = row + dy;
+            const int nb_col = col + dx;
+            // check bounds
+            if (nb_row < 0 || nb_row >= rows || nb_col < 0 || nb_col >= cols) {
+                continue;
+            }
+            if (is_flagged(nb_row, nb_col)) {
+                ++count;
+            }
+        }
+    }
+    return count;
 }
 
 void Board::refresh() const

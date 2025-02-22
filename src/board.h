@@ -88,9 +88,21 @@ public:
     const int mines;
 
 private:
+    /**
+     * Returns true if the cell can be opened.
+     */
     inline bool can_open(int row, int col) const
     {
         return active && !is_opened_array[row][col] && !is_flagged_array[row][col];
+    }
+
+    /**
+     * Returns true if the cell can be chorded.
+     */
+    inline bool can_chord(int row, int col) const
+    {
+        return active && is_opened_array[row][col] &&
+               neighbor_mine_counts[row][col] == get_neighbor_flag_count(row, col);
     }
 
     /**
@@ -102,6 +114,13 @@ private:
      */
     void open(int row, int col);
 
+    /**
+     * Open all neighboring unopened cells. See `open()` for more details.
+     * @param row Cell row.
+     * @param col Cell column.
+     */
+    void open_neighbors(int row, int col);
+
     inline bool is_known_mine(int row, int col) const { return is_known_mine_array[row][col]; }
 
     inline bool is_opened(int row, int col) const { return is_opened_array[row][col]; }
@@ -109,6 +128,8 @@ private:
     inline bool is_flagged(int row, int col) const { return is_flagged_array[row][col]; }
 
     inline int get_neighbor_mine_count(int row, int col) const { return neighbor_mine_counts[row][col]; }
+
+    int get_neighbor_flag_count(int row, int col) const;
 
     /**
      * Print the cell at the current cursor location, and then advance the

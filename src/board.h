@@ -12,7 +12,8 @@ namespace mines
 
 /**
  * Front-end for the Minesweeper game. Contains information about the game
- * known by the player, e.g. neighboring mine counts and flags.
+ * known by the player, e.g. neighboring mine counts and flags, and maintains
+ * the window viewed by the player.
  */
 class Board
 {
@@ -45,6 +46,7 @@ public:
      * Open a cell. If the cell contains a mine, the game will end. If the cell
      * has no neighboring mines, all neighboring mines will also be opened
      * (this happens recursively).
+     *
      * @param row Cell row.
      * @param col Cell column.
      *
@@ -65,6 +67,7 @@ public:
 
     /**
      * Toggle the flag for a cell.
+     *
      * @param row Cell row.
      * @param col Cell column.
      *

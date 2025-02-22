@@ -11,6 +11,9 @@ class App
 public:
     /**
      * Create application.
+     * @param rows Number of rows for the Minesweeper board.
+     * @param cols Number of columns for the Minesweeper board.
+     * @param mines Number of mines for the Minesweeper board.
      */
     App(int rows, int cols, int mines)
         : cursor_y((rows - 1) / 2),

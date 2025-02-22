@@ -113,7 +113,7 @@ void Board::refresh() const
 
 void Board::print_cell(int row, int col) const
 {
-    // if known mine, print 'X'
+    // if known mine, print '*'
     if (is_known_mine(row, col)) {
         wattron(window, A_BOLD | A_BLINK | COLOR_PAIR(COLOR_PAIR_MINES));
         waddch(window, '*');

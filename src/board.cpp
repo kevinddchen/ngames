@@ -40,13 +40,12 @@ int Board::click_cell(int row, int col)
         return 3;
     } else if (!is_opened(row, col)) {
         open(row, col);
-        return 0;
     } else if (can_chord(row, col)) {
         open_neighbors(row, col);
-        return 0;
     } else {
         return 2;
     }
+    return 0;
 }
 
 void Board::open(int row, int col)
@@ -153,24 +152,19 @@ void Board::refresh() const
 
 void Board::print_cell(int row, int col) const
 {
-    // if known mine, print '*'
     if (is_known_mine(row, col)) {
         const auto attr = A_BOLD | A_BLINK | COLOR_PAIR(COLOR_PAIR_MINES);
         wattron(window, attr);
         waddch(window, '*');
         wattroff(window, attr);
         return;
-    }
-    // if flagged, print flag
-    if (is_flagged(row, col)) {
+    } else if (is_flagged(row, col)) {
         const auto attr = A_BOLD;
         wattron(window, attr);
         waddch(window, 'F');
         wattroff(window, attr);
         return;
-    }
-    // if not opened, print opaque square
-    if (!is_opened(row, col)) {
+    } else if (!is_opened(row, col)) {
         const auto attr = COLOR_PAIR(COLOR_PAIR_UNOPENED);
         wattron(window, attr);
         waddch(window, '#');

@@ -45,7 +45,7 @@ public:
      * @returns Return code. A non-zero value means that an error occurred and
      * the game state was not been changed. The possible error codes are
      *   1: game is inactive.
-     *   2: cell has already been opened, and cannot chord.
+     *   2: cell has already been opened, and cannot be chorded.
      *   3: cell has been flagged.
      */
     int click_cell(int row, int col);
@@ -107,7 +107,7 @@ private:
 
     /**
      * Open an unopened cell. If the cell contains a mine, the game will end.
-     * If the cell has no neighboring mines, all neighboring unopened mines
+     * If the cell has no neighboring mines, all neighboring unopened cells
      * will also be opened (this happens recursively).
      * @param row Cell row.
      * @param col Cell column.

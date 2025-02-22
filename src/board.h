@@ -88,6 +88,11 @@ public:
     const int mines;
 
 private:
+    inline bool can_open(int row, int col) const
+    {
+        return active && !is_opened_array[row][col] && !is_flagged_array[row][col];
+    }
+
     /**
      * Open an unopened cell. If the cell contains a mine, the game will end.
      * If the cell has no neighboring mines, all neighboring unopened mines

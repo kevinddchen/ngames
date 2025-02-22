@@ -48,7 +48,7 @@ int Board::click_cell(int row, int col)
 
 void Board::open(int row, int col)
 {
-    assert(!(is_opened(row, col)));
+    assert(can_open(row, col));
 
     // interact with backend
     bool is_mine = false;
@@ -56,6 +56,7 @@ void Board::open(int row, int col)
     const int retval = game.open(row, col, is_mine, neighbor_mine_count);
     assert(retval == 0);
 
+    // update state
     is_opened_array[row][col] = true;
     ++num_opened;
     if (is_mine) {
@@ -82,11 +83,9 @@ void Board::open(int row, int col)
                 if (nb_row < 0 || nb_row >= rows || nb_col < 0 || nb_col >= cols) {
                     continue;
                 }
-                // check not opened
-                if (is_opened(nb_row, nb_col)) {
-                    continue;
+                if (can_open(nb_row, nb_col)) {
+                    open(nb_row, nb_col);
                 }
-                open(nb_row, nb_col);
             }
         }
     }
@@ -140,7 +139,7 @@ void Board::print_cell(int row, int col) const
         return;
     }
     // if not opened, print opaque square
-    if (!(is_opened(row, col))) {
+    if (!is_opened(row, col)) {
         const auto attr = COLOR_PAIR(COLOR_PAIR_UNOPENED);
         wattron(window, attr);
         waddch(window, '#');
@@ -154,8 +153,8 @@ void Board::print_cell(int row, int col) const
         return;
     } else {
         // convert digit (as int) to char
-        const auto attr = COLOR_PAIR(neighbor_mines);
         const char digit = neighbor_mines + '0';
+        const auto attr = COLOR_PAIR(neighbor_mines);
         wattron(window, attr);
         waddch(window, digit);
         wattroff(window, attr);

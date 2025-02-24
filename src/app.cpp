@@ -1,5 +1,3 @@
-#include <ncurses.h>
-
 #include "board.h"
 #include "common.h"
 #include "text_end_game.h"

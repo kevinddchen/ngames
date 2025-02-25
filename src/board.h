@@ -9,6 +9,8 @@
 namespace mines
 {
 
+enum BoardState { active, win, lose };
+
 /**
  * Front-end for the Minesweeper game. Contains information about the game
  * known by the player, e.g. neighboring mine counts and flags, and maintains
@@ -66,7 +68,7 @@ public:
     /**
      * Returns true if game is active.
      */
-    inline bool is_active() const { return active; }
+    inline bool is_active() const { return state == BoardState::active; }
 
     /**
      * Return number of flags used.
@@ -76,7 +78,7 @@ public:
     /**
      * Returns true if player has won the game.
      */
-    inline bool is_win() const { return num_opened + mines == rows * cols; }
+    inline bool is_win() const { return state == BoardState::win; }
 
     /**
      * Refresh the board viewed by the user.
@@ -93,7 +95,7 @@ private:
      */
     inline bool can_open(int row, int col) const
     {
-        return active && !is_opened_array[row][col] && !is_flagged_array[row][col];
+        return is_active() && !is_opened(row, col) && !is_flagged(row, col);
     }
 
     /**
@@ -101,8 +103,8 @@ private:
      */
     inline bool can_chord(int row, int col) const
     {
-        return active && is_opened_array[row][col] &&
-               neighbor_mine_counts[row][col] == get_neighbor_flag_count(row, col);
+        return is_active() && is_opened(row, col) &&
+               get_neighbor_mine_count(row, col) == get_neighbor_flag_count(row, col);
     }
 
     /**
@@ -143,7 +145,7 @@ private:
     Game game;
 
     // Whether the game is active.
-    bool active;
+    BoardState state;
     // Number of opened cells.
     int num_opened;
     // Number of flags used.

@@ -12,7 +12,7 @@ Board::Board(int rows, int cols, int mines, int start_y, int start_x)
       cols(cols),
       mines(mines),
       game(rows, cols, mines),
-      active(true),
+      state(BoardState::active),
       num_opened(0),
       num_flags(0)
 {
@@ -34,7 +34,7 @@ Board::Board(int rows, int cols, int mines, int start_y, int start_x)
 
 int Board::click_cell(int row, int col)
 {
-    if (!active) {
+    if (!is_active()) {
         return 1;
     } else if (is_flagged(row, col)) {
         return 3;
@@ -63,11 +63,11 @@ void Board::open(int row, int col)
     ++num_opened;
     if (is_mine) {
         is_known_mine_array[row][col] = true;
-        active = false;  // game has ended once a mine has been opened
+        state = BoardState::lose;  // game has ended once a mine has been opened
     } else {
         neighbor_mine_counts[row][col] = neighbor_mine_count;
-        if (is_win()) {
-            active = false;  // game has ended once all non-mine cells have been opened
+        if (num_opened + mines == rows * cols) {
+            state = BoardState::win;  // game has ended once all non-mine cells have been opened
         }
     }
 
@@ -100,7 +100,7 @@ void Board::open_neighbors(int row, int col)
 
 int Board::toggle_flag(int row, int col)
 {
-    if (!active) {
+    if (!is_active()) {
         return 1;
     } else if (is_opened(row, col)) {
         return 2;

@@ -1,3 +1,5 @@
+#include <optional>
+
 #include "common.h"
 
 #include "board.h"
@@ -53,26 +55,29 @@ void Board::open(int row, int col)
     assert(can_open(row, col));
 
     // interact with backend
-    bool is_mine = false;          // will be overwritten by `game.open()`
-    int neighbor_mine_count = -1;  // may be overwritten by `game.open()`
-    const int retval = game.open(row, col, is_mine, neighbor_mine_count);
-    assert(retval == 0);
+    std::optional<int> neighbor_mine_count = std::nullopt;  // may be overwritten by `game.open()`
+    const bool is_mine = game.open(row, col, neighbor_mine_count);
 
     // update state
     is_opened_array[row][col] = true;
     ++num_opened;
+
+    // check if lost
     if (is_mine) {
         is_known_mine_array[row][col] = true;
-        state = BoardState::lose;  // game has ended once a mine has been opened
-    } else {
-        neighbor_mine_counts[row][col] = neighbor_mine_count;
-        if (num_opened + mines == rows * cols) {
-            state = BoardState::win;  // game has ended once all non-mine cells have been opened
-        }
+        state = BoardState::lose;
+        return;
+    }
+
+    // check if won
+    neighbor_mine_counts[row][col] = neighbor_mine_count.value();
+    if (num_opened + mines == rows * cols) {  // if all non-mine cells have been opened
+        state = BoardState::win;
+        return;
     }
 
     // if no neighboring mines, recursively open all neighboring cells
-    if (neighbor_mine_count == 0) {
+    if (neighbor_mine_count.value() == 0) {
         open_neighbors(row, col);
     }
 }

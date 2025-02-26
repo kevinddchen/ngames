@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <numeric>
+#include <stdexcept>
 
 #include "common.h"
 
@@ -104,12 +105,12 @@ Game::Game(int rows, int cols, int mines) : rows(rows), cols(cols), mines(mines)
     populate_mines(is_mine_array, mines);
 }
 
-int Game::open(int row, int col, bool& is_mine, int& neighbor_mine_count)
+bool Game::open(int row, int col, std::optional<int>& neighbor_mine_count)
 {
     if (!active) {
-        return 1;
+        throw std::runtime_error("Game is not active");
     } else if (is_opened_array[row][col]) {
-        return 2;
+        throw std::runtime_error("Cell has already been opened");
     }
 
     // if first cell opened, guarantee no mine by shifting all cells down/right
@@ -121,19 +122,22 @@ int Game::open(int row, int col, bool& is_mine, int& neighbor_mine_count)
         }
     }
 
+    // update state
     is_opened_array[row][col] = true;
     ++num_opened;
+
+    // check if lost
     if (is_mine_array[row][col]) {
-        is_mine = true;
-        active = false;  // game has ended once a mine has been opened
-    } else {
-        is_mine = false;
-        neighbor_mine_count = count_neighbor_mines(is_mine_array, row, col);
-        if (num_opened + mines == rows * cols) {
-            active = false;  // game has ended once all non-mine cells have been opened
-        }
+        active = false;
+        return true;
     }
-    return 0;
+
+    // check if won
+    neighbor_mine_count = count_neighbor_mines(is_mine_array, row, col);
+    if (num_opened + mines == rows * cols) {  // if all non-mine cells have been opened
+        active = false;
+    }
+    return false;
 }
 
 }  // namespace mines

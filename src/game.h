@@ -1,5 +1,6 @@
 #pragma once
 
+#include <optional>
 #include <vector>
 
 
@@ -22,22 +23,19 @@ public:
     Game(int rows, int cols, int mines);
 
     /**
-     * Open a cell.
+     * Open a cell. First cell opened is guaranteed to not contain a mine.
      *
-     * First cell opened is guaranteed to not contain a mine.
+     * Raises an error if the game is not active or the cell has already been
+     * opened.
      *
      * @param row Cell row.
      * @param col Cell column.
-     * @param is_mine Will be set to true if the cell contains a mine.
      * @param neighbor_mine_count If cell is not a mine, will be set to the
      * number of neighboring mines.
      *
-     * @returns Return code. A non-zero value means that an error occurred and
-     * the game state was not been changed. The possible error codes are
-     *   1: game is inactive.
-     *   2: cell has already been opened.
+     * @returns Whether the cell contains a mine.
      */
-    int open(int row, int col, bool& is_mine, int& neighbor_mine_count);
+    bool open(int row, int col, std::optional<int>& neighbor_mine_count);
 
 private:
     const int rows;

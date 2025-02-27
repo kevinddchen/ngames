@@ -3,3 +3,4 @@
 #include <cassert>
 #include <cmath>
 #include <cstdio>
+#include <stdexcept>

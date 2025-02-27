@@ -33,10 +33,10 @@ int str_to_int(const std::string& str, std::optional<int> min = std::nullopt)
     int i;
     try {
         i = std::stoi(str);
-    } catch (std::invalid_argument) {
+    } catch (std::invalid_argument const&) {
         fprintf(stderr, "Input not a number: %s\n", str.c_str());
         help_and_exit();
-    } catch (std::out_of_range) {
+    } catch (std::out_of_range const&) {
         fprintf(stderr, "Input too large: %s\n", str.c_str());
         help_and_exit();
     }

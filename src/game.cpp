@@ -1,6 +1,6 @@
 #include <algorithm>
+#include <ctime>
 #include <numeric>
-#include <stdexcept>
 
 #include "common.h"
 
@@ -36,7 +36,7 @@ void populate_mines(std::vector<std::vector<bool>>& is_mine_array, int num_mines
     idxs[0] = idxs[idxs.size() - 1];
     idxs.pop_back();
 
-    assert(idxs.size() >= num_mines);  // number of mines cannot be too large
+    assert(static_cast<int>(idxs.size()) >= num_mines);  // number of mines cannot be too large
 
     for (int draw = 0; draw < num_mines; ++draw) {
         // pick random index from the list

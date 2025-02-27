@@ -10,7 +10,7 @@ objects := $(subst $(SRC),$(OBJ),$(sources:.cpp=.o))
 
 CXX 	 := g++
 CPPFLAGS :=
-CXXFLAGS := -std=c++20 -Wall -O3
+CXXFLAGS := -std=c++20 -O3 -Werror -Wall -Wextra -pedantic-errors
 LDFLAGS  :=
 LDLIBS   := -lncurses
 
@@ -27,4 +27,4 @@ all: $(objects) $(app)
 
 .PHONY: clean
 clean:
-	$(RM) $(OBJ)/* $(BIN)/*
+	$(RM) $(objects) $(app)

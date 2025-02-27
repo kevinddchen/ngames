@@ -182,8 +182,7 @@ void Board::print_cell(int row, int col) const
         waddch(window, ' ');
         return;
     } else {
-        // convert digit (as int) to char
-        const char digit = neighbor_mines + '0';
+        const char digit = static_cast<char>(neighbor_mines) + '0';
         const auto attr = COLOR_PAIR(neighbor_mines);
         wattron(window, attr);
         waddch(window, digit);

@@ -18,7 +18,7 @@ namespace
 void populate_mines(std::vector<std::vector<bool>>& is_mine_array, int num_mines)
 {
     // seed RNG with current time
-    std::srand(time(0));
+    std::srand(time(nullptr));
 
     const int num_rows = is_mine_array.size();
     const int num_cols = is_mine_array[0].size();

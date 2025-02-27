@@ -65,7 +65,9 @@ public:
      * Create component.
      * @param window Window displaying text for the component.
      */
-    Component(WINDOW* window) : window(window) {};
+    Component(WINDOW* window);
+
+    virtual ~Component();
 
     /**
      * Refresh the text viewed by the user.

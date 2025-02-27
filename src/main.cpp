@@ -10,7 +10,7 @@
 /**
  * Print usage help text and then exit the program.
  */
-[[noreturn]] void help_and_exit()
+[[noreturn]] static void help_and_exit()
 {
     fprintf(stderr, "\n");
     fprintf(stderr, "Usage:\n");
@@ -28,7 +28,7 @@
  * @param min If provided, will also check that the integer is greater than or
  * equal to this.
  */
-int str_to_int(const std::string& str, std::optional<int> min = std::nullopt)
+static int str_to_int(const std::string& str, std::optional<int> min = std::nullopt)
 {
     int i;
     try {
@@ -55,7 +55,7 @@ struct Args {
     int mines;
 };
 
-Args get_args(int argc, char** argv)
+static Args get_args(int argc, char** argv)
 {
     switch (argc) {
         case 1:

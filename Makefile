@@ -15,9 +15,11 @@ LDFLAGS  :=
 LDLIBS   := -lncurses
 
 $(app): $(objects)
+	@mkdir -p $(BIN)
 	$(CXX) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
 $(OBJ)/%.o: $(SRC)/%.cpp
+	@mkdir -p $(OBJ)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $^ -o $@
 
 .PHONY: all
@@ -25,4 +27,4 @@ all: $(objects) $(app)
 
 .PHONY: clean
 clean:
-	$(RM) $(objects) $(app)
+	$(RM) $(OBJ)/* $(BIN)/*

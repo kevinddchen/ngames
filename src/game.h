@@ -37,6 +37,16 @@ public:
      */
     bool open(int row, int col, std::optional<int>& neighbor_mine_count);
 
+    /**
+     * Returns true if cell contains a mine.
+     *
+     * Throws an error if the game is active.
+     *
+     * @param row Cell row.
+     * @param col Cell column.
+     */
+    bool is_mine(int row, int col) const;
+
 private:
     const int rows;
     const int cols;

@@ -111,6 +111,9 @@ private:
      * Open an unopened cell. If the cell contains a mine, the game will end.
      * If the cell has no neighboring mines, all neighboring unopened cells
      * will also be opened (this happens recursively).
+     *
+     * Throws an error of the cell cannot be opened.
+     *
      * @param row Cell row.
      * @param col Cell column.
      */
@@ -134,6 +137,13 @@ private:
     int get_neighbor_flag_count(int row, int col) const;
 
     /**
+     * Query `game` member for locations of all mines.
+     *
+     * Throws an error if the game is active.
+     */
+    void populate_known_mine_array();
+
+    /**
      * Print the cell at the current cursor location, and then advance the
      * cursor.
      * @param row Cell row.
@@ -150,6 +160,8 @@ private:
     int num_opened;
     // Number of flags used.
     int num_flags;
+    // (row, column) of last opened cell.
+    std::optional<std::pair<int, int>> last_opened;
 
     // Array with shape (rows, cols) tracking which cells are known to contain a mine.
     std::vector<std::vector<bool>> is_known_mine_array;

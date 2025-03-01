@@ -16,7 +16,8 @@ Board::Board(int rows, int cols, int mines, int start_y, int start_x)
       game(rows, cols, mines),
       state(BoardState::active),
       num_opened(0),
-      num_flags(0)
+      num_flags(0),
+      last_opened(std::nullopt)
 {
     // create window border
     box(window, 0, 0);
@@ -55,24 +56,27 @@ void Board::open(int row, int col)
     assert(can_open(row, col));
 
     // interact with backend
-    std::optional<int> neighbor_mine_count = std::nullopt;  // may be overwritten by `game.open()`
+    std::optional<int> neighbor_mine_count = std::nullopt;  // this is set if `is_mine` is false
     const bool is_mine = game.open(row, col, neighbor_mine_count);
 
     // update state
     is_opened_array[row][col] = true;
     ++num_opened;
+    last_opened = {row, col};
 
     // check if lost
     if (is_mine) {
-        is_known_mine_array[row][col] = true;
         state = BoardState::lose;
+        populate_known_mine_array();
         return;
     }
 
-    // check if won
     neighbor_mine_counts[row][col] = neighbor_mine_count.value();
+
+    // check if won
     if (num_opened + mines == rows * cols) {  // if all non-mine cells have been opened
         state = BoardState::win;
+        populate_known_mine_array();
         return;
     }
 
@@ -144,6 +148,16 @@ int Board::get_neighbor_flag_count(int row, int col) const
     return count;
 }
 
+void Board::populate_known_mine_array()
+{
+    assert(!is_active());
+    for (int row = 0; row < rows; ++row) {
+        for (int col = 0; col < cols; ++col) {
+            is_known_mine_array[row][col] = game.is_mine(row, col);
+        }
+    }
+}
+
 void Board::refresh() const
 {
     for (int row = 0; row < rows; ++row) {
@@ -157,16 +171,24 @@ void Board::refresh() const
 
 void Board::print_cell(int row, int col) const
 {
-    if (is_known_mine(row, col)) {
-        const auto attr = A_BOLD | A_BLINK | COLOR_PAIR(COLOR_PAIR_MINES);
-        wattron(window, attr);
-        waddch(window, '*');
-        wattroff(window, attr);
-        return;
-    } else if (is_flagged(row, col)) {
-        const auto attr = A_BOLD;
+    if (is_flagged(row, col)) {
+        auto attr = A_BOLD;
+        // if game ended and flag is incorrect, use red background and blink
+        if (!is_active() && !is_known_mine(row, col)) {
+            attr |= A_BLINK | COLOR_PAIR(COLOR_PAIR_ERROR);
+        }
         wattron(window, attr);
         waddch(window, 'F');
+        wattroff(window, attr);
+        return;
+    } else if (is_known_mine(row, col)) {
+        auto attr = A_BOLD;
+        // if last click, use red background and blink
+        if (const auto& lo = last_opened.value(); lo.first == row && lo.second == col) {
+            attr |= A_BLINK | COLOR_PAIR(COLOR_PAIR_ERROR);
+        }
+        wattron(window, attr);
+        waddch(window, '*');
         wattroff(window, attr);
         return;
     } else if (!is_opened(row, col)) {

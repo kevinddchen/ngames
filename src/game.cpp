@@ -129,12 +129,19 @@ bool Game::open(int row, int col, std::optional<int>& neighbor_mine_count)
         return true;
     }
 
-    // check if won
     neighbor_mine_count = count_neighbor_mines(is_mine_array, row, col);
+
+    // check if won
     if (num_opened + mines == rows * cols) {  // if all non-mine cells have been opened
         active = false;
     }
     return false;
+}
+
+bool Game::is_mine(int row, int col) const
+{
+    assert(!active);  // game must be inactive
+    return is_mine_array[row][col];
 }
 
 }  // namespace mines

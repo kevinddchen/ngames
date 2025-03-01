@@ -28,7 +28,7 @@ void init_ncurses()
     init_pair(8, COLOR_GREY, COLOR_BLACK);
 
     // color pair for mines
-    init_pair(COLOR_PAIR_MINES, COLOR_WHITE, COLOR_RED);
+    init_pair(COLOR_PAIR_ERROR, COLOR_WHITE, COLOR_RED);
 }
 
 Component::Component(WINDOW* window) : window(window) {}

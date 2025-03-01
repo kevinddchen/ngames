@@ -107,11 +107,8 @@ Game::Game(int rows, int cols, int mines) : rows(rows), cols(cols), mines(mines)
 
 bool Game::open(int row, int col, std::optional<int>& neighbor_mine_count)
 {
-    if (!active) {
-        throw std::runtime_error("Game is not active");
-    } else if (is_opened_array[row][col]) {
-        throw std::runtime_error("Cell has already been opened");
-    }
+    assert(active);                      // game must be active
+    assert(!is_opened_array[row][col]);  // cell must not be opened
 
     // if first cell opened, guarantee no mine by shifting all cells down/right
     // so that (0, 0) becomes the cell just clicked on

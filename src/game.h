@@ -25,7 +25,7 @@ public:
     /**
      * Open a cell. First cell opened is guaranteed to not contain a mine.
      *
-     * Raises an error if the game is not active or the cell has already been
+     * Throws an error if the game is not active or the cell has already been
      * opened.
      *
      * @param row Cell row.

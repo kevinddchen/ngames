@@ -23,6 +23,9 @@ public:
      * Refresh the text viewed by the user.
      */
     void refresh() const override;
+
+    static constexpr int HEIGHT = 4;
+    static constexpr int WIDTH = 32;
 };
 
 }  // namespace mines

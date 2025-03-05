@@ -11,10 +11,10 @@ namespace mines
 App::App(int rows, int cols, int mines)
     : cursor_y((rows - 1) / 2),
       cursor_x((cols - 1) / 2),
-      text_mine_count(board, MARGIN_TOP, MARGIN_LEFT),                              // height is 1
-      board(rows, cols, mines, MARGIN_TOP + 1, MARGIN_LEFT),                        // height is rows + 2 * BORDER_WIDTH
-      text_end_game(board, MARGIN_TOP + 1 + rows + 2 * BORDER_WIDTH, MARGIN_LEFT),  // height is 1
-      text_instructions(MARGIN_TOP + 2 + rows + 2 * BORDER_WIDTH, MARGIN_LEFT)
+      text_mine_count(board, MARGIN_TOP, MARGIN_LEFT),
+      board(rows, cols, mines, text_mine_count.bottom(), MARGIN_LEFT),
+      text_end_game(board, board.bottom(), MARGIN_LEFT),
+      text_instructions(text_end_game.bottom(), MARGIN_LEFT)
 {
 }
 

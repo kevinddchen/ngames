@@ -26,6 +26,9 @@ public:
      */
     void refresh() const override;
 
+    static constexpr int HEIGHT = 1;
+    static constexpr int WIDTH = 32;
+
 private:
     const Board& board;
 };

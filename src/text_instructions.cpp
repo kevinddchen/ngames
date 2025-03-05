@@ -6,7 +6,10 @@
 namespace mines
 {
 
-TextInstructions::TextInstructions(int start_y, int start_x) : Component(newwin(4, 32, start_y, start_x)) {}
+TextInstructions::TextInstructions(int start_y, int start_x)
+    : Component(newwin(TextInstructions::HEIGHT, TextInstructions::WIDTH, start_y, start_x))
+{
+}
 
 void TextInstructions::refresh() const
 {

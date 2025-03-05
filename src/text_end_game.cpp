@@ -7,7 +7,7 @@ namespace mines
 {
 
 TextEndGame::TextEndGame(const Board& board, int start_y, int start_x)
-    : Component(newwin(1, 16, start_y, start_x)),
+    : Component(newwin(TextEndGame::HEIGHT, TextEndGame::WIDTH, start_y, start_x)),
       board(board)
 {
 }

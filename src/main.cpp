@@ -5,12 +5,7 @@
 
 #include "app.h"
 #include "common.h"
-#include "ui.h"
 
-
-constexpr int MIN_ROWS = 1;
-constexpr int MIN_COLS = 1;
-constexpr int MIN_MINES = 0;
 
 /**
  * Print usage help text and then exit the program.
@@ -84,16 +79,16 @@ static Args get_args(int argc, char** argv)
             const int cols = str_to_int(argv[2]);
             const int mines = str_to_int(argv[3]);
 
-            if (rows < MIN_ROWS) {
-                fprintf(stderr, "Not enough rows (%d); must be at least %d\n", rows, MIN_ROWS);
+            if (rows < mines::Game::MIN_ROWS) {
+                fprintf(stderr, "Not enough rows (%d); must be at least %d\n", rows, mines::Game::MIN_ROWS);
                 help_and_exit();
             }
-            if (cols < MIN_COLS) {
-                fprintf(stderr, "Not enough columns (%d); must be at least %d\n", cols, MIN_COLS);
+            if (cols < mines::Game::MIN_COLS) {
+                fprintf(stderr, "Not enough columns (%d); must be at least %d\n", cols, mines::Game::MIN_COLS);
                 help_and_exit();
             }
-            if (mines < MIN_MINES) {
-                fprintf(stderr, "Not enough mines (%d); must be at least %d\n", mines, MIN_MINES);
+            if (mines < mines::Game::MIN_MINES) {
+                fprintf(stderr, "Not enough mines (%d); must be at least %d\n", mines, mines::Game::MIN_MINES);
                 help_and_exit();
             }
             // since first cell is always empty, can have at most (rows * cols - 1) mines

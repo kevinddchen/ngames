@@ -94,6 +94,10 @@ namespace mines
 
 Game::Game(int rows, int cols, int mines) : rows(rows), cols(cols), mines(mines)
 {
+    assert(rows >= MIN_ROWS);
+    assert(cols >= MIN_COLS);
+    assert(mines >= MIN_MINES);
+
     // create empty data structures
     is_mine_array.reserve(rows);
     is_opened_array.reserve(rows);
@@ -108,6 +112,8 @@ Game::Game(int rows, int cols, int mines) : rows(rows), cols(cols), mines(mines)
 bool Game::open(int row, int col, std::optional<int>& neighbor_mine_count)
 {
     assert(active);                      // game must be active
+    assert(0 <= row && row < rows);      // row must be valid
+    assert(0 <= col && col < cols);      // col must be valid
     assert(!is_opened_array[row][col]);  // cell must not be opened
 
     // if first cell opened, guarantee no mine by shifting all cells down/right
@@ -140,7 +146,9 @@ bool Game::open(int row, int col, std::optional<int>& neighbor_mine_count)
 
 bool Game::is_mine(int row, int col) const
 {
-    assert(!active);  // game must be inactive
+    assert(!active);                 // game must be inactive
+    assert(0 <= row && row < rows);  // row must be valid
+    assert(0 <= col && col < cols);  // col must be valid
     return is_mine_array[row][col];
 }
 

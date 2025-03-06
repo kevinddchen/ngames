@@ -51,8 +51,6 @@ int Board::click_cell(int row, int col)
 
 void Board::open(int row, int col)
 {
-    assert(can_open(row, col));
-
     // interact with backend
     std::optional<int> neighbor_mine_count = std::nullopt;  // this is set if `is_mine` is false
     const bool is_mine = game.open(row, col, neighbor_mine_count);
@@ -148,7 +146,6 @@ int Board::count_neighbor_flags(int row, int col) const
 
 void Board::populate_known_mine_array()
 {
-    assert(!is_active());
     for (int row = 0; row < rows; ++row) {
         for (int col = 0; col < cols; ++col) {
             is_known_mine_array[row][col] = game.is_mine(row, col);

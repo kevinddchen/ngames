@@ -52,6 +52,10 @@ public:
      */
     void reset();
 
+    static constexpr int MIN_ROWS = 1;
+    static constexpr int MIN_COLS = 1;
+    static constexpr int MIN_MINES = 0;
+
 private:
     const int rows;
     const int cols;

@@ -16,10 +16,6 @@ App::App(int rows, int cols, int mines)
       text_end_game(board, board.bottom(), MARGIN_LEFT),
       text_instructions(text_end_game.bottom(), MARGIN_LEFT)
 {
-}
-
-void App::run()
-{
     // Allow arrow keys
     keypad(board.window, true);
 
@@ -28,12 +24,14 @@ void App::run()
     board.refresh();
     text_end_game.refresh();
     text_instructions.refresh();
+}
 
+void App::run()
+{
     while (true) {
         wmove(board.window, cursor_y + BORDER_WIDTH, cursor_x + BORDER_WIDTH);
         const int key = wgetch(board.window);
-        const bool continue_ = handle_keystroke(key);
-        if (!continue_) {
+        if (!handle_keystroke(key)) {
             break;
         }
     }

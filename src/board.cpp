@@ -1,5 +1,3 @@
-#include <optional>
-
 #include "common.h"
 
 #include "board.h"
@@ -125,7 +123,7 @@ int Board::toggle_flag(int row, int col)
     return 0;
 }
 
-int Board::get_neighbor_flag_count(int row, int col) const
+int Board::count_neighbor_flags(int row, int col) const
 {
     int count = 0;
     for (int dy : {-1, 0, 1}) {

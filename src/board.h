@@ -1,5 +1,6 @@
 #pragma once
 
+#include <optional>
 #include <vector>
 
 #include "game.h"
@@ -104,16 +105,13 @@ private:
     inline bool can_chord(int row, int col) const
     {
         return is_active() && is_opened(row, col) &&
-               get_neighbor_mine_count(row, col) == get_neighbor_flag_count(row, col);
+               get_neighbor_mine_count(row, col) == count_neighbor_flags(row, col);
     }
 
     /**
      * Open an unopened cell. If the cell contains a mine, the game will end.
      * If the cell has no neighboring mines, all neighboring unopened cells
      * will also be opened (this happens recursively).
-     *
-     * Throws an error of the cell cannot be opened.
-     *
      * @param row Cell row.
      * @param col Cell column.
      */
@@ -134,12 +132,10 @@ private:
 
     inline int get_neighbor_mine_count(int row, int col) const { return neighbor_mine_counts[row][col]; }
 
-    int get_neighbor_flag_count(int row, int col) const;
+    int count_neighbor_flags(int row, int col) const;
 
     /**
-     * Query `game` member for locations of all mines.
-     *
-     * Throws an error if the game is active.
+     * Query `game` for locations of all mines.
      */
     void populate_known_mine_array();
 

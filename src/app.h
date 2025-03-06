@@ -30,7 +30,7 @@ public:
 
 private:
     /**
-     * Perform action associated with given keystroke.
+     * Perform action associated with given keystroke or mouse event.
      * @param key Key pressed.
      * @returns False when we want to quit.
      */

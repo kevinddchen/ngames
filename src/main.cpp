@@ -115,5 +115,6 @@ int main(int argc, char** argv)
     mines::App app(args.rows, args.cols, args.mines);
     app.run();
 
+    endwin();  // end ncurses
     return EXIT_SUCCESS;
 }

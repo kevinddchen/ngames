@@ -16,8 +16,10 @@ App::App(int rows, int cols, int mines)
       text_end_game(board, board.bottom(), MARGIN_LEFT),
       text_instructions(text_end_game.bottom(), MARGIN_LEFT)
 {
-    // Allow arrow keys
-    keypad(board.window, true);
+    keypad(board.window, true);                            // Allow arrow keys
+    mousemask(BUTTON1_RELEASED | BUTTON3_RELEASED, NULL);  // Allow mouse
+
+    mouseinterval(0);  // Do not wait to distinguish clicks; more reactive interface
 
     // Initial print
     text_mine_count.refresh();
@@ -35,12 +37,39 @@ void App::run()
             break;
         }
     }
-
-    endwin();
 }
 
 bool App::handle_keystroke(int key)
 {
+    // handle mouse event
+    if (key == KEY_MOUSE) {
+        MEVENT event;
+        if (getmouse(&event) != OK) {
+            return true;
+        }
+        // convert to window coordinates
+        event.y -= BORDER_WIDTH + board.top();
+        event.x -= BORDER_WIDTH + board.left();
+
+        if (event.y < 0 || event.y > board.rows - 1 || event.x < 0 || event.x > board.cols - 1) {
+            // mouse event outside of window
+            return true;
+        }
+
+        // move cursor to mouse
+        cursor_y = event.y;
+        cursor_x = event.x;
+
+        if (event.bstate & BUTTON1_RELEASED) {
+            // left-click opens cell, i.e. same as space
+            key = ' ';
+        } else if (event.bstate & BUTTON3_RELEASED) {
+            // right-click toggles flag i.e. same as 'f'
+            key = 'f';
+        }
+    }
+
+    // handle keystroke
     switch (key) {
         case 'h':
         case KEY_LEFT:

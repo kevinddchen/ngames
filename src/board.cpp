@@ -175,7 +175,7 @@ void Board::print_cell(int row, int col) const
         auto attr = A_BOLD;
         // if game ended and flag is incorrect, use red background and blink
         if (!is_active() && !is_known_mine(row, col)) {
-            attr |= A_BLINK | COLOR_PAIR(COLOR_PAIR_ERROR);
+            attr |= A_BLINK | COLOR_PAIR(COLOR_PAIR_MISTAKE);
         }
         wattron(window, attr);
         waddch(window, 'F');
@@ -184,8 +184,8 @@ void Board::print_cell(int row, int col) const
     } else if (is_known_mine(row, col)) {
         auto attr = A_BOLD;
         // if last click, use red background and blink
-        if (const auto& lo = last_opened.value(); lo.first == row && lo.second == col) {
-            attr |= A_BLINK | COLOR_PAIR(COLOR_PAIR_ERROR);
+        if (auto [last_row, last_col] = last_opened.value(); last_row == row && last_col == col) {
+            attr |= A_BLINK | COLOR_PAIR(COLOR_PAIR_MISTAKE);
         }
         wattron(window, attr);
         waddch(window, '*');

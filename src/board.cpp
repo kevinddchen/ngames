@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "common.h"
 
 #include "board.h"
@@ -11,11 +13,7 @@ Board::Board(int rows, int cols, int mines, int start_y, int start_x)
       rows(rows),
       cols(cols),
       mines(mines),
-      game(rows, cols, mines),
-      state(BoardState::active),
-      num_opened(0),
-      num_flags(0),
-      last_opened(std::nullopt)
+      game(rows, cols, mines)
 {
     // create window border
     box(window, 0, 0);
@@ -26,11 +24,13 @@ Board::Board(int rows, int cols, int mines, int start_y, int start_x)
     is_flagged_array.reserve(rows);
     neighbor_mine_counts.reserve(rows);
     for (int i = 0; i < rows; ++i) {
-        is_known_mine_array.emplace_back(cols, false);
-        is_opened_array.emplace_back(cols, false);
-        is_flagged_array.emplace_back(cols, false);
-        neighbor_mine_counts.emplace_back(cols, -1);  // sentinel value for unset value
+        is_known_mine_array.emplace_back(cols);
+        is_opened_array.emplace_back(cols);
+        is_flagged_array.emplace_back(cols);
+        neighbor_mine_counts.emplace_back(cols);
     }
+
+    reset();
 }
 
 int Board::click_cell(int row, int col)
@@ -153,6 +153,26 @@ void Board::populate_known_mine_array()
         for (int col = 0; col < cols; ++col) {
             is_known_mine_array[row][col] = game.is_mine(row, col);
         }
+    }
+}
+
+void Board::reset()
+{
+    // reset the game
+    game.reset();
+
+    // initialize data
+    state = BoardState::active;
+    num_opened = 0;
+    num_flags = 0;
+    last_opened = std::nullopt;
+
+    // initialize arrays
+    for (int i = 0; i < rows; ++i) {
+        std::fill(is_known_mine_array[i].begin(), is_known_mine_array[i].end(), false);
+        std::fill(is_opened_array[i].begin(), is_opened_array[i].end(), false);
+        std::fill(is_flagged_array[i].begin(), is_flagged_array[i].end(), false);
+        std::fill(neighbor_mine_counts[i].begin(), neighbor_mine_counts[i].end(), -1);  // sentinel for unset value
     }
 }
 

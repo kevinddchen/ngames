@@ -92,17 +92,17 @@ int count_neighbor_mines(const std::vector<std::vector<bool>>& is_mine_array, in
 namespace mines
 {
 
-Game::Game(int rows, int cols, int mines) : rows(rows), cols(cols), mines(mines), active(true), num_opened(0)
+Game::Game(int rows, int cols, int mines) : rows(rows), cols(cols), mines(mines)
 {
     // create empty data structures
     is_mine_array.reserve(rows);
     is_opened_array.reserve(rows);
     for (int i = 0; i < rows; ++i) {
-        is_mine_array.emplace_back(cols, false);
-        is_opened_array.emplace_back(cols, false);
+        is_mine_array.emplace_back(cols);
+        is_opened_array.emplace_back(cols);
     }
 
-    populate_mines(is_mine_array, mines);
+    reset();
 }
 
 bool Game::open(int row, int col, std::optional<int>& neighbor_mine_count)
@@ -144,4 +144,18 @@ bool Game::is_mine(int row, int col) const
     return is_mine_array[row][col];
 }
 
+void Game::reset()
+{
+    // initialize data
+    active = true;
+    num_opened = 0;
+
+    // initialize arrays
+    for (int i = 0; i < rows; ++i) {
+        std::fill(is_mine_array[i].begin(), is_mine_array[i].end(), false);
+        std::fill(is_opened_array[i].begin(), is_opened_array[i].end(), false);
+    }
+
+    populate_mines(is_mine_array, mines);
+}
 }  // namespace mines

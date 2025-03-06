@@ -47,6 +47,11 @@ public:
      */
     bool is_mine(int row, int col) const;
 
+    /**
+     * Reset the game.
+     */
+    void reset();
+
 private:
     const int rows;
     const int cols;

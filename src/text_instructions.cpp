@@ -18,7 +18,8 @@ void TextInstructions::refresh() const
     mvwprintw(window, 0, 0, "hjkl / arrow keys to move");
     mvwprintw(window, 1, 0, "    f: place flag");
     mvwprintw(window, 2, 0, "space: open cell / chord");
-    mvwprintw(window, 3, 0, "    q: quit");
+    mvwprintw(window, 3, 0, "    r: reset");
+    mvwprintw(window, 4, 0, "    q: quit");
     wattroff(window, attr);
     wrefresh(window);
 }

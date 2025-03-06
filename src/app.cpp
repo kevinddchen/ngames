@@ -76,6 +76,12 @@ bool App::handle_keystroke(int key)
             board.refresh();
             text_end_game.refresh();
             break;
+        case 'r':
+            board.reset();
+            text_mine_count.refresh();
+            board.refresh();
+            text_end_game.refresh();
+            break;
         case 'q':
             return false;
     }

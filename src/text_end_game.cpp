@@ -27,6 +27,8 @@ void TextEndGame::refresh() const
             mvwprintw(window, 0, 0, "YOU HAVE LOST...");
             wattroff(window, attr);
         }
+    } else {
+        wclear(window);
     }
     wrefresh(window);
 }

@@ -82,6 +82,11 @@ public:
     inline bool is_win() const { return state == BoardState::win; }
 
     /**
+     * Reset the game.
+     */
+    void reset();
+
+    /**
      * Refresh the board viewed by the user.
      */
     void refresh() const override;

@@ -24,7 +24,7 @@ public:
      */
     void refresh() const override;
 
-    static constexpr int HEIGHT = 4;
+    static constexpr int HEIGHT = 5;
     static constexpr int WIDTH = 32;
 };
 

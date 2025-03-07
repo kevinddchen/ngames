@@ -95,23 +95,26 @@ bool App::handle_keystroke(int key)
                 ++cursor_x;
             }
             break;
-        case 'f':
+        case 'f':  // flag
             board.toggle_flag(cursor_y, cursor_x);
             text_mine_count.refresh();
             board.refresh();
             break;
-        case ' ':
+        case ' ':  // open
             board.click_cell(cursor_y, cursor_x);
             board.refresh();
             text_end_game.refresh();
             break;
-        case 'r':
+        case 'z':  // new game
             board.reset();
+            // also do actions below
+        case 'r':  // refresh
             text_mine_count.refresh();
             board.refresh();
             text_end_game.refresh();
+            text_instructions.refresh();
             break;
-        case 'q':
+        case 'q':  // quit
             return false;
     }
     return true;

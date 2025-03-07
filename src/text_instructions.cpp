@@ -15,11 +15,12 @@ void TextInstructions::refresh() const
 {
     const auto attr = COLOR_PAIR(COLOR_PAIR_INSTRUCTIONS);
     wattron(window, attr);
-    mvwprintw(window, 0, 0, "hjkl / arrow keys to move");
-    mvwprintw(window, 1, 0, "    f: place flag");
-    mvwprintw(window, 2, 0, "space: open cell / chord");
-    mvwprintw(window, 3, 0, "    r: reset");
-    mvwprintw(window, 4, 0, "    q: quit");
+    mvwprintw(window, 0, 0, "move cursor     hjkl / arrow keys");
+    mvwprintw(window, 1, 0, "toggle flag     f / right click");
+    mvwprintw(window, 2, 0, "open / chord    space / left click");
+    mvwprintw(window, 3, 0, "refresh ui      r");
+    mvwprintw(window, 4, 0, "new game        z");
+    mvwprintw(window, 5, 0, "quit            q");
     wattroff(window, attr);
     wrefresh(window);
 }

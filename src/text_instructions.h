@@ -24,8 +24,8 @@ public:
      */
     void refresh() const override;
 
-    static constexpr int HEIGHT = 5;
-    static constexpr int WIDTH = 32;
+    static constexpr int HEIGHT = 6;
+    static constexpr int WIDTH = 48;
 };
 
 }  // namespace mines

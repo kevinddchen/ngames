@@ -7,9 +7,10 @@ OBJ := objects
 app     := $(BIN)/mines
 sources := $(wildcard $(SRC)/*.cpp)
 objects := $(subst $(SRC),$(OBJ),$(sources:.cpp=.o))
+deps    := $(objects:.o=.d)
 
 CXX 	 := g++
-CPPFLAGS :=
+CPPFLAGS := -MMD -MP
 CXXFLAGS := -std=c++20 -O3 -Werror -Wall -Wextra -pedantic-errors
 LDFLAGS  :=
 LDLIBS   := -lncurses
@@ -20,11 +21,13 @@ $(app): $(objects)
 
 $(OBJ)/%.o: $(SRC)/%.cpp
 	@mkdir -p $(OBJ)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $^ -o $@
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
 .PHONY: all
-all: $(objects) $(app)
+all: $(app) $(objects)
 
 .PHONY: clean
 clean:
-	$(RM) $(objects) $(app)
+	$(RM) $(BIN)/* $(OBJ)/*
+
+-include $(deps)

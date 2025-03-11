@@ -1,9 +1,7 @@
-#include <mines/text_mine_count.hpp>
-
-#include <mines/common.hpp>
+#include <games/mines/text_mine_count.hpp>
 
 
-namespace mines
+namespace games::mines
 {
 
 TextMineCount::TextMineCount(const Board& board, int start_y, int start_x)
@@ -18,4 +16,4 @@ void TextMineCount::refresh() const
     wrefresh(window);
 }
 
-}  // namespace mines
+}  // namespace games::mines

@@ -4,7 +4,7 @@
 #include <vector>
 
 
-namespace mines
+namespace games::mines
 {
 
 /**
@@ -72,4 +72,4 @@ private:
     std::vector<std::vector<bool>> is_opened_array;
 };
 
-}  // namespace mines
+}  // namespace games::mines

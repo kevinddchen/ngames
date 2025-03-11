@@ -1,6 +1,4 @@
-#include <mines/game.hpp>
-
-#include <mines/common.hpp>
+#include <games/mines/game.hpp>
 
 #include <algorithm>
 #include <numeric>
@@ -90,7 +88,7 @@ int count_neighbor_mines(const std::vector<std::vector<bool>>& is_mine_array, in
 }  // namespace
 
 
-namespace mines
+namespace games::mines
 {
 
 Game::Game(int rows, int cols, int mines) : rows(rows), cols(cols), mines(mines)
@@ -167,4 +165,5 @@ void Game::reset()
 
     populate_mines(is_mine_array, mines);
 }
-}  // namespace mines
+
+}  // namespace games::mines

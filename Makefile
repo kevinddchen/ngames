@@ -1,13 +1,17 @@
 # https://stackoverflow.com/a/25966957
 
 BIN := bin
-SRC := mines
+SRC := games
 OBJ := objects
 
-app     := $(BIN)/mines
-sources := $(wildcard $(SRC)/*.cpp)
-objects := $(subst $(SRC),$(OBJ),$(sources:.cpp=.o))
-deps    := $(objects:.o=.d)
+apps    := $(BIN)/mines
+# These will be populated as we include the modules
+sources :=
+objects :=
+deps    :=
+
+include $(SRC)/common/module.mk
+include $(SRC)/mines/module.mk
 
 CXX 	 := g++
 CPPFLAGS := -I. -MMD -MP
@@ -15,19 +19,23 @@ CXXFLAGS := -std=c++20 -O3 -Werror -Wall -Wextra -pedantic-errors
 LDFLAGS  :=
 LDLIBS   := -lncurses
 
-$(app): $(objects)
-	@mkdir -p $(BIN)
+.SECONDEXPANSION:
+$(BIN)/%: $(common_objects) $$(%_objects)
+	@mkdir -p $(@D)
 	$(CXX) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
 $(OBJ)/%.o: $(SRC)/%.cpp
-	@mkdir -p $(OBJ)
+	@mkdir -p $(@D)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
 .PHONY: all
-all: $(app) $(objects)
+all: $(apps) $(objects)
 
 .PHONY: clean
 clean:
-	$(RM) $(BIN)/* $(OBJ)/*
+	$(RM) -r $(BIN)/* $(OBJ)/*
+
+.PHONY:
+mines: $(BIN)/mines
 
 -include $(deps)

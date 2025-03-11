@@ -1,9 +1,7 @@
-#include <mines/text_instructions.hpp>
-
-#include <mines/common.hpp>
+#include <games/mines/text_instructions.hpp>
 
 
-namespace mines
+namespace games::mines
 {
 
 TextInstructions::TextInstructions(int start_y, int start_x)
@@ -25,4 +23,4 @@ void TextInstructions::refresh() const
     wrefresh(window);
 }
 
-}  // namespace mines
+}  // namespace games::mines

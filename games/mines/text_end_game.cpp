@@ -1,9 +1,7 @@
-#include <mines/text_end_game.hpp>
-
-#include <mines/common.hpp>
+#include <games/mines/text_end_game.hpp>
 
 
-namespace mines
+namespace games::mines
 {
 
 TextEndGame::TextEndGame(const Board& board, int start_y, int start_x)
@@ -33,4 +31,4 @@ void TextEndGame::refresh() const
     wrefresh(window);
 }
 
-}  // namespace mines
+}  // namespace games::mines

@@ -1,12 +1,12 @@
 #pragma once
 
-#include <mines/board.hpp>
-#include <mines/text_end_game.hpp>
-#include <mines/text_instructions.hpp>
-#include <mines/text_mine_count.hpp>
+#include <games/mines/board.hpp>
+#include <games/mines/text_end_game.hpp>
+#include <games/mines/text_instructions.hpp>
+#include <games/mines/text_mine_count.hpp>
 
 
-namespace mines
+namespace games::mines
 {
 
 /**
@@ -47,4 +47,4 @@ private:
     TextInstructions text_instructions;
 };
 
-}  // namespace mines
+}  // namespace games::mines

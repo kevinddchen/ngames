@@ -1,16 +1,18 @@
 #pragma once
 
-#include <mines/board.hpp>
-#include <mines/ui.hpp>
+#include <games/mines/board.hpp>
+#include <games/mines/ui.hpp>
+
+#include <games/common/component.hpp>
 
 
-namespace mines
+namespace games::mines
 {
 
 /**
- * Text displaying the number of mines remaining.
+ * Text displaying end game message.
  */
-class TextMineCount : public Component
+class TextEndGame : public Component
 {
 public:
     /**
@@ -19,7 +21,7 @@ public:
      * @param start_y y-coordinate of the top-left corner of the window.
      * @param start_x x-coordinate of the top-left corner of the window.
      */
-    TextMineCount(const Board& board, int start_y, int start_x);
+    TextEndGame(const Board& board, int start_y, int start_x);
 
     /**
      * Refresh the text viewed by the user.
@@ -33,4 +35,4 @@ private:
     const Board& board;
 };
 
-}  // namespace mines
+}  // namespace games::mines

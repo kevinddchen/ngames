@@ -1,13 +1,15 @@
 #pragma once
 
-#include <mines/game.hpp>
-#include <mines/ui.hpp>
+#include <games/mines/game.hpp>
+#include <games/mines/ui.hpp>
+
+#include <games/common/component.hpp>
 
 #include <optional>
 #include <vector>
 
 
-namespace mines
+namespace games::mines
 {
 
 enum BoardState { active, win, lose };
@@ -174,4 +176,4 @@ private:
     std::vector<std::vector<int>> neighbor_mine_counts;
 };
 
-}  // namespace mines
+}  // namespace games::mines

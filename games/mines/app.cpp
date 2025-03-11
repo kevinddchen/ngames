@@ -1,9 +1,9 @@
-#include <mines/app.hpp>
+#include <games/mines/app.hpp>
 
-#include <mines/common.hpp>
+#include <games/mines/ui.hpp>
 
 
-namespace mines
+namespace games::mines
 {
 
 App::App(int rows, int cols, int mines)
@@ -14,6 +14,8 @@ App::App(int rows, int cols, int mines)
       text_end_game(board, board.bottom(), MARGIN_LEFT),
       text_instructions(text_end_game.bottom(), MARGIN_LEFT)
 {
+    init_colors();
+
     keypad(board.window, true);                            // Allow arrow keys
     mousemask(BUTTON1_RELEASED | BUTTON3_RELEASED, NULL);  // Allow mouse
 
@@ -118,4 +120,4 @@ bool App::handle_keystroke(int key)
     return true;
 }
 
-}  // namespace mines
+}  // namespace games::mines

@@ -1,11 +1,9 @@
-#include <mines/board.hpp>
-
-#include <mines/common.hpp>
+#include <games/mines/board.hpp>
 
 #include <algorithm>
 
 
-namespace mines
+namespace games::mines
 {
 
 Board::Board(int rows, int cols, int mines, int start_y, int start_x)
@@ -228,4 +226,4 @@ void Board::print_cell(int row, int col) const
     }
 }
 
-}  // namespace mines
+}  // namespace games::mines

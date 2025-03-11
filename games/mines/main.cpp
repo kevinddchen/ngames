@@ -1,5 +1,6 @@
-#include <mines/app.hpp>
-#include <mines/common.hpp>
+#include <games/mines/app.hpp>
+
+#include <games/common/ncurses.hpp>
 
 #include <optional>
 #include <stdexcept>
@@ -79,16 +80,16 @@ static Args get_args(int argc, char** argv)
             const int cols = str_to_int(argv[2]);
             const int mines = str_to_int(argv[3]);
 
-            if (rows < mines::Game::MIN_ROWS) {
-                fprintf(stderr, "Not enough rows (%d); must be at least %d\n", rows, mines::Game::MIN_ROWS);
+            if (rows < games::mines::Game::MIN_ROWS) {
+                fprintf(stderr, "Not enough rows (%d); must be at least %d\n", rows, games::mines::Game::MIN_ROWS);
                 help_and_exit();
             }
-            if (cols < mines::Game::MIN_COLS) {
-                fprintf(stderr, "Not enough columns (%d); must be at least %d\n", cols, mines::Game::MIN_COLS);
+            if (cols < games::mines::Game::MIN_COLS) {
+                fprintf(stderr, "Not enough columns (%d); must be at least %d\n", cols, games::mines::Game::MIN_COLS);
                 help_and_exit();
             }
-            if (mines < mines::Game::MIN_MINES) {
-                fprintf(stderr, "Not enough mines (%d); must be at least %d\n", mines, mines::Game::MIN_MINES);
+            if (mines < games::mines::Game::MIN_MINES) {
+                fprintf(stderr, "Not enough mines (%d); must be at least %d\n", mines, games::mines::Game::MIN_MINES);
                 help_and_exit();
             }
             // since first cell is always empty, can have at most (rows * cols - 1) mines
@@ -110,9 +111,9 @@ int main(int argc, char** argv)
 {
     const Args args = get_args(argc, argv);
 
-    mines::init_ncurses();
+    games::init_ncurses();
 
-    mines::App app(args.rows, args.cols, args.mines);
+    games::mines::App app(args.rows, args.cols, args.mines);
     app.run();
 
     endwin();  // end ncurses

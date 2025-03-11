@@ -1,9 +1,11 @@
 #pragma once
 
-#include <mines/ui.hpp>
+#include <games/mines/ui.hpp>
+
+#include <games/common/component.hpp>
 
 
-namespace mines
+namespace games::mines
 {
 
 /**
@@ -28,4 +30,4 @@ public:
     static constexpr int WIDTH = 48;
 };
 
-}  // namespace mines
+}  // namespace games::mines

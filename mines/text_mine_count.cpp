@@ -1,6 +1,6 @@
-#include "common.h"
+#include <mines/text_mine_count.hpp>
 
-#include "text_mine_count.h"
+#include <mines/common.hpp>
 
 
 namespace mines

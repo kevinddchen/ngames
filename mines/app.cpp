@@ -1,8 +1,6 @@
-#include <ncurses.h>
+#include <mines/app.hpp>
 
-#include "common.h"
-
-#include "app.h"
+#include <mines/common.hpp>
 
 
 namespace mines

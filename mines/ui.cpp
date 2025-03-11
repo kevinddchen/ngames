@@ -1,6 +1,6 @@
-#include "common.h"
+#include <mines/ui.hpp>
 
-#include "ui.h"
+#include <mines/common.hpp>
 
 
 namespace mines

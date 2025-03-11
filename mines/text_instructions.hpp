@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ui.h"
+#include <mines/ui.hpp>
 
 
 namespace mines

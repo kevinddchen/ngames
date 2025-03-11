@@ -1,10 +1,10 @@
 #pragma once
 
+#include <mines/game.hpp>
+#include <mines/ui.hpp>
+
 #include <optional>
 #include <vector>
-
-#include "game.h"
-#include "ui.h"
 
 
 namespace mines

@@ -1,7 +1,7 @@
 # https://stackoverflow.com/a/25966957
 
 BIN := bin
-SRC := src
+SRC := mines
 OBJ := objects
 
 app     := $(BIN)/mines
@@ -10,7 +10,7 @@ objects := $(subst $(SRC),$(OBJ),$(sources:.cpp=.o))
 deps    := $(objects:.o=.d)
 
 CXX 	 := g++
-CPPFLAGS := -MMD -MP
+CPPFLAGS := -I. -MMD -MP
 CXXFLAGS := -std=c++20 -O3 -Werror -Wall -Wextra -pedantic-errors
 LDFLAGS  :=
 LDLIBS   := -lncurses

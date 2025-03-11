@@ -1,6 +1,6 @@
-#include "common.h"
+#include <mines/text_end_game.hpp>
 
-#include "text_end_game.h"
+#include <mines/common.hpp>
 
 
 namespace mines

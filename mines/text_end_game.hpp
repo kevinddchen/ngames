@@ -1,7 +1,7 @@
 #pragma once
 
-#include "board.h"
-#include "ui.h"
+#include <mines/board.hpp>
+#include <mines/ui.hpp>
 
 
 namespace mines

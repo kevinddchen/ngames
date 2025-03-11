@@ -1,6 +1,6 @@
-#include "common.h"
+#include <mines/text_instructions.hpp>
 
-#include "text_instructions.h"
+#include <mines/common.hpp>
 
 
 namespace mines

@@ -1,8 +1,8 @@
+#include <mines/board.hpp>
+
+#include <mines/common.hpp>
+
 #include <algorithm>
-
-#include "common.h"
-
-#include "board.h"
 
 
 namespace mines

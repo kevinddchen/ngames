@@ -1,10 +1,10 @@
+#include <mines/app.hpp>
+#include <mines/common.hpp>
+
 #include <optional>
 #include <stdexcept>
 #include <string>
 #include <vector>
-
-#include "app.h"
-#include "common.h"
 
 
 /**

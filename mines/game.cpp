@@ -1,10 +1,11 @@
+#include <mines/game.hpp>
+
+#include <mines/common.hpp>
+
 #include <algorithm>
-#include <ctime>
 #include <numeric>
 
-#include "common.h"
-
-#include "game.h"
+#include <ctime>
 
 
 namespace

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "board.h"
-#include "text_end_game.h"
-#include "text_instructions.h"
-#include "text_mine_count.h"
+#include <mines/board.hpp>
+#include <mines/text_end_game.hpp>
+#include <mines/text_instructions.hpp>
+#include <mines/text_mine_count.hpp>
 
 
 namespace mines

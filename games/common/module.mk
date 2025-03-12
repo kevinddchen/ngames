@@ -4,4 +4,4 @@ common_deps    := $(common_objects:.o=.d)
 
 sources += $(common_sources)
 objects += $(common_objects)
-deps += $(common_deps)
+deps    += $(common_deps)

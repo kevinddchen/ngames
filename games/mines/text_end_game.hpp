@@ -1,7 +1,6 @@
 #pragma once
 
 #include <games/mines/board.hpp>
-#include <games/mines/ui.hpp>
 
 #include <games/common/component.hpp>
 

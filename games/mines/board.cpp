@@ -1,5 +1,7 @@
 #include <games/mines/board.hpp>
 
+#include <games/mines/ui.hpp>
+
 #include <algorithm>
 
 

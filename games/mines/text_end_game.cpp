@@ -1,5 +1,7 @@
 #include <games/mines/text_end_game.hpp>
 
+#include <games/mines/ui.hpp>
+
 
 namespace games::mines
 {

@@ -14,21 +14,24 @@ TextEndGame::TextEndGame(const Board& board, int start_y, int start_x)
 
 void TextEndGame::refresh() const
 {
-    // check if game has ended
-    if (!board.is_active()) {
-        if (board.is_win()) {
+    switch (board.get_state()) {
+        case BoardState::active:
+            wclear(window);
+            break;
+        case BoardState::win: {
             const auto attr = A_BOLD | COLOR_PAIR(COLOR_PAIR_WIN);
             wattron(window, attr);
             mvwprintw(window, 0, 0, "YOU HAVE WON!");
             wattroff(window, attr);
-        } else {
+            break;
+        }
+        case BoardState::lose: {
             const auto attr = A_BOLD | COLOR_PAIR(COLOR_PAIR_LOSS);
             wattron(window, attr);
             mvwprintw(window, 0, 0, "YOU HAVE LOST...");
             wattroff(window, attr);
+            break;
         }
-    } else {
-        wclear(window);
     }
     wrefresh(window);
 }

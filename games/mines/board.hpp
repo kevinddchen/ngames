@@ -68,19 +68,14 @@ public:
     int toggle_flag(int row, int col);
 
     /**
-     * Returns true if game is active.
+     * Returns game state.
      */
-    inline bool is_active() const { return state == BoardState::active; }
+    inline BoardState get_state() const { return state; }
 
     /**
      * Return number of flags used.
      */
     inline int get_num_flags() const { return num_flags; }
-
-    /**
-     * Returns true if player has won the game.
-     */
-    inline bool is_win() const { return state == BoardState::win; }
 
     /**
      * Reset the game.
@@ -102,7 +97,7 @@ private:
      */
     inline bool can_open(int row, int col) const
     {
-        return is_active() && !is_opened(row, col) && !is_flagged(row, col);
+        return state == BoardState::active && !is_opened(row, col) && !is_flagged(row, col);
     }
 
     /**
@@ -110,7 +105,7 @@ private:
      */
     inline bool can_chord(int row, int col) const
     {
-        return is_active() && is_opened(row, col) &&
+        return state == BoardState::active && is_opened(row, col) &&
                get_neighbor_mine_count(row, col) == count_neighbor_flags(row, col);
     }
 

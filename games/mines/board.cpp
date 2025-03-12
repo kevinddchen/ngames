@@ -35,7 +35,7 @@ Board::Board(int rows, int cols, int mines, int start_y, int start_x)
 
 int Board::click_cell(int row, int col)
 {
-    if (!is_active()) {
+    if (state != BoardState::active) {
         return 1;
     } else if (is_flagged(row, col)) {
         return 3;
@@ -105,7 +105,7 @@ void Board::open_neighbors(int row, int col)
 
 int Board::toggle_flag(int row, int col)
 {
-    if (!is_active()) {
+    if (state != BoardState::active) {
         return 1;
     } else if (is_opened(row, col)) {
         return 2;
@@ -189,7 +189,7 @@ void Board::print_cell(int row, int col) const
     if (is_flagged(row, col)) {
         auto attr = A_BOLD;
         // if game ended and flag is incorrect, use red background and blink
-        if (!is_active() && !is_known_mine(row, col)) {
+        if (state != BoardState::active && !is_known_mine(row, col)) {
             attr |= A_BLINK | COLOR_PAIR(COLOR_PAIR_MISTAKE);
         }
         wattron(window, attr);

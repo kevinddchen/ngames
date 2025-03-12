@@ -18,4 +18,12 @@ inline void init_ncurses()
     start_color();
 }
 
+/**
+ * End ncurses.
+ */
+inline void end_ncurses()
+{
+    endwin();
+}
+
 }  // namespace games

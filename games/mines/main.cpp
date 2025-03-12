@@ -2,10 +2,8 @@
 
 #include <games/common/ncurses.hpp>
 
-#include <optional>
 #include <stdexcept>
 #include <string>
-#include <vector>
 
 
 /**
@@ -116,6 +114,6 @@ int main(int argc, char** argv)
     games::mines::App app(args.rows, args.cols, args.mines);
     app.run();
 
-    endwin();  // end ncurses
+    games::end_ncurses();
     return EXIT_SUCCESS;
 }

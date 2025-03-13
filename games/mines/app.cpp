@@ -109,7 +109,9 @@ bool App::handle_keystroke(int key)
             break;
         case ' ':  // open
             if (board.click_cell(cursor_y, cursor_x) == 0) {
-                refresh();
+                // only need to refresh board and end game text
+                board.refresh();
+                text_end_game.refresh();
             }
             break;
         case 'z':  // new game

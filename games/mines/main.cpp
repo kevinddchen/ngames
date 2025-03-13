@@ -78,16 +78,20 @@ static Args get_args(int argc, char** argv)
             const int cols = str_to_int(argv[2]);
             const int mines = str_to_int(argv[3]);
 
-            if (rows < games::mines::Game::MIN_ROWS) {
-                fprintf(stderr, "Not enough rows (%d); must be at least %d\n", rows, games::mines::Game::MIN_ROWS);
+            const int min_rows = games::mines::Minesweeper::MIN_ROWS;
+            const int min_cols = games::mines::Minesweeper::MIN_COLS;
+            const int min_mines = games::mines::Minesweeper::MIN_MINES;
+
+            if (rows < min_rows) {
+                fprintf(stderr, "Not enough rows (%d); must be at least %d\n", rows, min_rows);
                 help_and_exit();
             }
-            if (cols < games::mines::Game::MIN_COLS) {
-                fprintf(stderr, "Not enough columns (%d); must be at least %d\n", cols, games::mines::Game::MIN_COLS);
+            if (cols < min_cols) {
+                fprintf(stderr, "Not enough columns (%d); must be at least %d\n", cols, min_cols);
                 help_and_exit();
             }
-            if (mines < games::mines::Game::MIN_MINES) {
-                fprintf(stderr, "Not enough mines (%d); must be at least %d\n", mines, games::mines::Game::MIN_MINES);
+            if (mines < min_mines) {
+                fprintf(stderr, "Not enough mines (%d); must be at least %d\n", mines, min_mines);
                 help_and_exit();
             }
             // since first cell is always empty, can have at most (rows * cols - 1) mines

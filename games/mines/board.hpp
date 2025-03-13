@@ -1,6 +1,6 @@
 #pragma once
 
-#include <games/mines/game.hpp>
+#include <games/mines/minesweeper.hpp>
 
 #include <games/common/component.hpp>
 
@@ -149,7 +149,7 @@ private:
     void print_cell(int row, int col) const;
 
     // Game back-end.
-    Game game;
+    Minesweeper game;
 
     // Whether the game is active.
     BoardState state;

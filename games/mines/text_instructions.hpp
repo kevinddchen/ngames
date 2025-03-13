@@ -12,6 +12,9 @@ namespace games::mines
 class TextInstructions : public Component
 {
 public:
+    static constexpr int HEIGHT = 6;
+    static constexpr int WIDTH = 48;
+
     /**
      * Create text.
      * @param start_y y-coordinate of the top-left corner of the window.
@@ -23,9 +26,6 @@ public:
      * Refresh the text viewed by the user.
      */
     void refresh() const override;
-
-    static constexpr int HEIGHT = 6;
-    static constexpr int WIDTH = 48;
 };
 
 }  // namespace games::mines

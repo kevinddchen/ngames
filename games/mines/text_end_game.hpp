@@ -14,6 +14,9 @@ namespace games::mines
 class TextEndGame : public Component
 {
 public:
+    static constexpr int HEIGHT = 1;
+    static constexpr int WIDTH = 32;
+
     /**
      * Create text.
      * @param board Reference to board object.
@@ -26,9 +29,6 @@ public:
      * Refresh the text viewed by the user.
      */
     void refresh() const override;
-
-    static constexpr int HEIGHT = 1;
-    static constexpr int WIDTH = 32;
 
 private:
     const Board& board;

@@ -1,4 +1,4 @@
-#include <games/mines/game.hpp>
+#include <games/mines/minesweeper.hpp>
 
 #include <algorithm>
 #include <numeric>
@@ -91,7 +91,7 @@ int count_neighbor_mines(const std::vector<std::vector<bool>>& is_mine_array, in
 namespace games::mines
 {
 
-Game::Game(int rows, int cols, int mines) : rows(rows), cols(cols), mines(mines)
+Minesweeper::Minesweeper(int rows, int cols, int mines) : rows(rows), cols(cols), mines(mines)
 {
     assert(rows >= MIN_ROWS);
     assert(cols >= MIN_COLS);
@@ -108,7 +108,7 @@ Game::Game(int rows, int cols, int mines) : rows(rows), cols(cols), mines(mines)
     reset();
 }
 
-bool Game::open(int row, int col, std::optional<int>& neighbor_mine_count)
+bool Minesweeper::open(int row, int col, std::optional<int>& neighbor_mine_count)
 {
     assert(active);                      // game must be active
     assert(0 <= row && row < rows);      // row must be valid
@@ -143,7 +143,7 @@ bool Game::open(int row, int col, std::optional<int>& neighbor_mine_count)
     return false;
 }
 
-bool Game::is_mine(int row, int col) const
+bool Minesweeper::is_mine(int row, int col) const
 {
     assert(!active);                 // game must be inactive
     assert(0 <= row && row < rows);  // row must be valid
@@ -151,7 +151,7 @@ bool Game::is_mine(int row, int col) const
     return is_mine_array[row][col];
 }
 
-void Game::reset()
+void Minesweeper::reset()
 {
     // initialize data
     active = true;

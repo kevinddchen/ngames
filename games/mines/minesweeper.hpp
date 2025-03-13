@@ -11,16 +11,20 @@ namespace games::mines
  * Back-end for the Minesweeper game. Contains secret game state hidden from
  * the player, i.e. the locations of all mines.
  */
-class Game
+class Minesweeper
 {
 public:
+    static constexpr int MIN_ROWS = 1;
+    static constexpr int MIN_COLS = 1;
+    static constexpr int MIN_MINES = 0;
+
     /**
      * Create back-end for new Minesweeper game.
      * @param rows Number of rows.
      * @param cols Number of columns.
      * @param mines Number of mines.
      */
-    Game(int rows, int cols, int mines);
+    Minesweeper(int rows, int cols, int mines);
 
     /**
      * Open a cell. First cell opened is guaranteed to not contain a mine.
@@ -51,10 +55,6 @@ public:
      * Reset the game.
      */
     void reset();
-
-    static constexpr int MIN_ROWS = 1;
-    static constexpr int MIN_COLS = 1;
-    static constexpr int MIN_MINES = 0;
 
 private:
     const int rows;

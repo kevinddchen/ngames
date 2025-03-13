@@ -7,7 +7,8 @@ namespace games::mines
 {
 
 App::App(int rows, int cols, int mines)
-    : cursor_y((rows - 1) / 2),
+    : Component(stdscr),
+      cursor_y((rows - 1) / 2),
       cursor_x((cols - 1) / 2),
       text_mine_count(board, MARGIN_TOP, MARGIN_LEFT),
       board(rows, cols, mines, text_mine_count.bottom(), MARGIN_LEFT),
@@ -21,11 +22,7 @@ App::App(int rows, int cols, int mines)
 
     mouseinterval(0);  // Do not wait to distinguish clicks; more reactive interface
 
-    // Initial print
-    text_mine_count.refresh();
-    board.refresh();
-    text_end_game.refresh();
-    text_instructions.refresh();
+    refresh();  // Initial print
 }
 
 void App::run()
@@ -37,6 +34,14 @@ void App::run()
             break;
         }
     }
+}
+
+void App::refresh() const
+{
+    text_mine_count.refresh();
+    board.refresh();
+    text_end_game.refresh();
+    text_instructions.refresh();
 }
 
 bool App::handle_keystroke(int key)
@@ -96,23 +101,23 @@ bool App::handle_keystroke(int key)
             }
             break;
         case 'f':  // flag
-            board.toggle_flag(cursor_y, cursor_x);
-            text_mine_count.refresh();
-            board.refresh();
+            if (board.toggle_flag(cursor_y, cursor_x) == 0) {
+                // only need to refresh mine count and board
+                text_mine_count.refresh();
+                board.refresh();
+            }
             break;
         case ' ':  // open
-            board.click_cell(cursor_y, cursor_x);
-            board.refresh();
-            text_end_game.refresh();
+            if (board.click_cell(cursor_y, cursor_x) == 0) {
+                refresh();
+            }
             break;
         case 'z':  // new game
             board.reset();
-            // also do actions below
+            refresh();
+            break;
         case 'r':  // refresh
-            text_mine_count.refresh();
-            board.refresh();
-            text_end_game.refresh();
-            text_instructions.refresh();
+            refresh();
             break;
         case 'q':  // quit
             return false;

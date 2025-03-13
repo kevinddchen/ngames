@@ -14,9 +14,9 @@ TextEndGame::TextEndGame(const Board& board, int start_y, int start_x)
 
 void TextEndGame::refresh() const
 {
+    wclear(window);
     switch (board.get_state()) {
         case BoardState::active:
-            wclear(window);
             break;
         case BoardState::win: {
             const auto attr = A_BOLD | COLOR_PAIR(COLOR_PAIR_WIN);

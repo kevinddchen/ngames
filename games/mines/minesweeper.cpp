@@ -20,7 +20,7 @@ void populate_mines(std::vector<std::vector<bool>>& is_mine_array, int num_mines
     std::srand(time(nullptr));
 
     const int num_rows = is_mine_array.size();
-    const int num_cols = is_mine_array[0].size();
+    const int num_cols = is_mine_array.front().size();
     const int num_cells = num_rows * num_cols;
 
     // create list of indices
@@ -32,7 +32,7 @@ void populate_mines(std::vector<std::vector<bool>>& is_mine_array, int num_mines
     // the list to avoid drawing duplicates. we can remove an element in O(1)
     // time by replacing it with the last element of the list. to guarantee
     // index `0` not contain a mine, we remove it from the list.
-    idxs[0] = idxs[idxs.size() - 1];
+    idxs.front() = idxs.back();
     idxs.pop_back();
 
     assert(static_cast<int>(idxs.size()) >= num_mines);  // number of mines cannot be too large
@@ -46,7 +46,7 @@ void populate_mines(std::vector<std::vector<bool>>& is_mine_array, int num_mines
         const int col = idx % num_cols;
         is_mine_array[row][col] = true;
         // remove drawn index from list
-        idxs[idx_idx] = idxs[idxs.size() - 1];
+        idxs[idx_idx] = idxs.back();
         idxs.pop_back();
     }
 
@@ -62,7 +62,7 @@ void populate_mines(std::vector<std::vector<bool>>& is_mine_array, int num_mines
 int count_neighbor_mines(const std::vector<std::vector<bool>>& is_mine_array, int row, int col)
 {
     const int num_rows = is_mine_array.size();
-    const int num_cols = is_mine_array[0].size();
+    const int num_cols = is_mine_array.front().size();
 
     int count = 0;
     for (int dy : {-1, 0, 1}) {
@@ -136,8 +136,7 @@ bool Minesweeper::open(int row, int col, std::optional<int>& neighbor_mine_count
 
     neighbor_mine_count = count_neighbor_mines(is_mine_array, row, col);
 
-    // check if won
-    if (num_opened + mines == rows * cols) {  // if all non-mine cells have been opened
+    if (check_win()) {
         active = false;
     }
     return false;

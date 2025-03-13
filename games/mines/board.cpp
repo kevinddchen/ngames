@@ -15,9 +15,6 @@ Board::Board(int rows, int cols, int mines, int start_y, int start_x)
       mines(mines),
       game(rows, cols, mines)
 {
-    // create window border
-    box(window, 0, 0);
-
     // create empty data structures
     is_known_mine_array.reserve(rows);
     is_opened_array.reserve(rows);
@@ -69,8 +66,7 @@ void Board::open(int row, int col)
 
     neighbor_mine_counts[row][col] = neighbor_mine_count.value();
 
-    // check if won
-    if (num_opened + mines == rows * cols) {  // if all non-mine cells have been opened
+    if (check_win()) {
         state = BoardState::win;
         populate_known_mine_array();
         return;
@@ -144,6 +140,29 @@ int Board::count_neighbor_flags(int row, int col) const
     return count;
 }
 
+int Board::count_neighbor_unopened(int row, int col) const
+{
+    int count = 0;
+    for (int dy : {-1, 0, 1}) {
+        for (int dx : {-1, 0, 1}) {
+            // skip case where not actually neighbor
+            if (dy == 0 && dx == 0) {
+                continue;
+            }
+            const int nb_row = row + dy;
+            const int nb_col = col + dx;
+            // check bounds
+            if (nb_row < 0 || nb_row >= rows || nb_col < 0 || nb_col >= cols) {
+                continue;
+            }
+            if (!is_opened(nb_row, nb_col)) {
+                ++count;
+            }
+        }
+    }
+    return count;
+}
+
 void Board::populate_known_mine_array()
 {
     for (int row = 0; row < rows; ++row) {
@@ -175,6 +194,8 @@ void Board::reset()
 
 void Board::refresh() const
 {
+    wclear(window);
+    box(window, 0, 0);  // create window border
     for (int row = 0; row < rows; ++row) {
         wmove(window, row + BORDER_WIDTH, BORDER_WIDTH);
         for (int col = 0; col < cols; ++col) {

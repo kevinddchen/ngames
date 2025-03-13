@@ -57,6 +57,12 @@ public:
     void reset();
 
 private:
+    /**
+     * Returns true if player win condition has been met, i.e. all non-mine
+     * cells have been opened.
+     */
+    inline bool check_win() const { return num_opened + mines == rows * cols; };
+
     const int rows;
     const int cols;
     const int mines;

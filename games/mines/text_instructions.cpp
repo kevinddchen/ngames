@@ -13,6 +13,7 @@ TextInstructions::TextInstructions(int start_y, int start_x)
 
 void TextInstructions::refresh() const
 {
+    wclear(window);
     const auto attr = COLOR_PAIR(COLOR_PAIR_INSTRUCTIONS);
     wattron(window, attr);
     mvwprintw(window, 0, 0, "move cursor     hjkl / arrow keys");

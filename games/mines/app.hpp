@@ -5,6 +5,8 @@
 #include <games/mines/text_instructions.hpp>
 #include <games/mines/text_mine_count.hpp>
 
+#include <games/common/component.hpp>
+
 
 namespace games::mines
 {
@@ -12,7 +14,7 @@ namespace games::mines
 /**
  * Minesweeper application.
  */
-class App
+class App : public Component
 {
 public:
     /**
@@ -27,6 +29,11 @@ public:
      * Run the application.
      */
     void run();
+
+    /**
+     * Refresh the app viewed by the user.
+     */
+    void refresh() const override;
 
 private:
     /**

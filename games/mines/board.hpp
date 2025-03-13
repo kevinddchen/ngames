@@ -105,7 +105,7 @@ private:
      */
     inline bool can_chord(int row, int col) const
     {
-        return state == BoardState::active && is_opened(row, col) &&
+        return state == BoardState::active && is_opened(row, col) && count_neighbor_unopened(row, col) > 0 &&
                get_neighbor_mine_count(row, col) == count_neighbor_flags(row, col);
     }
 
@@ -135,8 +135,17 @@ private:
 
     int count_neighbor_flags(int row, int col) const;
 
+    int count_neighbor_unopened(int row, int col) const;
+
     /**
-     * Query `game` for locations of all mines.
+     * Returns true if player win condition has been met, i.e. all non-mine
+     * cells have been opened.
+     */
+    inline bool check_win() const { return num_opened + mines == rows * cols; };
+
+    /**
+     * Query `game` for locations of all mines. This will error out if the game
+     * is still active.
      */
     void populate_known_mine_array();
 

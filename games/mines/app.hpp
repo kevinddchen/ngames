@@ -14,7 +14,7 @@ namespace games::mines
 /**
  * Minesweeper application.
  */
-class App : public Component
+class App : private Component
 {
 public:
     /**
@@ -30,11 +30,6 @@ public:
      */
     void run();
 
-    /**
-     * Refresh the app viewed by the user.
-     */
-    void refresh() const override;
-
 private:
     /**
      * Perform action associated with given keystroke or mouse event.
@@ -42,6 +37,11 @@ private:
      * @returns False when we want to quit.
      */
     bool handle_keystroke(int key);
+
+    /**
+     * Refresh the app viewed by the user.
+     */
+    void refresh() const override;
 
     // y-coordinate of cursor, relative to board window.
     int cursor_y;

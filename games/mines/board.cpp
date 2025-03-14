@@ -30,6 +30,62 @@ Board::Board(int rows, int cols, int mines, int start_y, int start_x)
     reset();
 }
 
+void Board::refresh() const
+{
+    wclear(window);
+    for (int row = 0; row < rows; ++row) {
+        wmove(window, row, 0);
+        for (int col = 0; col < cols; ++col) {
+            print_cell(row, col);
+        }
+    }
+    wrefresh(window);
+}
+
+void Board::print_cell(int row, int col) const
+{
+    if (is_flagged(row, col)) {
+        auto attr = A_BOLD;
+        // if game ended and flag is incorrect, use red background and blink
+        if (state != BoardState::active && !is_known_mine(row, col)) {
+            attr |= A_BLINK | COLOR_PAIR(COLOR_PAIR_MISTAKE);
+        }
+        wattron(window, attr);
+        waddch(window, 'F');
+        wattroff(window, attr);
+        return;
+    } else if (is_known_mine(row, col)) {
+        auto attr = A_BOLD;
+        // if last click, use red background and blink
+        if (auto [last_row, last_col] = last_opened.value(); last_row == row && last_col == col) {
+            attr |= A_BLINK | COLOR_PAIR(COLOR_PAIR_MISTAKE);
+        }
+        wattron(window, attr);
+        waddch(window, '*');
+        wattroff(window, attr);
+        return;
+    } else if (!is_opened(row, col)) {
+        const auto attr = COLOR_PAIR(COLOR_PAIR_UNOPENED);
+        wattron(window, attr);
+        waddch(window, '#');
+        wattroff(window, attr);
+        return;
+    }
+    // otherwise, empty cell. print number of neighboring mines
+    const int neighbor_mines = get_neighbor_mine_count(row, col);
+    if (neighbor_mines == 0) {
+        waddch(window, ' ');
+        return;
+    } else {
+        const char digit = static_cast<char>(neighbor_mines) + '0';
+        const auto attr = COLOR_PAIR(neighbor_mines);
+        wattron(window, attr);
+        waddch(window, digit);
+        wattroff(window, attr);
+        return;
+    }
+}
+
 int Board::click_cell(int row, int col)
 {
     if (state != BoardState::active) {
@@ -189,62 +245,6 @@ void Board::reset()
         std::fill(is_opened_array[i].begin(), is_opened_array[i].end(), false);
         std::fill(is_flagged_array[i].begin(), is_flagged_array[i].end(), false);
         std::fill(neighbor_mine_counts[i].begin(), neighbor_mine_counts[i].end(), -1);  // sentinel for unset value
-    }
-}
-
-void Board::refresh() const
-{
-    wclear(window);
-    for (int row = 0; row < rows; ++row) {
-        wmove(window, row, 0);
-        for (int col = 0; col < cols; ++col) {
-            print_cell(row, col);
-        }
-    }
-    wrefresh(window);
-}
-
-void Board::print_cell(int row, int col) const
-{
-    if (is_flagged(row, col)) {
-        auto attr = A_BOLD;
-        // if game ended and flag is incorrect, use red background and blink
-        if (state != BoardState::active && !is_known_mine(row, col)) {
-            attr |= A_BLINK | COLOR_PAIR(COLOR_PAIR_MISTAKE);
-        }
-        wattron(window, attr);
-        waddch(window, 'F');
-        wattroff(window, attr);
-        return;
-    } else if (is_known_mine(row, col)) {
-        auto attr = A_BOLD;
-        // if last click, use red background and blink
-        if (auto [last_row, last_col] = last_opened.value(); last_row == row && last_col == col) {
-            attr |= A_BLINK | COLOR_PAIR(COLOR_PAIR_MISTAKE);
-        }
-        wattron(window, attr);
-        waddch(window, '*');
-        wattroff(window, attr);
-        return;
-    } else if (!is_opened(row, col)) {
-        const auto attr = COLOR_PAIR(COLOR_PAIR_UNOPENED);
-        wattron(window, attr);
-        waddch(window, '#');
-        wattroff(window, attr);
-        return;
-    }
-    // otherwise, empty cell. print number of neighboring mines
-    const int neighbor_mines = get_neighbor_mine_count(row, col);
-    if (neighbor_mines == 0) {
-        waddch(window, ' ');
-        return;
-    } else {
-        const char digit = static_cast<char>(neighbor_mines) + '0';
-        const auto attr = COLOR_PAIR(neighbor_mines);
-        wattron(window, attr);
-        waddch(window, digit);
-        wattroff(window, attr);
-        return;
     }
 }
 

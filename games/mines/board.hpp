@@ -32,6 +32,11 @@ public:
     Board(int rows, int cols, int mines, int start_y, int start_x);
 
     /**
+     * Refresh the board viewed by the user.
+     */
+    void refresh() const override;
+
+    /**
      * Click on a cell.
      *
      * If the cell is unopened, the cell will be opened. If the cell contains a
@@ -82,16 +87,19 @@ public:
      */
     void reset();
 
-    /**
-     * Refresh the board viewed by the user.
-     */
-    void refresh() const override;
-
     const int rows;
     const int cols;
     const int mines;
 
 private:
+    /**
+     * Print the cell at the current cursor location, and then advance the
+     * cursor.
+     * @param row Cell row.
+     * @param col Cell column.
+     */
+    void print_cell(int row, int col) const;
+
     /**
      * Returns true if the cell can be opened.
      */
@@ -148,14 +156,6 @@ private:
      * is still active.
      */
     void populate_known_mine_array();
-
-    /**
-     * Print the cell at the current cursor location, and then advance the
-     * cursor.
-     * @param row Cell row.
-     * @param col Cell column.
-     */
-    void print_cell(int row, int col) const;
 
     // Game back-end.
     Minesweeper game;

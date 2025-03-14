@@ -38,16 +38,16 @@ public:
 
 private:
     /**
+     * Refresh the app viewed by the user.
+     */
+    void refresh() const override;
+
+    /**
      * Perform action associated with given keystroke or mouse event.
      * @param key Key pressed.
      * @returns False when we want to quit.
      */
     bool handle_keystroke(int key);
-
-    /**
-     * Refresh the app viewed by the user.
-     */
-    void refresh() const override;
 
     // y-coordinate of cursor, relative to board window.
     int cursor_y;

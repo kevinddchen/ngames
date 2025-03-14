@@ -1,5 +1,8 @@
 #include <games/snakes/app.hpp>
 
+#include <chrono>
+#include <thread>
+
 
 namespace games::snakes
 {
@@ -14,7 +17,11 @@ App::App(int rows, int cols)
 
 void App::run()
 {
-    wgetch(board.window);
+    while (true) {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        board.update();
+        refresh();
+    }
 }
 
 void App::refresh() const

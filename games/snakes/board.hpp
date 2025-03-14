@@ -8,6 +8,11 @@
 namespace games::snakes
 {
 
+constexpr std::pair<int, int> UP = {-1, 0};
+constexpr std::pair<int, int> DOWN = {1, 0};
+constexpr std::pair<int, int> LEFT = {0, -1};
+constexpr std::pair<int, int> RIGHT = {0, 1};
+
 /**
  * Board containing Snakes game.
  */
@@ -27,6 +32,11 @@ public:
      * Refresh the board viewed by the user.
      */
     void refresh() const override;
+
+    /**
+     * Update the state of the board.
+     */
+    void update();
 
     const int rows;
     const int cols;

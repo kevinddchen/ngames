@@ -1,5 +1,4 @@
 #include <games/snakes/snake.hpp>
-#include <games/snakes/ui.hpp>
 
 
 namespace games::snakes
@@ -28,7 +27,7 @@ Snake::Snake(int head_y, int head_x, std::pair<int, int> direction, int length, 
 void Snake::draw(WINDOW* window) const
 {
     for (const auto& [y, x] : chain) {
-        mvwaddch(window, y + BORDER_WIDTH, x + BORDER_WIDTH, '@');
+        mvwaddch(window, y, x, '@');
     }
     // TODO: remove
     (void)head_y;

@@ -1,11 +1,11 @@
 #pragma once
 
 #include <games/mines/board.hpp>
-#include <games/mines/board_border.hpp>
 #include <games/mines/text_end_game.hpp>
 #include <games/mines/text_instructions.hpp>
 #include <games/mines/text_mine_count.hpp>
 
+#include <games/common/border.hpp>
 #include <games/common/component.hpp>
 
 
@@ -55,7 +55,7 @@ private:
     int cursor_x;
 
     TextMineCount text_mine_count;
-    BoardBorder board_border;
+    Border board_border;
     Board board;
     TextEndGame text_end_game;
     TextInstructions text_instructions;

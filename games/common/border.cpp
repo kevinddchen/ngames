@@ -1,19 +1,19 @@
-#include <games/mines/board_border.hpp>
+#include <games/common/border.hpp>
 
 
-namespace games::mines
+namespace games
 {
 
-BoardBorder::BoardBorder(int rows, int cols, int start_y, int start_x)
+Border::Border(int rows, int cols, int start_y, int start_x)
     : Component(newwin(rows + 2 * BORDER_WIDTH, cols + 2 * BORDER_WIDTH, start_y, start_x))
 {
 }
 
-void BoardBorder::refresh() const
+void Border::refresh() const
 {
     wclear(window);
     box(window, 0, 0);  // create window border
     wrefresh(window);
 }
 
-}  // namespace games::mines
+}  // namespace games

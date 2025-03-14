@@ -2,6 +2,7 @@
 
 #include <games/snakes/board.hpp>
 
+#include <games/common/border.hpp>
 #include <games/common/component.hpp>
 
 
@@ -14,6 +15,11 @@ namespace games::snakes
 class App : private Component
 {
 public:
+    // Top margin, in number of chars
+    static constexpr int MARGIN_TOP = 1;
+    // Left margin, in number of chars
+    static constexpr int MARGIN_LEFT = 1;
+
     /**
      * Create application.
      * @param rows Number of rows for the Snakes board.
@@ -32,6 +38,7 @@ private:
      */
     void refresh() const override;
 
+    Border board_border;
     Board board;
 };
 

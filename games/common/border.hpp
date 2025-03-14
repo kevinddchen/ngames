@@ -3,13 +3,13 @@
 #include <games/common/component.hpp>
 
 
-namespace games::mines
+namespace games
 {
 
 /**
- * Border for the Minesweeper board.
+ * Window border.
  */
-class BoardBorder : public Component
+class Border : public Component
 {
 public:
     // Window border width, in number of chars
@@ -19,10 +19,10 @@ public:
      * Create border.
      * @param rows Number of rows inside the border.
      * @param cols Number of columns inside the border.
-     * @param start_y y-coordinate of the top-left corner of the window.
-     * @param start_x x-coordinate of the top-left corner of the window.
+     * @param start_y y-coordinate of the top-left corner of the window border.
+     * @param start_x x-coordinate of the top-left corner of the window border.
      */
-    BoardBorder(int rows, int cols, int start_y, int start_x);
+    Border(int rows, int cols, int start_y, int start_x);
 
     /**
      * Refresh the border viewed by the user.
@@ -40,4 +40,4 @@ public:
     inline int inner_start_x() const { return left() + BORDER_WIDTH; }
 };
 
-}  // namespace games::mines
+}  // namespace games

@@ -1,12 +1,13 @@
 #include <games/snakes/app.hpp>
 
-#include <games/snakes/ui.hpp>
-
 
 namespace games::snakes
 {
 
-App::App(int rows, int cols) : Component(stdscr), board(rows, cols, MARGIN_TOP, MARGIN_LEFT)
+App::App(int rows, int cols)
+    : Component(stdscr),
+      board_border(rows, cols, MARGIN_TOP, MARGIN_LEFT),
+      board(rows, cols, board_border.inner_start_y(), board_border.inner_start_x())
 {
     refresh();  // Initial print
 }
@@ -18,6 +19,7 @@ void App::run()
 
 void App::refresh() const
 {
+    board_border.refresh();
     board.refresh();
 }
 

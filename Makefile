@@ -12,6 +12,7 @@ deps    :=
 
 include $(SRC)/common/module.mk
 include $(SRC)/mines/module.mk
+include $(SRC)/snakes/module.mk
 
 -include $(deps)
 

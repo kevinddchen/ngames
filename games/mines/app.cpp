@@ -11,8 +11,9 @@ App::App(int rows, int cols, int mines)
       cursor_y((rows - 1) / 2),
       cursor_x((cols - 1) / 2),
       text_mine_count(board, MARGIN_TOP, MARGIN_LEFT),
-      board(rows, cols, mines, text_mine_count.bottom(), MARGIN_LEFT),
-      text_end_game(board, board.bottom(), MARGIN_LEFT),
+      board_border(rows, cols, text_mine_count.bottom(), MARGIN_LEFT),
+      board(rows, cols, mines, board_border.inner_start_y(), board_border.inner_start_x()),
+      text_end_game(board, board_border.bottom(), MARGIN_LEFT),
       text_instructions(text_end_game.bottom(), MARGIN_LEFT)
 {
     init_colors();
@@ -28,7 +29,7 @@ App::App(int rows, int cols, int mines)
 void App::run()
 {
     while (true) {
-        wmove(board.window, cursor_y + BORDER_WIDTH, cursor_x + BORDER_WIDTH);
+        wmove(board.window, cursor_y, cursor_x);
         const int key = wgetch(board.window);
         if (!handle_keystroke(key)) {
             break;
@@ -39,6 +40,7 @@ void App::run()
 void App::refresh() const
 {
     text_mine_count.refresh();
+    board_border.refresh();
     board.refresh();
     text_end_game.refresh();
     text_instructions.refresh();
@@ -53,8 +55,8 @@ bool App::handle_keystroke(int key)
             return true;
         }
         // convert to window coordinates
-        event.y -= BORDER_WIDTH + board.top();
-        event.x -= BORDER_WIDTH + board.left();
+        event.y -= board.top();
+        event.x -= board.left();
 
         if (event.y < 0 || event.y > board.rows - 1 || event.x < 0 || event.x > board.cols - 1) {
             // mouse event outside of window
@@ -116,7 +118,10 @@ bool App::handle_keystroke(int key)
             break;
         case 'z':  // new game
             board.reset();
-            refresh();
+            // only need to refresh mine count, board, and end game text
+            text_mine_count.refresh();
+            board.refresh();
+            text_end_game.refresh();
             break;
         case 'r':  // refresh
             refresh();

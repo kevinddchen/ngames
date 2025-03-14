@@ -1,6 +1,7 @@
 #pragma once
 
 #include <games/mines/board.hpp>
+#include <games/mines/board_border.hpp>
 #include <games/mines/text_end_game.hpp>
 #include <games/mines/text_instructions.hpp>
 #include <games/mines/text_mine_count.hpp>
@@ -17,6 +18,11 @@ namespace games::mines
 class App : private Component
 {
 public:
+    // Top margin, in number of chars
+    static constexpr int MARGIN_TOP = 1;
+    // Left margin, in number of chars
+    static constexpr int MARGIN_LEFT = 1;
+
     /**
      * Create application.
      * @param rows Number of rows for the Minesweeper board.
@@ -49,6 +55,7 @@ private:
     int cursor_x;
 
     TextMineCount text_mine_count;
+    BoardBorder board_border;
     Board board;
     TextEndGame text_end_game;
     TextInstructions text_instructions;

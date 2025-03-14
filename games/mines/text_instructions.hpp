@@ -13,7 +13,7 @@ class TextInstructions : public Component
 {
 public:
     static constexpr int HEIGHT = 6;
-    static constexpr int WIDTH = 48;
+    static constexpr int WIDTH = 80;
 
     /**
      * Create text.

@@ -9,7 +9,7 @@ namespace games::mines
 {
 
 Board::Board(int rows, int cols, int mines, int start_y, int start_x)
-    : Component(newwin(rows + 2 * BORDER_WIDTH, cols + 2 * BORDER_WIDTH, start_y, start_x)),
+    : Component(newwin(rows, cols, start_y, start_x)),
       rows(rows),
       cols(cols),
       mines(mines),
@@ -195,9 +195,8 @@ void Board::reset()
 void Board::refresh() const
 {
     wclear(window);
-    box(window, 0, 0);  // create window border
     for (int row = 0; row < rows; ++row) {
-        wmove(window, row + BORDER_WIDTH, BORDER_WIDTH);
+        wmove(window, row, 0);
         for (int col = 0; col < cols; ++col) {
             print_cell(row, col);
         }

@@ -15,7 +15,7 @@ class TextEndGame : public Component
 {
 public:
     static constexpr int HEIGHT = 1;
-    static constexpr int WIDTH = 32;
+    static constexpr int WIDTH = 80;
 
     /**
      * Create text.

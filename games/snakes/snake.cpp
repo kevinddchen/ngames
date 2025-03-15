@@ -14,7 +14,20 @@ Snake::Snake(std::pair<int, int> head, std::pair<int, int> direction, int length
 
 void Snake::draw(WINDOW* window) const
 {
-    for (const auto& [y, x] : chain) {
+    // head is drawn specially
+    const auto [head_y, head_x] = chain.front();
+    if (direction == LEFT) {
+        mvwaddch(window, head_y, head_x, '<');
+    } else if (direction == DOWN) {
+        mvwaddch(window, head_y, head_x, 'v');
+    } else if (direction == UP) {
+        mvwaddch(window, head_y, head_x, '^');
+    } else if (direction == RIGHT) {
+        mvwaddch(window, head_y, head_x, '>');
+    }
+
+    for (int i = 1; i < static_cast<int>(chain.size()); ++i) {
+        const auto [y, x] = chain[i];
         mvwaddch(window, y, x, '@');
     }
 }

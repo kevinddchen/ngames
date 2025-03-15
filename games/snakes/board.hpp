@@ -8,11 +8,6 @@
 namespace games::snakes
 {
 
-constexpr std::pair<int, int> UP = {-1, 0};
-constexpr std::pair<int, int> DOWN = {1, 0};
-constexpr std::pair<int, int> LEFT = {0, -1};
-constexpr std::pair<int, int> RIGHT = {0, 1};
-
 /**
  * Board containing Snakes game.
  */
@@ -37,6 +32,8 @@ public:
      * Update the state of the board.
      */
     void update();
+
+    inline void set_snake_direction(const std::pair<int, int> dir) { snake.set_direction(dir); }
 
     const int rows;
     const int cols;

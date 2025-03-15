@@ -8,6 +8,11 @@
 namespace games::snakes
 {
 
+constexpr std::pair<int, int> UP = {-1, 0};
+constexpr std::pair<int, int> DOWN = {1, 0};
+constexpr std::pair<int, int> LEFT = {0, -1};
+constexpr std::pair<int, int> RIGHT = {0, 1};
+
 /**
  * Snake state and controls.
  */
@@ -36,6 +41,8 @@ public:
      * Step the snake forward one cell.
      */
     void step();
+
+    inline void set_direction(const std::pair<int, int>& dir) { direction = dir; }
 
 private:
     // Unit vector (dy, dx) pointing in direction of travel.

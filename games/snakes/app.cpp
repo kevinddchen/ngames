@@ -36,8 +36,9 @@ App::App(int rows, int cols)
 
 void App::run()
 {
-    // background thread continuously updates and refreshes the board every second
+    // daemon thread continuously updates and refreshes the board every second
     std::thread loop_thread(loop_update_refresh, &board);
+    loop_thread.detach();
 
     while (true) {
         const int key = wgetch(board.window);

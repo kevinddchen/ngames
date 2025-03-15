@@ -1,5 +1,7 @@
 #pragma once
 
+#include <games/snakes/direction.hpp>
+
 #include <ncurses.h>
 
 #include <deque>
@@ -7,11 +9,6 @@
 
 namespace games::snakes
 {
-
-constexpr std::pair<int, int> UP = {-1, 0};
-constexpr std::pair<int, int> DOWN = {1, 0};
-constexpr std::pair<int, int> LEFT = {0, -1};
-constexpr std::pair<int, int> RIGHT = {0, 1};
 
 /**
  * Snake state and controls.
@@ -21,11 +18,12 @@ class Snake
 public:
     /**
      * Create new snake.
-     * @param head (y, x) position of the snake head.
-     * @param direction (dy, dx) unit vector pointing in direction of travel.
-     * @param length Length of snake, in characters.
+     * @param head_y y-coordinate of the snake head in the board.
+     * @param head_x x-coordinate of the snake head in the board.
+     * @param direction Direction of snake.
+     * @param length Length of snake, in number of characters.
      */
-    Snake(std::pair<int, int> head, std::pair<int, int> direction, int length);
+    Snake(int head_y, int head_x, Direction direction, int length);
 
     /**
      * Draw the snake on the given window.
@@ -42,11 +40,11 @@ public:
      */
     void step();
 
-    inline void set_direction(const std::pair<int, int>& dir) { direction = dir; }
+    inline void set_direction(Direction dir) { direction = dir; }
 
 private:
-    // Unit vector (dy, dx) pointing in direction of travel.
-    std::pair<int, int> direction;
+    // Direction of snake.
+    Direction direction;
 
     // Chain of cells (y, x) that make up the snake body
     std::deque<std::pair<int, int>> chain;

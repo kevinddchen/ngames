@@ -59,22 +59,22 @@ bool App::handle_keystroke(int key)
     switch (key) {
         case 'h':
         case KEY_LEFT:
-            board.set_snake_direction(LEFT);
+            board.set_snake_direction(Direction::left);
             board.refresh();
             break;
         case 'j':
         case KEY_DOWN:
-            board.set_snake_direction(DOWN);
+            board.set_snake_direction(Direction::down);
             board.refresh();
             break;
         case 'k':
         case KEY_UP:
-            board.set_snake_direction(UP);
+            board.set_snake_direction(Direction::up);
             board.refresh();
             break;
         case 'l':
         case KEY_RIGHT:
-            board.set_snake_direction(RIGHT);
+            board.set_snake_direction(Direction::right);
             board.refresh();
             break;
         case 'r':  // refresh

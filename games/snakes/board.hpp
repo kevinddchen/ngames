@@ -33,7 +33,7 @@ public:
      */
     void update();
 
-    inline void set_snake_direction(const std::pair<int, int> dir) { snake.set_direction(dir); }
+    inline void set_snake_direction(Direction dir) { snake.set_direction(dir); }
 
     const int rows;
     const int cols;

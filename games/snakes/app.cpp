@@ -31,6 +31,9 @@ App::App(int rows, int cols)
       board_border(rows, cols, MARGIN_TOP, MARGIN_LEFT),
       board(rows, cols, board_border.inner_start_y(), board_border.inner_start_x())
 {
+    curs_set(0);                 // Hide cursor
+    keypad(board.window, true);  // Allow arrow keys
+
     refresh();  // Initial print
 }
 

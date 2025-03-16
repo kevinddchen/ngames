@@ -8,15 +8,14 @@ namespace
 
 /**
  * Loop that periodically updates and refreshes the board.
- * @param board Pointer to board.
+ * @param board Board.
  */
-void loop_update_refresh(games::snakes::Board* const board)
+void loop_update_refresh(games::snakes::Board& board)
 {
-    assert(board != nullptr);
     while (true) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
-        board->update();
-        board->refresh();
+        board.update();
+        board.refresh();
     }
 }
 
@@ -40,7 +39,7 @@ App::App(int rows, int cols)
 void App::run()
 {
     // daemon thread continuously updates and refreshes the board every second
-    std::thread loop_thread(loop_update_refresh, &board);
+    std::thread loop_thread(loop_update_refresh, std::ref(board));
     loop_thread.detach();
 
     while (true) {

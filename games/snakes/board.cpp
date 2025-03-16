@@ -11,9 +11,9 @@ Board::Board(int rows, int cols, int start_y, int start_x)
       snake(1, 4, Direction::right, 3)
 {
     // Check snake endpoints are inside board
-    for (const auto& [y, x] : {snake.head(), snake.tail()}) {
-        assert(0 <= y && y < rows);
-        assert(0 <= x && x < cols);
+    for (const auto& [row, col] : {snake.head(), snake.tail()}) {
+        assert(0 <= row && row < rows);
+        assert(0 <= col && col < cols);
     }
 }
 

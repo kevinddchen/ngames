@@ -9,7 +9,7 @@ namespace games::snakes
 {
 
 /**
- * Board containing Snakes game.
+ * Board managing the Snakes game.
  */
 class Board : public Component
 {

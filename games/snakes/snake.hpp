@@ -46,8 +46,8 @@ private:
     // Direction of snake.
     Direction direction;
 
-    // Chain of cells (row, col) that make up the snake body. Front is head
-    // and back is tail.
+    // Chain of cells (row, col) that make up the snake body. Head is front of
+    // deque, and tail is back of deque.
     std::deque<std::pair<int, int>> chain;
 };
 

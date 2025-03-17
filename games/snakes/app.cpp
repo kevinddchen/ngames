@@ -1,25 +1,7 @@
 #include <games/snakes/app.hpp>
 
+#include <chrono>
 #include <thread>
-
-
-namespace
-{
-
-/**
- * Loop that periodically updates and refreshes the board.
- * @param board Board.
- */
-void loop_update_refresh(games::snakes::Board& board)
-{
-    while (true) {
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-        board.update();
-        board.refresh();
-    }
-}
-
-}  // namespace
 
 
 namespace games::snakes
@@ -30,23 +12,42 @@ App::App(int rows, int cols)
       board_border(rows, cols, MARGIN_TOP, MARGIN_LEFT),
       board(rows, cols, board_border.inner_start_y(), board_border.inner_start_x())
 {
-    curs_set(0);                 // Hide cursor
-    keypad(board.window, true);  // Allow arrow keys
+    curs_set(0);                  // Hide cursor
+    keypad(board.window, true);   // Allow arrow keys
+    nodelay(board.window, true);  // User input is non-blocking
 
     refresh();  // Initial print
 }
 
 void App::run()
 {
-    // daemon thread continuously updates and refreshes the board every second
-    std::thread loop_thread(loop_update_refresh, std::ref(board));
-    loop_thread.detach();
+    // How many ms pass between frames
+    constexpr std::chrono::duration<double, std::milli> frame_interval_ms(1000.0 / FRAMES_PER_SEC);
+    // How many frames pass between updates
+    constexpr long update_interval_frames = FRAMES_PER_SEC / UPDATES_PER_SEC;
 
-    while (true) {
-        const int key = wgetch(board.window);
+    const auto t_start = std::chrono::steady_clock::now();
+    for (long iframe = 1;; ++iframe) {
+        const auto t_curr = std::chrono::steady_clock::now();
+
+        // Wait until appropriate time
+        const auto target_diff_ms = iframe * frame_interval_ms;
+        const std::chrono::duration<double, std::milli> curr_diff_ms = t_curr - t_start;
+        std::this_thread::sleep_for(target_diff_ms - curr_diff_ms);
+
+        // Get user key
+        const auto key = wgetch(board.window);
         if (!handle_keystroke(key)) {
             break;
         }
+
+        // Update board
+        if (iframe % update_interval_frames == 0) {
+            board.update();
+            board.refresh();
+        }
+
+        flushinp();  // clear input buffer to avoid keystrokes from building up
     }
 }
 

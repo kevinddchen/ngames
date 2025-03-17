@@ -29,7 +29,7 @@ public:
     void refresh() const override;
 
     /**
-     * Update the state of the board.
+     * Update the state of the board by stepping the snake forward one cell.
      */
     void update();
 

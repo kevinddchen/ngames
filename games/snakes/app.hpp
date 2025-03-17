@@ -15,6 +15,11 @@ namespace games::snakes
 class App : private Component
 {
 public:
+    // Frame rate
+    static constexpr double FRAMES_PER_SEC = 30.0;
+    // Board update rate
+    static constexpr double UPDATES_PER_SEC = 1.0;
+
     // Top margin, in number of chars
     static constexpr int MARGIN_TOP = 1;
     // Left margin, in number of chars

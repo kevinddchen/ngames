@@ -25,6 +25,8 @@ constexpr short COLOR_PAIR_INSTRUCTIONS = 8;  // use same color as cell 8, i.e. 
  */
 inline void init_colors()
 {
+    start_color();
+
     // define grey color
     init_color(COLOR_GREY, 500, 500, 500);
 

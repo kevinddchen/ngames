@@ -14,8 +14,6 @@ inline void init_ncurses()
     initscr();
     cbreak();
     noecho();
-
-    start_color();
 }
 
 /**

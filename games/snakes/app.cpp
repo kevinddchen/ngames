@@ -45,9 +45,10 @@ void App::run()
         if (iframe % update_interval_frames == 0) {
             board.update();
             board.refresh();
+            doupdate();
         }
 
-        flushinp();  // clear input buffer to avoid keystrokes from building up
+        // flushinp();  // clear input buffer to avoid keystrokes from building up
     }
 }
 
@@ -55,6 +56,7 @@ void App::refresh() const
 {
     board_border.refresh();
     board.refresh();
+    doupdate();
 }
 
 bool App::handle_keystroke(int key)

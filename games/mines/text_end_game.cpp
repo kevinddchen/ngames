@@ -14,7 +14,7 @@ TextEndGame::TextEndGame(const Board& board, int start_y, int start_x)
 
 void TextEndGame::refresh() const
 {
-    wclear(window);
+    werase(window);
     switch (board.get_state()) {
         case BoardState::active:
             break;
@@ -33,7 +33,7 @@ void TextEndGame::refresh() const
             break;
         }
     }
-    wrefresh(window);
+    wnoutrefresh(window);
 }
 
 }  // namespace games::mines

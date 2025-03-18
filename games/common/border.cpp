@@ -11,9 +11,9 @@ Border::Border(int rows, int cols, int start_y, int start_x)
 
 void Border::refresh() const
 {
-    wclear(window);
+    // no `werase` since we don't want to erase the subwindow.
     box(window, 0, 0);  // create window border
-    wrefresh(window);
+    wnoutrefresh(window);
 }
 
 }  // namespace games

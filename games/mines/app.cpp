@@ -12,7 +12,7 @@ App::App(int rows, int cols, int mines)
       cursor_x((cols - 1) / 2),
       text_mine_count(board, MARGIN_TOP, MARGIN_LEFT),
       board_border(rows, cols, text_mine_count.bottom(), MARGIN_LEFT),
-      board(rows, cols, mines, board_border.inner_start_y(), board_border.inner_start_x()),
+      board(rows, cols, mines, board_border.inner_start_y(), board_border.inner_start_x(), board_border.window),
       text_end_game(board, board_border.bottom(), MARGIN_LEFT),
       text_instructions(text_end_game.bottom(), MARGIN_LEFT)
 {
@@ -38,10 +38,13 @@ void App::run()
 void App::refresh() const
 {
     text_mine_count.refresh();
+    // if `board` were not a subwindow of `board_border`, we would have to
+    // always refresh `board_border` before `board` to avoid overwriting text.
     board_border.refresh();
     board.refresh();
     text_end_game.refresh();
     text_instructions.refresh();
+    doupdate();
 }
 
 bool App::handle_keystroke(int key)
@@ -102,24 +105,17 @@ bool App::handle_keystroke(int key)
             break;
         case 'f':  // flag
             if (board.toggle_flag(cursor_y, cursor_x) == 0) {
-                // only need to refresh mine count and board
-                text_mine_count.refresh();
-                board.refresh();
+                refresh();
             }
             break;
         case ' ':  // open
             if (board.click_cell(cursor_y, cursor_x) == 0) {
-                // only need to refresh board and end game text
-                board.refresh();
-                text_end_game.refresh();
+                refresh();
             }
             break;
         case 'z':  // new game
             board.reset();
-            // only need to refresh mine count, board, and end game text
-            text_mine_count.refresh();
-            board.refresh();
-            text_end_game.refresh();
+            refresh();
             break;
         case 'r':  // refresh
             refresh();

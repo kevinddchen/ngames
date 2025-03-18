@@ -13,7 +13,7 @@ TextInstructions::TextInstructions(int start_y, int start_x)
 
 void TextInstructions::refresh() const
 {
-    wclear(window);
+    werase(window);
     const auto attr = COLOR_PAIR(COLOR_PAIR_INSTRUCTIONS);
     wattron(window, attr);
     mvwprintw(window, 0, 0, "move cursor     hjkl / arrow keys");
@@ -23,7 +23,7 @@ void TextInstructions::refresh() const
     mvwprintw(window, 4, 0, "new game        z");
     mvwprintw(window, 5, 0, "quit            q");
     wattroff(window, attr);
-    wrefresh(window);
+    wnoutrefresh(window);
 }
 
 }  // namespace games::mines

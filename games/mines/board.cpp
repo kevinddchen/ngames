@@ -8,8 +8,8 @@
 namespace games::mines
 {
 
-Board::Board(int rows, int cols, int mines, int start_y, int start_x)
-    : Component(newwin(rows, cols, start_y, start_x)),
+Board::Board(int rows, int cols, int mines, int start_y, int start_x, WINDOW* border_window)
+    : Component(subwin(border_window, rows, cols, start_y, start_x)),
       rows(rows),
       cols(cols),
       mines(mines),
@@ -32,14 +32,14 @@ Board::Board(int rows, int cols, int mines, int start_y, int start_x)
 
 void Board::refresh() const
 {
-    wclear(window);
+    werase(window);
     for (int row = 0; row < rows; ++row) {
         wmove(window, row, 0);
         for (int col = 0; col < cols; ++col) {
             print_cell(row, col);
         }
     }
-    wrefresh(window);
+    wnoutrefresh(window);
 }
 
 void Board::print_cell(int row, int col) const

@@ -19,9 +19,9 @@ Board::Board(int rows, int cols, int start_y, int start_x)
 
 void Board::refresh() const
 {
-    wclear(window);
+    werase(window);
     snake.draw(window);
-    wrefresh(window);
+    wnoutrefresh(window);
 }
 
 void Board::update()

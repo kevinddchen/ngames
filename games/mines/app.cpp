@@ -12,7 +12,7 @@ App::App(int rows, int cols, int mines)
       cursor_x((cols - 1) / 2),
       text_mine_count(board, MARGIN_TOP, MARGIN_LEFT),
       board_border(rows, cols, text_mine_count.bottom(), MARGIN_LEFT),
-      board(rows, cols, mines, board_border.inner_start_y(), board_border.inner_start_x()),
+      board(rows, cols, mines, board_border.inner_start_y(), board_border.inner_start_x(), board_border.window),
       text_end_game(board, board_border.bottom(), MARGIN_LEFT),
       text_instructions(text_end_game.bottom(), MARGIN_LEFT)
 {
@@ -39,7 +39,9 @@ void App::run()
 void App::refresh() const
 {
     text_mine_count.refresh();
-    board_border.refresh();  // border must be updated before board
+    // if `board` were not a subwindow of `board_border`, we would have to
+    // always refresh `board_border` before `board` to avoid overwriting text.
+    board_border.refresh();
     board.refresh();
     text_end_game.refresh();
     text_instructions.refresh();

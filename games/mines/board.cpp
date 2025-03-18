@@ -8,8 +8,8 @@
 namespace games::mines
 {
 
-Board::Board(int rows, int cols, int mines, int start_y, int start_x)
-    : Component(newwin(rows, cols, start_y, start_x)),
+Board::Board(int rows, int cols, int mines, int start_y, int start_x, WINDOW* border_window)
+    : Component(subwin(border_window, rows, cols, start_y, start_x)),
       rows(rows),
       cols(cols),
       mines(mines),

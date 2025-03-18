@@ -28,8 +28,9 @@ public:
      * @param mines Number of mines.
      * @param start_y y-coordinate of the top-left corner of the window.
      * @param start_x x-coordinate of the top-left corner of the window.
+     * @param border_window Parent window containing border.
      */
-    Board(int rows, int cols, int mines, int start_y, int start_x);
+    Board(int rows, int cols, int mines, int start_y, int start_x, WINDOW* border_window);
 
     /**
      * Refresh the board viewed by the user.

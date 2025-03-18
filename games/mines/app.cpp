@@ -39,7 +39,7 @@ void App::run()
 void App::refresh() const
 {
     text_mine_count.refresh();
-    board_border.refresh();
+    board_border.refresh();  // border must be updated before board
     board.refresh();
     text_end_game.refresh();
     text_instructions.refresh();

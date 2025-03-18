@@ -28,7 +28,6 @@ void App::run()
 {
     while (true) {
         wmove(board.window, cursor_y, cursor_x);
-        // HACK: `wgetch` calls `doupdate`, which conveniently updates the terminal :)
         const int key = wgetch(board.window);
         if (!handle_keystroke(key)) {
             break;
@@ -45,6 +44,7 @@ void App::refresh() const
     board.refresh();
     text_end_game.refresh();
     text_instructions.refresh();
+    doupdate();
 }
 
 bool App::handle_keystroke(int key)

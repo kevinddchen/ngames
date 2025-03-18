@@ -48,7 +48,7 @@ void App::run()
             doupdate();
         }
 
-        // flushinp();  // clear input buffer to avoid keystrokes from building up
+        flushinp();  // clear input buffer to avoid keystrokes from building up
     }
 }
 

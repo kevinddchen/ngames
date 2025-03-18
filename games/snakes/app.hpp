@@ -12,13 +12,13 @@ namespace games::snakes
 /**
  * Snakes application.
  */
-class App : private Component
+class App
 {
 public:
     // Frame rate
     static constexpr double FRAMES_PER_SEC = 30.0;
-    // Board update rate
-    static constexpr double UPDATES_PER_SEC = 1.0;
+    // Tick rate
+    static constexpr double TICKS_PER_SEC = 1.0;
 
     // Top margin, in number of chars
     static constexpr int MARGIN_TOP = 1;
@@ -39,9 +39,9 @@ public:
 
 private:
     /**
-     * Refresh the app viewed by the user.
+     * Refresh the windows of the application.
      */
-    void refresh() const override;
+    void refresh() const;
 
     /**
      * Perform action associated with given keystroke or mouse event.

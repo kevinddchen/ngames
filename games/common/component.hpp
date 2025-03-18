@@ -7,14 +7,14 @@ namespace games
 {
 
 /**
- * Abstract base class for an interactive component.
+ * Abstract base class for a window displaying dynamic text.
  */
 class Component
 {
 public:
     /**
      * Create component.
-     * @param window Window displaying text for the component.
+     * @param window Window displaying the text.
      */
     Component(WINDOW* window);
 
@@ -41,7 +41,7 @@ public:
     inline int right() const { return getbegx(window) + getmaxx(window); }
 
     /**
-     * Refresh the text viewed by the user.
+     * Refresh the window text.
      */
     virtual void refresh() const = 0;
 

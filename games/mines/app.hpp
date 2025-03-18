@@ -15,7 +15,7 @@ namespace games::mines
 /**
  * Minesweeper application.
  */
-class App : private Component
+class App
 {
 public:
     // Top margin, in number of chars
@@ -38,9 +38,9 @@ public:
 
 private:
     /**
-     * Refresh the app viewed by the user.
+     * Refresh the windows of the application.
      */
-    void refresh() const override;
+    void refresh() const;
 
     /**
      * Perform action associated with given keystroke or mouse event.

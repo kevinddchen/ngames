@@ -26,7 +26,7 @@ public:
     TextEndGame(const Board& board, int start_y, int start_x);
 
     /**
-     * Refresh the text viewed by the user.
+     * Refresh the window text.
      */
     void refresh() const override;
 

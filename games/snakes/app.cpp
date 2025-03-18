@@ -8,9 +8,8 @@ namespace games::snakes
 {
 
 App::App(int rows, int cols)
-    : Component(stdscr),
-      board_border(rows, cols, MARGIN_TOP, MARGIN_LEFT),
-      board(rows, cols, board_border.inner_start_y(), board_border.inner_start_x())
+    : board_border(rows, cols, MARGIN_TOP, MARGIN_LEFT),
+      board(rows, cols, board_border.inner_start_y(), board_border.inner_start_x(), board_border.window)
 {
     curs_set(0);                  // Hide cursor
     keypad(board.window, true);   // Allow arrow keys
@@ -23,8 +22,8 @@ void App::run()
 {
     // How many ms pass between frames
     constexpr std::chrono::duration<double, std::milli> frame_interval_ms(1000.0 / FRAMES_PER_SEC);
-    // How many frames pass between updates
-    constexpr long update_interval_frames = FRAMES_PER_SEC / UPDATES_PER_SEC;
+    // How many frames pass between ticks
+    constexpr long tick_interval_frames = FRAMES_PER_SEC / TICKS_PER_SEC;
 
     const auto t_start = std::chrono::steady_clock::now();
     for (long iframe = 1;; ++iframe) {
@@ -41,19 +40,19 @@ void App::run()
             break;
         }
 
-        // Update board
-        if (iframe % update_interval_frames == 0) {
-            board.update();
-            board.refresh();
-            doupdate();
+        if (iframe % tick_interval_frames == 0) {
+            board.tick();
         }
 
+        refresh();
         flushinp();  // clear input buffer to avoid keystrokes from building up
     }
 }
 
 void App::refresh() const
 {
+    // if `board` were not a subwindow of `board_border`, we would have to
+    // always refresh `board_border` before `board` to avoid overwriting text.
     board_border.refresh();
     board.refresh();
     doupdate();

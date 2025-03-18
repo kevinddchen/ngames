@@ -25,7 +25,7 @@ public:
     Border(int rows, int cols, int start_y, int start_x);
 
     /**
-     * Refresh the border viewed by the user.
+     * Refresh the window displaying the border.
      */
     void refresh() const override;
 

@@ -4,8 +4,8 @@
 namespace games::snakes
 {
 
-Board::Board(int rows, int cols, int start_y, int start_x)
-    : Component(newwin(rows, cols, start_y, start_x)),
+Board::Board(int rows, int cols, int start_y, int start_x, WINDOW* border_window)
+    : Component(subwin(border_window, rows, cols, start_y, start_x)),
       rows(rows),
       cols(cols),
       snake(1, 4, Direction::right, 3)
@@ -24,7 +24,7 @@ void Board::refresh() const
     wnoutrefresh(window);
 }
 
-void Board::update()
+void Board::tick()
 {
     snake.step();
 }

@@ -7,8 +7,7 @@ namespace games::mines
 {
 
 App::App(int rows, int cols, int mines)
-    : Component(stdscr),
-      cursor_y((rows - 1) / 2),
+    : cursor_y((rows - 1) / 2),
       cursor_x((cols - 1) / 2),
       text_mine_count(board, MARGIN_TOP, MARGIN_LEFT),
       board_border(rows, cols, text_mine_count.bottom(), MARGIN_LEFT),

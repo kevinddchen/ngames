@@ -33,7 +33,7 @@ public:
     Board(int rows, int cols, int mines, int start_y, int start_x, WINDOW* border_window);
 
     /**
-     * Refresh the board viewed by the user.
+     * Refresh the window displaying the board.
      */
     void refresh() const override;
 

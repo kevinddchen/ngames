@@ -34,7 +34,6 @@ void Board::refresh() const
 {
     werase(window);
     for (int row = 0; row < rows; ++row) {
-        wmove(window, row, 0);
         for (int col = 0; col < cols; ++col) {
             print_cell(row, col);
         }
@@ -44,6 +43,7 @@ void Board::refresh() const
 
 void Board::print_cell(int row, int col) const
 {
+    wmove(window, row, col);
     if (is_flagged(row, col)) {
         auto attr = A_BOLD;
         // if game ended and flag is incorrect, use red background and blink
@@ -54,7 +54,8 @@ void Board::print_cell(int row, int col) const
         waddch(window, 'F');
         wattroff(window, attr);
         return;
-    } else if (is_known_mine(row, col)) {
+    }
+    if (is_known_mine(row, col)) {
         auto attr = A_BOLD;
         // if last click, use red background and blink
         if (auto [last_row, last_col] = last_opened.value(); last_row == row && last_col == col) {
@@ -64,7 +65,8 @@ void Board::print_cell(int row, int col) const
         waddch(window, '*');
         wattroff(window, attr);
         return;
-    } else if (!is_opened(row, col)) {
+    }
+    if (!is_opened(row, col)) {
         const auto attr = COLOR_PAIR(COLOR_PAIR_UNOPENED);
         wattron(window, attr);
         waddch(window, '#');
@@ -73,16 +75,12 @@ void Board::print_cell(int row, int col) const
     }
     // otherwise, empty cell. print number of neighboring mines
     const int neighbor_mines = get_neighbor_mine_count(row, col);
-    if (neighbor_mines == 0) {
-        waddch(window, ' ');
-        return;
-    } else {
+    if (neighbor_mines != 0) {
         const char digit = static_cast<char>(neighbor_mines) + '0';
         const auto attr = COLOR_PAIR(neighbor_mines);
         wattron(window, attr);
         waddch(window, digit);
         wattroff(window, attr);
-        return;
     }
 }
 

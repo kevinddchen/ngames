@@ -28,6 +28,7 @@ void App::run()
 {
     while (true) {
         wmove(board.window, cursor_y, cursor_x);
+        // HACK: `wgetch` calls `doupdate`, which conveniently updates the terminal :)
         const int key = wgetch(board.window);
         if (!handle_keystroke(key)) {
             break;
@@ -102,24 +103,17 @@ bool App::handle_keystroke(int key)
             break;
         case 'f':  // flag
             if (board.toggle_flag(cursor_y, cursor_x) == 0) {
-                // only need to refresh mine count and board
-                text_mine_count.refresh();
-                board.refresh();
+                refresh();
             }
             break;
         case ' ':  // open
             if (board.click_cell(cursor_y, cursor_x) == 0) {
-                // only need to refresh board and end game text
-                board.refresh();
-                text_end_game.refresh();
+                refresh();
             }
             break;
         case 'z':  // new game
             board.reset();
-            // only need to refresh mine count, board, and end game text
-            text_mine_count.refresh();
-            board.refresh();
-            text_end_game.refresh();
+            refresh();
             break;
         case 'r':  // refresh
             refresh();

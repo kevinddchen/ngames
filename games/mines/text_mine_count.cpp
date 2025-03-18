@@ -12,9 +12,9 @@ TextMineCount::TextMineCount(const Board& board, int start_y, int start_x)
 
 void TextMineCount::refresh() const
 {
-    wclear(window);
+    werase(window);
     mvwprintw(window, 0, 0, "MINES: %-4d", board.mines - board.get_num_flags());
-    wrefresh(window);
+    wnoutrefresh(window);
 }
 
 }  // namespace games::mines

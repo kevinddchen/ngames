@@ -11,6 +11,5 @@ int main()
     app.run();
 
     games::end_ncurses();
-    return 0;
-    // return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 }

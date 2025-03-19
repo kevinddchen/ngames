@@ -6,7 +6,6 @@
 #include <games/mines/text_mine_count.hpp>
 
 #include <games/common/border.hpp>
-#include <games/common/component.hpp>
 
 
 namespace games::mines

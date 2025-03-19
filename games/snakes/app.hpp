@@ -3,14 +3,13 @@
 #include <games/snakes/board.hpp>
 
 #include <games/common/border.hpp>
-#include <games/common/component.hpp>
 
 
 namespace games::snakes
 {
 
 /**
- * Snakes application.
+ * Snakes application. Manages user input and game loop.
  */
 class App
 {

@@ -2,8 +2,6 @@
 
 #include <games/snakes/direction.hpp>
 
-#include <ncurses.h>
-
 #include <deque>
 
 
@@ -11,7 +9,7 @@ namespace games::snakes
 {
 
 /**
- * Class controlling the snake.
+ * Container for snake data, and some basic manipulations.
  */
 struct Snake {
     /**
@@ -24,15 +22,16 @@ struct Snake {
     Snake(int head_row, int head_col, Direction direction, int length);
 
     /**
-     * Draw the snake on the given window.
-     * @param window Window to draw on.
+     * Returns the cell (row, col) in front of the snake.
      */
-    void draw(WINDOW* window) const;
+    std::pair<int, int> peek_forward() const;
 
     /**
      * Step the snake forward one cell.
+     * @param grow If true, does not delete the tail and snake length increases
+     * by 1.
      */
-    void step();
+    void step(bool grow);
 
     // Direction of snake.
     Direction direction;

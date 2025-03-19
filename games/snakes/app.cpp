@@ -1,5 +1,7 @@
 #include <games/snakes/app.hpp>
 
+#include <games/snakes/ui.hpp>
+
 #include <chrono>
 #include <thread>
 
@@ -11,6 +13,7 @@ App::App(int rows, int cols)
     : board_border(rows, cols, MARGIN_TOP, MARGIN_LEFT),
       board(rows, cols, board_border.inner_start_y(), board_border.inner_start_x(), board_border.window)
 {
+    init_colors();
     curs_set(0);                  // Hide cursor
     keypad(board.window, true);   // Allow arrow keys
     nodelay(board.window, true);  // User input is non-blocking

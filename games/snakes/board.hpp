@@ -10,11 +10,15 @@ namespace games::snakes
 {
 
 /**
- * Board managing the Snakes game.
+ * Front-end for the Snakes game. Manages game state and window viewed by the
+ * player.
  */
 class Board : public Component
 {
 public:
+    static constexpr int MIN_ROWS = 5;
+    static constexpr int MIN_COLS = 5;
+
     /**
      * Create new Snakes game.
      * @param rows Number of rows.
@@ -42,6 +46,7 @@ public:
 
 private:
     Snake snake;
+    std::pair<int, int> apple;
 };
 
 }  // namespace games::snakes

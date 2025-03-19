@@ -1,5 +1,6 @@
 #include <games/mines/board.hpp>
 
+#include <games/mines/neighbors.hpp>
 #include <games/mines/ui.hpp>
 
 #include <algorithm>
@@ -134,21 +135,9 @@ void Board::open(int row, int col)
 
 void Board::open_neighbors(int row, int col)
 {
-    for (int dy : {-1, 0, 1}) {
-        for (int dx : {-1, 0, 1}) {
-            // skip case where not actually neighbor
-            if (dy == 0 && dx == 0) {
-                continue;
-            }
-            const int nb_row = row + dy;
-            const int nb_col = col + dx;
-            // check bounds
-            if (nb_row < 0 || nb_row >= rows || nb_col < 0 || nb_col >= cols) {
-                continue;
-            }
-            if (can_open(nb_row, nb_col)) {
-                open(nb_row, nb_col);
-            }
+    for (const auto& [nb_row, nb_col] : get_neighbors(row, col, rows, cols)) {
+        if (can_open(nb_row, nb_col)) {
+            open(nb_row, nb_col);
         }
     }
 }
@@ -174,21 +163,9 @@ int Board::toggle_flag(int row, int col)
 int Board::count_neighbor_flags(int row, int col) const
 {
     int count = 0;
-    for (int dy : {-1, 0, 1}) {
-        for (int dx : {-1, 0, 1}) {
-            // skip case where not actually neighbor
-            if (dy == 0 && dx == 0) {
-                continue;
-            }
-            const int nb_row = row + dy;
-            const int nb_col = col + dx;
-            // check bounds
-            if (nb_row < 0 || nb_row >= rows || nb_col < 0 || nb_col >= cols) {
-                continue;
-            }
-            if (is_flagged(nb_row, nb_col)) {
-                ++count;
-            }
+    for (const auto& [nb_row, nb_col] : get_neighbors(row, col, rows, cols)) {
+        if (is_flagged(nb_row, nb_col)) {
+            ++count;
         }
     }
     return count;
@@ -197,21 +174,9 @@ int Board::count_neighbor_flags(int row, int col) const
 int Board::count_neighbor_unopened(int row, int col) const
 {
     int count = 0;
-    for (int dy : {-1, 0, 1}) {
-        for (int dx : {-1, 0, 1}) {
-            // skip case where not actually neighbor
-            if (dy == 0 && dx == 0) {
-                continue;
-            }
-            const int nb_row = row + dy;
-            const int nb_col = col + dx;
-            // check bounds
-            if (nb_row < 0 || nb_row >= rows || nb_col < 0 || nb_col >= cols) {
-                continue;
-            }
-            if (!is_opened(nb_row, nb_col)) {
-                ++count;
-            }
+    for (const auto& [nb_row, nb_col] : get_neighbors(row, col, rows, cols)) {
+        if (!is_opened(nb_row, nb_col)) {
+            ++count;
         }
     }
     return count;

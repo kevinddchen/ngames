@@ -1,5 +1,7 @@
 #include <games/mines/minesweeper.hpp>
 
+#include <games/mines/neighbors.hpp>
+
 #include <algorithm>
 #include <numeric>
 
@@ -65,21 +67,9 @@ int count_neighbor_mines(const std::vector<std::vector<bool>>& is_mine_array, in
     const int num_cols = is_mine_array.front().size();
 
     int count = 0;
-    for (int dy : {-1, 0, 1}) {
-        for (int dx : {-1, 0, 1}) {
-            // skip case where not actually neighbor
-            if (dy == 0 && dx == 0) {
-                continue;
-            }
-            const int nb_row = row + dy;
-            const int nb_col = col + dx;
-            // check bounds
-            if (nb_row < 0 || nb_row >= num_rows || nb_col < 0 || nb_col >= num_cols) {
-                continue;
-            }
-            if (is_mine_array[nb_row][nb_col]) {
-                ++count;
-            }
+    for (const auto& [nb_row, nb_col] : games::mines::get_neighbors(row, col, num_rows, num_cols)) {
+        if (is_mine_array[nb_row][nb_col]) {
+            ++count;
         }
     }
     return count;

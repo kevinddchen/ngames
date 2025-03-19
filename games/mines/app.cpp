@@ -37,8 +37,6 @@ void App::run()
 void App::refresh() const
 {
     text_mine_count.refresh();
-    // if `board` were not a subwindow of `board_border`, we would have to
-    // always refresh `board_border` before `board` to avoid overwriting text.
     board_border.refresh();
     board.refresh();
     text_end_game.refresh();

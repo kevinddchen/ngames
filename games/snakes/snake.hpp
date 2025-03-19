@@ -13,9 +13,7 @@ namespace games::snakes
 /**
  * Class controlling the snake.
  */
-class Snake
-{
-public:
+struct Snake {
     /**
      * Create new snake.
      * @param head_row Cell row for the snake head.
@@ -31,18 +29,11 @@ public:
      */
     void draw(WINDOW* window) const;
 
-    inline const std::pair<int, int>& head() const { return chain.front(); }
-
-    inline const std::pair<int, int>& tail() const { return chain.back(); }
-
     /**
      * Step the snake forward one cell.
      */
     void step();
 
-    inline void set_direction(Direction dir) { direction = dir; }
-
-private:
     // Direction of snake.
     Direction direction;
 

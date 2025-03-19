@@ -27,9 +27,8 @@ void App::run()
 
     const auto t_start = std::chrono::steady_clock::now();
     for (long iframe = 1;; ++iframe) {
+        // Wait until correct frame time
         const auto t_curr = std::chrono::steady_clock::now();
-
-        // Wait until appropriate time
         const auto target_diff_ms = iframe * frame_interval_ms;
         const std::chrono::duration<double, std::milli> curr_diff_ms = t_curr - t_start;
         std::this_thread::sleep_for(target_diff_ms - curr_diff_ms);
@@ -51,8 +50,6 @@ void App::run()
 
 void App::refresh() const
 {
-    // if `board` were not a subwindow of `board_border`, we would have to
-    // always refresh `board_border` before `board` to avoid overwriting text.
     board_border.refresh();
     board.refresh();
     doupdate();

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <games/snakes/direction.hpp>
 #include <games/snakes/snake.hpp>
 
 #include <games/common/component.hpp>
@@ -34,7 +35,7 @@ public:
      */
     void tick();
 
-    inline void set_snake_direction(Direction dir) { snake.set_direction(dir); }
+    inline void set_snake_direction(Direction dir) { snake.direction = dir; }
 
     const int rows;
     const int cols;

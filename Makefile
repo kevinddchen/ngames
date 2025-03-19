@@ -18,7 +18,7 @@ include $(SRC)/snakes/module.mk
 
 CXX 	 := g++
 CPPFLAGS := -I. -MMD -MP
-CXXFLAGS := -std=c++20 -O3 -Werror -Wall -Wextra -pedantic-errors
+CXXFLAGS := -std=c++20 -O3 -Wall -Wextra -pedantic-errors
 LDFLAGS  :=
 LDLIBS   := -lncurses
 

@@ -6,6 +6,8 @@ namespace games::snakes
 
 Snake::Snake(int head_row, int head_col, Direction direction, int length) : direction(direction)
 {
+    assert(length > 0);
+
     const auto [drow, dcol] = dir2vec(direction);
     // populate chain in a straight line
     for (int i = 0; i < length; ++i) {
@@ -32,9 +34,9 @@ void Snake::draw(WINDOW* window) const
             break;
     }
 
-    for (int i = 1; i < static_cast<int>(chain.size()); ++i) {
-        const auto [row, col] = chain[i];
-        mvwaddch(window, row, col, '*');
+    for (auto it = chain.begin() + 1; it != chain.end(); ++it) {
+        const auto [row, col] = *it;
+        mvwaddch(window, row, col, '@');
     }
 }
 

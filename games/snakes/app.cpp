@@ -66,23 +66,27 @@ bool App::handle_keystroke(int key)
     switch (key) {
         case 'h':
         case KEY_LEFT:
-            board.set_snake_direction(Direction::left);
-            board.refresh();
+            if (board.set_snake_direction(Direction::left) == 0) {
+                board.refresh();
+            }
             break;
         case 'j':
         case KEY_DOWN:
-            board.set_snake_direction(Direction::down);
-            board.refresh();
+            if (board.set_snake_direction(Direction::down) == 0) {
+                board.refresh();
+            }
             break;
         case 'k':
         case KEY_UP:
-            board.set_snake_direction(Direction::up);
-            board.refresh();
+            if (board.set_snake_direction(Direction::up) == 0) {
+                board.refresh();
+            }
             break;
         case 'l':
         case KEY_RIGHT:
-            board.set_snake_direction(Direction::right);
-            board.refresh();
+            if (board.set_snake_direction(Direction::right) == 0) {
+                board.refresh();
+            }
             break;
         case 'r':  // refresh
             refresh();

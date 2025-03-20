@@ -15,16 +15,16 @@ Snake::Snake(int head_row, int head_col, Direction direction, int length) : dire
     }
 }
 
-std::pair<int, int> Snake::peek_forward() const
+std::pair<int, int> Snake::next_head(std::optional<Direction> dir) const
 {
     const auto [head_row, head_col] = chain.front();
-    const auto [drow, dcol] = dir2vec(direction);
+    const auto [drow, dcol] = dir2vec(dir.value_or(direction));
     return {head_row + drow, head_col + dcol};
 }
 
 void Snake::step(bool grow)
 {
-    chain.push_front(peek_forward());
+    chain.push_front(next_head());
     if (!grow) {
         chain.pop_back();
     }

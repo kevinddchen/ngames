@@ -46,7 +46,7 @@ public:
      * @returns Return code. A non-zero value means that an error occurred and
      * the game state was not been changed. The possible error codes are
      *   1: game is inactive.
-     *   2: new direction is towards snake body (not implemented).
+     *   2: new direction will point towards the snake's second cell.
      */
     int set_snake_direction(Direction dir);
 

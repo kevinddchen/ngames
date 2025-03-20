@@ -101,7 +101,7 @@ void Board::tick()
         return;
     }
     // otherwise, move the snake forwards
-    const bool grow_snake = snake.peek_forward() == apple;
+    const bool grow_snake = snake.next_head() == apple;
     snake.step(grow_snake);
     if (grow_snake) {
         apple = find_unoccupied();
@@ -112,8 +112,9 @@ int Board::set_snake_direction(Direction dir)
 {
     if (state != BoardState::active) {
         return 1;
+    } else if (snake.chain.size() > 1 && snake.next_head(dir) == snake.chain[1]) {
+        return 2;
     }
-    // TODO: implement check for collision with snake body
     snake.direction = dir;
     return 0;
 }
@@ -152,7 +153,7 @@ std::pair<int, int> Board::find_unoccupied() const
 
 bool Board::check_collision() const
 {
-    const auto next = snake.peek_forward();
+    const auto next = snake.next_head();
     // check collision with wall
     if (next.first < 0 || next.first >= rows || next.second < 0 || next.second >= cols) {
         return true;

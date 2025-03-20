@@ -3,6 +3,7 @@
 #include <games/snakes/direction.hpp>
 
 #include <deque>
+#include <optional>
 
 
 namespace games::snakes
@@ -23,8 +24,9 @@ struct Snake {
 
     /**
      * Returns the cell (row, col) in front of the snake.
+     * @param dir Override for direction.
      */
-    std::pair<int, int> peek_forward() const;
+    std::pair<int, int> next_head(std::optional<Direction> dir = std::nullopt) const;
 
     /**
      * Step the snake forward one cell. Does not check for any kind of collisions.

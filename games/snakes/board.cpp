@@ -2,12 +2,28 @@
 
 #include <games/snakes/ui.hpp>
 
+#include <numeric>
+#include <vector>
+
+#include <ctime>
+
 
 namespace
 {
 
+/**
+ * Draw the snake on the window.
+ * @param window Window.
+ * @param snake Snake instance.
+ */
 void draw_snake(WINDOW* window, const games::snakes::Snake& snake)
 {
+    // draw snake body
+    for (auto it = snake.chain.begin() + 1; it != snake.chain.end(); ++it) {
+        const auto [row, col] = *it;
+        mvwaddch(window, row, col, '@');
+    }
+
     // head is drawn specially
     const auto [head_row, head_col] = snake.chain.front();
     switch (snake.direction) {
@@ -24,13 +40,14 @@ void draw_snake(WINDOW* window, const games::snakes::Snake& snake)
             mvwaddch(window, head_row, head_col, '>');
             break;
     }
-
-    for (auto it = snake.chain.begin() + 1; it != snake.chain.end(); ++it) {
-        const auto [row, col] = *it;
-        mvwaddch(window, row, col, '@');
-    }
 }
 
+/**
+ * Draw the apple.
+ * @param window Window.
+ * @param row Cell row for the apple.
+ * @param col Cell column for the apple.
+ */
 void draw_apple(WINDOW* window, int row, int col)
 {
     const auto attr = A_BOLD | COLOR_PAIR(games::snakes::COLOR_PAIR_APPLE);
@@ -49,8 +66,7 @@ Board::Board(int rows, int cols, int start_y, int start_x, WINDOW* border_window
     : Component(subwin(border_window, rows, cols, start_y, start_x)),
       rows(rows),
       cols(cols),
-      snake(1, 1, Direction::left, 3),       // snake starts along top of board
-      apple((rows - 1) / 2, (cols - 1) / 2)  // apple starts in the middle
+      snake(1, 1, Direction::left, 3)  // snake starts along top of board
 {
     assert(rows >= MIN_ROWS);
     assert(cols >= MIN_COLS);
@@ -62,6 +78,9 @@ Board::Board(int rows, int cols, int start_y, int start_x, WINDOW* border_window
     }
 
     snake.direction = Direction::down;  // start snake pointing down
+
+    // Initialize apple at random location
+    apple = find_unoccupied();
 }
 
 void Board::refresh() const
@@ -74,8 +93,44 @@ void Board::refresh() const
 
 void Board::tick()
 {
-    const bool grow = snake.peek_forward() == apple;
-    snake.step(grow);
+    const bool grow_snake = snake.peek_forward() == apple;
+    snake.step(grow_snake);
+    if (grow_snake) {
+        apple = find_unoccupied();
+    }
+}
+
+
+std::pair<int, int> Board::find_unoccupied() const
+{
+    // seed RNG with current time
+    std::srand(time(nullptr));
+
+    // create list tracking empty cells
+    // NOTE: we encode the pair (row, col) as a single index: row * num_cols + col
+    std::vector<bool> empty(rows * cols, true);
+
+    // mark cells in the snake as `false`
+    for (const auto& [row, col] : snake.chain) {
+        const int idx = row * cols + col;
+        empty[idx] = false;
+    }
+
+    // gather a list of empty indices
+    std::vector<int> empty_idxs;
+    for (int idx = 0; idx < static_cast<int>(empty.size()); ++idx) {
+        if (empty[idx]) {
+            empty_idxs.push_back(idx);
+        }
+    }
+    assert(empty_idxs.size() > 0);
+
+    // draw random index
+    const int idx = std::rand() % empty_idxs.size();
+    const int row = idx / cols;
+    const int col = idx % cols;
+
+    return {row, col};
 }
 
 }  // namespace games::snakes

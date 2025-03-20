@@ -45,7 +45,16 @@ public:
     const int cols;
 
 private:
+    /**
+     * Finds a random cell on the board that is not occupied by the snake. Used
+     * for finding new locations for the apple after it has been eaten.
+     * @returns (row, col) of unoccupied cell.
+     */
+    std::pair<int, int> find_unoccupied() const;
+
+    // Snake instance.
     Snake snake;
+    // Apple location (row, cell) on the board.
     std::pair<int, int> apple;
 };
 

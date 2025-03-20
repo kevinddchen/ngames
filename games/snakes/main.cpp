@@ -7,7 +7,7 @@ int main()
 {
     games::init_ncurses();
 
-    games::snakes::App app(20, 20);
+    games::snakes::App app(10, 10);
     app.run();
 
     games::end_ncurses();

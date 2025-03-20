@@ -27,9 +27,8 @@ struct Snake {
     std::pair<int, int> peek_forward() const;
 
     /**
-     * Step the snake forward one cell.
-     * @param grow If true, does not delete the tail and snake length increases
-     * by 1.
+     * Step the snake forward one cell. Does not check for any kind of collisions.
+     * @param grow If true, does not delete the tail. Snake length increases by 1.
      */
     void step(bool grow);
 
@@ -37,7 +36,7 @@ struct Snake {
     Direction direction;
 
     // Chain of cells (row, col) that make up the snake body. Head is front of
-    // deque, and tail is back of deque.
+    // chain, and tail is back of chain.
     std::deque<std::pair<int, int>> chain;
 };
 

@@ -2,7 +2,6 @@
 
 #include <games/snakes/ui.hpp>
 
-#include <chrono>
 #include <thread>
 
 
@@ -31,8 +30,8 @@ void App::run()
     const auto t_start = std::chrono::steady_clock::now();
     for (long iframe = 1;; ++iframe) {
         // Wait until correct frame time
-        const auto t_curr = std::chrono::steady_clock::now();
         const auto target_diff_ms = iframe * frame_interval_ms;
+        const auto t_curr = std::chrono::steady_clock::now();
         const std::chrono::duration<double, std::milli> curr_diff_ms = t_curr - t_start;
         std::this_thread::sleep_for(target_diff_ms - curr_diff_ms);
 

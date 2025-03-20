@@ -9,6 +9,8 @@
 namespace games::snakes
 {
 
+enum BoardState { active, win, lose };
+
 /**
  * Front-end for the Snakes game. Manages game state and window viewed by the
  * player.
@@ -39,7 +41,16 @@ public:
      */
     void tick();
 
-    inline void set_snake_direction(Direction dir) { snake.direction = dir; }
+    /**
+     * Attempt to set the snake direction.
+     * @returns Return code. A non-zero value means that an error occurred and
+     * the game state was not been changed. The possible error codes are
+     *   1: game is inactive.
+     *   2: new direction is towards snake body (not implemented).
+     */
+    int set_snake_direction(Direction dir);
+
+    inline BoardState get_state() const { return state; }
 
     const int rows;
     const int cols;
@@ -52,10 +63,18 @@ private:
      */
     std::pair<int, int> find_unoccupied() const;
 
+    /**
+     * Returns `true` if the snake's future position will collide into itself
+     * or a wall.
+     */
+    bool check_collision() const;
+
     // Snake instance.
     Snake snake;
     // Apple location (row, cell) on the board.
     std::pair<int, int> apple;
+
+    BoardState state;
 };
 
 }  // namespace games::snakes

@@ -13,11 +13,12 @@ App::App(int rows, int cols)
       board(rows, cols, board_border.inner_start_y(), board_border.inner_start_x(), board_border.window)
 {
     init_colors();
-    curs_set(0);                  // Hide cursor
-    keypad(board.window, true);   // Allow arrow keys
-    nodelay(board.window, true);  // User input is non-blocking
+    curs_set(0);                  // hide cursor
+    keypad(board.window, true);   // allow arrow keys
+    nodelay(board.window, true);  // user input is non-blocking
 
-    refresh();  // Initial print
+    // initial print
+    refresh();
 }
 
 void App::run()
@@ -29,13 +30,13 @@ void App::run()
 
     const auto t_start = std::chrono::steady_clock::now();
     for (long iframe = 1;; ++iframe) {
-        // Wait until correct frame time
+        // wait until correct frame time
         const auto target_diff_ms = iframe * frame_interval_ms;
         const auto t_curr = std::chrono::steady_clock::now();
         const std::chrono::duration<double, std::milli> curr_diff_ms = t_curr - t_start;
         std::this_thread::sleep_for(target_diff_ms - curr_diff_ms);
 
-        // Get user key
+        // get user key
         const auto key = wgetch(board.window);
         if (!handle_keystroke(key)) {
             break;
@@ -46,7 +47,9 @@ void App::run()
         }
 
         refresh();
-        flushinp();  // clear input buffer to avoid keystrokes from building up
+
+        // clear input buffer to avoid keystrokes from building up
+        flushinp();
     }
 }
 

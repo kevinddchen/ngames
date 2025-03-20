@@ -66,20 +66,22 @@ Board::Board(int rows, int cols, int start_y, int start_x, WINDOW* border_window
     : Component(subwin(border_window, rows, cols, start_y, start_x)),
       rows(rows),
       cols(cols),
-      snake(1, 1, Direction::left, 3)  // snake starts along top of board
+      snake(1, 1, Direction::left, 3),  // snake starts along top of board
+      state(BoardState::active)
 {
     assert(rows >= MIN_ROWS);
     assert(cols >= MIN_COLS);
 
-    // Check snake endpoints are inside board
+    // check snake endpoints are inside board
     for (const auto& [row, col] : {snake.chain.front(), snake.chain.back()}) {
         assert(0 <= row && row < rows);
         assert(0 <= col && col < cols);
     }
 
-    snake.direction = Direction::down;  // start snake pointing down
+    // start snake pointing down
+    snake.direction = Direction::down;
 
-    // Initialize apple at random location
+    // initialize apple at random location
     apple = find_unoccupied();
 }
 
@@ -93,6 +95,12 @@ void Board::refresh() const
 
 void Board::tick()
 {
+    // if collision, the game ends
+    if (check_collision()) {
+        state = BoardState::lose;
+        return;
+    }
+    // otherwise, move the snake forwards
     const bool grow_snake = snake.peek_forward() == apple;
     snake.step(grow_snake);
     if (grow_snake) {
@@ -100,6 +108,15 @@ void Board::tick()
     }
 }
 
+int Board::set_snake_direction(Direction dir)
+{
+    if (state != BoardState::active) {
+        return 1;
+    }
+    // TODO: implement check for collision with snake body
+    snake.direction = dir;
+    return 0;
+}
 
 std::pair<int, int> Board::find_unoccupied() const
 {
@@ -131,6 +148,22 @@ std::pair<int, int> Board::find_unoccupied() const
     const int col = idx % cols;
 
     return {row, col};
+}
+
+bool Board::check_collision() const
+{
+    const auto next = snake.peek_forward();
+    // check collision with wall
+    if (next.first < 0 || next.first >= rows || next.second < 0 || next.second >= cols) {
+        return true;
+    }
+    // check collision with itself
+    for (const auto& cell : snake.chain) {
+        if (next == cell) {
+            return true;
+        }
+    }
+    return false;
 }
 
 }  // namespace games::snakes

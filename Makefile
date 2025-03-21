@@ -1,7 +1,7 @@
 # https://stackoverflow.com/a/25966957
 
 BIN := bin
-SRC := games
+SRC := ngames
 OBJ := objects
 
 # These will be populated as we include the modules
@@ -12,7 +12,7 @@ deps    :=
 
 include $(SRC)/common/module.mk
 include $(SRC)/mines/module.mk
-include $(SRC)/snakes/module.mk
+include $(SRC)/snake/module.mk
 
 -include $(deps)
 

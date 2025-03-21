@@ -1,6 +1,9 @@
-# mines
+# ngames
 
-Minesweeper in your terminal.
+Games in your terminal.
+The following games have been implemented:
+- `mines`: Minesweeper
+- `snake`: Snake
 
 ## Installation
 
@@ -13,14 +16,21 @@ To build, run
 make all
 ```
 
+or build a specific game,
+
+```
+make <name>
+```
+
 ## Run
 
-After building, run
+After building, run a game,
 
 ```
-./bin/mines
+./bin/<name>
 ```
 
-The cursor can be moved using vim controls (i.e. `hjkl`) or arrow keys.
-`f` places a flag, and `space` opens a cell.
-You can [chord](https://en.wikipedia.org/wiki/Chording#Minesweeper_tactic) by clicking on an already opened cell.
+The games typically use Vim `hjkl` controls or arrow keys to move.
+The `q` key will quit the game.
+The `z` key will reset the game.
+The `r` key will refresh the display, e.g. if something caused the game to render incorrectly.

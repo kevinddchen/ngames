@@ -9,8 +9,6 @@
 namespace games::snakes
 {
 
-enum BoardState { active, win, lose };
-
 /**
  * Front-end for the Snakes game. Manages game state and window viewed by the
  * player.
@@ -50,9 +48,9 @@ public:
      */
     int set_snake_direction(Direction dir);
 
-    inline BoardState get_state() const { return state; }
+    inline bool is_active() const { return active; }
 
-    int get_score() const { return score; }
+    inline int get_score() const { return score; }
 
     const int rows;
     const int cols;
@@ -76,8 +74,9 @@ private:
     // Apple location (row, cell) on the board.
     std::pair<int, int> apple;
 
-    BoardState state;
-
+    // True if the game is active.
+    bool active;
+    // Player score.
     int score;
 };
 

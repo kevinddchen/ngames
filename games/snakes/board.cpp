@@ -15,31 +15,44 @@ namespace
  * Draw the snake on the window.
  * @param window Window.
  * @param snake Snake instance.
+ * @param active True if game is active.
  */
-void draw_snake(WINDOW* window, const games::snakes::Snake& snake)
+void draw_snake(WINDOW* window, const games::snakes::Snake& snake, bool active)
 {
     // draw snake body
+    const auto body_attr = A_BOLD;
+    wattron(window, body_attr);
     for (auto it = snake.chain.begin() + 1; it != snake.chain.end(); ++it) {
         const auto [row, col] = *it;
         mvwaddch(window, row, col, '@');
     }
+    wattroff(window, body_attr);
 
     // head is drawn specially
-    const auto [head_row, head_col] = snake.chain.front();
+    char head_char;
     switch (snake.direction) {
         case games::snakes::Direction::up:
-            mvwaddch(window, head_row, head_col, '^');
+            head_char = '^';
             break;
         case games::snakes::Direction::down:
-            mvwaddch(window, head_row, head_col, 'v');
+            head_char = 'v';
             break;
         case games::snakes::Direction::left:
-            mvwaddch(window, head_row, head_col, '<');
+            head_char = '<';
             break;
         case games::snakes::Direction::right:
-            mvwaddch(window, head_row, head_col, '>');
+            head_char = '>';
             break;
     }
+    const auto [head_row, head_col] = snake.chain.front();
+    // if game end, make snake head flash
+    auto head_attr = A_BOLD;
+    if (!active) {
+        head_attr |= A_BLINK | COLOR_PAIR(games::snakes::COLOR_PAIR_COLLISION);
+    }
+    wattron(window, head_attr);
+    mvwaddch(window, head_row, head_col, head_char);
+    wattroff(window, head_attr);
 }
 
 /**
@@ -67,7 +80,7 @@ Board::Board(int rows, int cols, int start_y, int start_x, WINDOW* border_window
       rows(rows),
       cols(cols),
       snake(1, 1, Direction::left, 3),  // snake starts along top of board
-      state(BoardState::active),
+      active(true),
       score(0)
 {
     assert(rows >= MIN_ROWS);
@@ -89,7 +102,7 @@ Board::Board(int rows, int cols, int start_y, int start_x, WINDOW* border_window
 void Board::refresh() const
 {
     werase(window);
-    draw_snake(window, snake);
+    draw_snake(window, snake, active);
     draw_apple(window, apple.first, apple.second);
     wnoutrefresh(window);
 }
@@ -98,7 +111,7 @@ void Board::tick()
 {
     // if collision, the game ends
     if (check_collision()) {
-        state = BoardState::lose;
+        active = false;
         return;
     }
     // otherwise, move the snake forwards
@@ -112,7 +125,7 @@ void Board::tick()
 
 int Board::set_snake_direction(Direction dir)
 {
-    if (state != BoardState::active) {
+    if (!active) {
         return 1;
     } else if (snake.chain.size() > 1 && snake.next_head(dir) == snake.chain[1]) {
         return 2;

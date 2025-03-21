@@ -37,7 +37,8 @@ void populate_mines(std::vector<std::vector<bool>>& is_mine_array, int num_mines
     idxs.front() = idxs.back();
     idxs.pop_back();
 
-    assert(static_cast<int>(idxs.size()) >= num_mines);  // number of mines cannot be too large
+    // number of mines cannot be too large
+    assert(static_cast<int>(idxs.size()) >= num_mines);
 
     for (int draw = 0; draw < num_mines; ++draw) {
         // pick random index from the list
@@ -52,27 +53,8 @@ void populate_mines(std::vector<std::vector<bool>>& is_mine_array, int num_mines
         idxs.pop_back();
     }
 
-    assert(!is_mine_array[0][0]);  // sanity check (0, 0) does not contain a mine
-}
-
-/**
- * Count the number of mines neighboring a cell.
- * @param is_mine_array Array tracking which cells contain a mine.
- * @param row Cell row.
- * @param col Cell col.
- */
-int count_neighbor_mines(const std::vector<std::vector<bool>>& is_mine_array, int row, int col)
-{
-    const int num_rows = is_mine_array.size();
-    const int num_cols = is_mine_array.front().size();
-
-    int count = 0;
-    for (const auto& [nb_row, nb_col] : games::mines::get_neighbors(row, col, num_rows, num_cols)) {
-        if (is_mine_array[nb_row][nb_col]) {
-            ++count;
-        }
-    }
-    return count;
+    // sanity check (0, 0) does not contain a mine
+    assert(!is_mine_array[0][0]);
 }
 
 }  // namespace
@@ -124,7 +106,7 @@ bool Minesweeper::open(int row, int col, std::optional<int>& neighbor_mine_count
         return true;
     }
 
-    neighbor_mine_count = count_neighbor_mines(is_mine_array, row, col);
+    neighbor_mine_count = count_neighbor_mines(row, col);
 
     if (check_win()) {
         active = false;
@@ -138,6 +120,17 @@ bool Minesweeper::is_mine(int row, int col) const
     assert(0 <= row && row < rows);  // row must be valid
     assert(0 <= col && col < cols);  // col must be valid
     return is_mine_array[row][col];
+}
+
+int Minesweeper::count_neighbor_mines(int row, int col) const
+{
+    int count = 0;
+    for (const auto& [nb_row, nb_col] : games::mines::get_neighbors(row, col, rows, cols)) {
+        if (is_mine_array[nb_row][nb_col]) {
+            ++count;
+        }
+    }
+    return count;
 }
 
 void Minesweeper::reset()

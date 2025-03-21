@@ -16,11 +16,12 @@ App::App(int rows, int cols, int mines)
       text_instructions(text_end_game.bottom(), MARGIN_LEFT)
 {
     init_colors();
-    keypad(board.window, true);                            // Allow arrow keys
-    mousemask(BUTTON1_RELEASED | BUTTON3_RELEASED, NULL);  // Allow mouse
-    mouseinterval(0);                                      // Do not wait to distinguish clicks; more reactive interface
+    keypad(board.window, true);                            // allow arrow keys
+    mousemask(BUTTON1_RELEASED | BUTTON3_RELEASED, NULL);  // allow mouse
+    mouseinterval(0);                                      // do not wait to distinguish clicks; more reactive interface
 
-    refresh();  // Initial print
+    // initial print
+    refresh();
 }
 
 void App::run()

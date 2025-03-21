@@ -63,6 +63,13 @@ private:
      */
     inline bool check_win() const { return num_opened + mines == rows * cols; };
 
+    /**
+     * Count the number of mines neighboring a cell.
+     * @param row Cell row.
+     * @param col Cell col.
+     */
+    int count_neighbor_mines(int row, int col) const;
+
     const int rows;
     const int cols;
     const int mines;

@@ -67,7 +67,8 @@ Board::Board(int rows, int cols, int start_y, int start_x, WINDOW* border_window
       rows(rows),
       cols(cols),
       snake(1, 1, Direction::left, 3),  // snake starts along top of board
-      state(BoardState::active)
+      state(BoardState::active),
+      score(0)
 {
     assert(rows >= MIN_ROWS);
     assert(cols >= MIN_COLS);
@@ -105,6 +106,7 @@ void Board::tick()
     snake.step(grow_snake);
     if (grow_snake) {
         apple = find_unoccupied();
+        ++score;
     }
 }
 

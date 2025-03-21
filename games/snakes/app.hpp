@@ -1,6 +1,7 @@
 #pragma once
 
 #include <games/snakes/board.hpp>
+#include <games/snakes/text_score.hpp>
 
 #include <games/common/border.hpp>
 
@@ -49,6 +50,7 @@ private:
      */
     bool handle_keystroke(int key);
 
+    TextScore text_score;
     Border board_border;
     Board board;
 };

@@ -52,6 +52,8 @@ public:
 
     inline BoardState get_state() const { return state; }
 
+    int get_score() const { return score; }
+
     const int rows;
     const int cols;
 
@@ -75,6 +77,8 @@ private:
     std::pair<int, int> apple;
 
     BoardState state;
+
+    int score;
 };
 
 }  // namespace games::snakes

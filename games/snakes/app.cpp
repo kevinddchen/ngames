@@ -9,7 +9,8 @@ namespace games::snakes
 {
 
 App::App(int rows, int cols)
-    : board_border(rows, cols, MARGIN_TOP, MARGIN_LEFT),
+    : text_score(board, MARGIN_TOP, MARGIN_LEFT),
+      board_border(rows, cols, text_score.bottom(), MARGIN_LEFT),
       board(rows, cols, board_border.inner_start_y(), board_border.inner_start_x(), board_border.window)
 {
     init_colors();
@@ -55,6 +56,7 @@ void App::run()
 
 void App::refresh() const
 {
+    text_score.refresh();
     board_border.refresh();
     board.refresh();
     doupdate();

@@ -19,14 +19,18 @@ namespace
  */
 void draw_snake(WINDOW* window, const games::snakes::Snake& snake, bool active)
 {
-    // draw snake body
+    // draw snake body excluding head and tail
     const auto body_attr = A_BOLD;
     wattron(window, body_attr);
-    for (auto it = snake.chain.begin() + 1; it != snake.chain.end(); ++it) {
+    for (auto it = snake.chain.begin() + 1; it != snake.chain.end() - 1; ++it) {
         const auto [row, col] = *it;
         mvwaddch(window, row, col, '@');
     }
     wattroff(window, body_attr);
+
+    // tail is not bold
+    const auto [tail_row, tail_col] = snake.chain.back();
+    mvwaddch(window, tail_row, tail_col, '@');
 
     // head is drawn specially
     char head_char;
@@ -45,8 +49,8 @@ void draw_snake(WINDOW* window, const games::snakes::Snake& snake, bool active)
             break;
     }
     const auto [head_row, head_col] = snake.chain.front();
-    // if game end, make snake head flash
     auto head_attr = A_BOLD;
+    // if game end, make snake head flash red
     if (!active) {
         head_attr |= A_BLINK | COLOR_PAIR(games::snakes::COLOR_PAIR_COLLISION);
     }
@@ -174,9 +178,10 @@ bool Board::check_collision() const
     if (next.first < 0 || next.first >= rows || next.second < 0 || next.second >= cols) {
         return true;
     }
-    // check collision with itself
-    for (const auto& cell : snake.chain) {
-        if (next == cell) {
+    // check collision with itself.
+    // we exclude the snake tail since it will move away in time.
+    for (auto it = snake.chain.begin(); it != snake.chain.end() - 1; ++it) {
+        if (next == *it) {
             return true;
         }
     }

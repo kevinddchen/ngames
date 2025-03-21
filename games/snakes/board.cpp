@@ -159,7 +159,8 @@ std::pair<int, int> Board::find_unoccupied() const
     assert(empty_idxs.size() > 0);
 
     // draw random index
-    const int idx = std::rand() % empty_idxs.size();
+    const int idx_idx = std::rand() % empty_idxs.size();
+    const int idx = empty_idxs[idx_idx];
     const int row = idx / cols;
     const int col = idx % cols;
 

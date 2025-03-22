@@ -11,7 +11,8 @@ namespace ngames::snake
 App::App(int rows, int cols)
     : text_score(board, MARGIN_TOP, MARGIN_LEFT),
       board_border(rows, cols, text_score.bottom(), MARGIN_LEFT),
-      board(rows, cols, board_border.inner_start_y(), board_border.inner_start_x(), board_border.window)
+      board(rows, cols, board_border.inner_start_y(), board_border.inner_start_x(), board_border.window),
+      text_instructions(board_border.bottom() + 1, MARGIN_LEFT)
 {
     init_colors();
     curs_set(0);                  // hide cursor
@@ -59,6 +60,7 @@ void App::refresh() const
     text_score.refresh();
     board_border.refresh();
     board.refresh();
+    text_instructions.refresh();
     doupdate();
 }
 

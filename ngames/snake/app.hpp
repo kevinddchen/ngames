@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ngames/snake/board.hpp>
+#include <ngames/snake/text_instructions.hpp>
 #include <ngames/snake/text_score.hpp>
 
 #include <ngames/common/border.hpp>
@@ -53,6 +54,7 @@ private:
     TextScore text_score;
     Border board_border;
     Board board;
+    TextInstructions text_instructions;
 };
 
 }  // namespace ngames::snake

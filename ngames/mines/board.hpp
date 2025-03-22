@@ -103,6 +103,8 @@ private:
 
     /**
      * Returns true if the cell can be opened.
+     * @param row Cell row.
+     * @param col Cell column.
      */
     inline bool can_open(int row, int col) const
     {
@@ -111,6 +113,8 @@ private:
 
     /**
      * Returns true if the cell can be chorded.
+     * @param row Cell row.
+     * @param col Cell column.
      */
     inline bool can_chord(int row, int col) const
     {

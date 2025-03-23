@@ -11,6 +11,11 @@ namespace ngames::snake
 {
 
 /**
+ * Indicate special actions for the game loop.
+ */
+enum Signal { none, reset, quit };
+
+/**
  * Snakes application. Manages user input and game loop.
  */
 class App
@@ -47,9 +52,9 @@ private:
     /**
      * Perform action associated with given keystroke or mouse event.
      * @param key Key pressed.
-     * @returns False when we want to quit.
+     * @returns A `Signal` that may require special actions for the game loop.
      */
-    bool handle_keystroke(int key);
+    Signal handle_keystroke(int key);
 
     TextScore text_score;
     Border board_border;

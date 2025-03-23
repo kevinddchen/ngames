@@ -19,6 +19,8 @@ public:
     static constexpr int MIN_ROWS = 5;
     static constexpr int MIN_COLS = 5;
 
+    static constexpr int INIT_SNAKE_LENGTH = 3;
+
     /**
      * Create new Snakes game.
      * @param rows Number of rows.
@@ -41,6 +43,9 @@ public:
 
     /**
      * Attempt to set the snake direction.
+     *
+     * @param dir Desired direction.
+     *
      * @returns Return code. A non-zero value means that an error occurred and
      * the game state was not been changed. The possible error codes are
      *   1: game is inactive.
@@ -51,6 +56,11 @@ public:
     inline bool is_active() const { return active; }
 
     inline int get_score() const { return score; }
+
+    /**
+     * Reset the game.
+     */
+    void reset();
 
     const int rows;
     const int cols;

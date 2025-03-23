@@ -5,6 +5,17 @@
 #include <thread>
 
 
+namespace
+{
+
+std::chrono::steady_clock::time_point now()
+{
+    return std::chrono::steady_clock::now();
+}
+
+}  // namespace
+
+
 namespace ngames::snake
 {
 
@@ -30,22 +41,38 @@ void App::run()
     // How many frames pass between ticks
     constexpr long tick_interval_frames = FRAMES_PER_SEC / TICKS_PER_SEC;
 
-    const auto t_start = std::chrono::steady_clock::now();
-    for (long iframe = 1;; ++iframe) {
-        // wait until correct frame time
+    auto t_start = now();
+
+    bool loop = true;
+    for (long iframe = 1; loop; ++iframe) {
+        // wait for duration of frame
         const auto target_diff_ms = iframe * frame_interval_ms;
-        const auto t_curr = std::chrono::steady_clock::now();
+        const auto t_curr = now();
         const std::chrono::duration<double, std::milli> curr_diff_ms = t_curr - t_start;
         std::this_thread::sleep_for(target_diff_ms - curr_diff_ms);
 
         // get user key
         const auto key = wgetch(board.window);
-        if (!handle_keystroke(key)) {
-            break;
-        }
+        const Signal signal = handle_keystroke(key);
 
-        if (iframe % tick_interval_frames == 0) {
-            board.tick();
+        // handle special actions, if any
+        switch (signal) {
+            case Signal::reset:
+                board.reset();
+                // restart tick
+                t_start = now();
+                iframe = 0;
+                break;
+            case Signal::quit:
+                // break the loop
+                loop = false;
+                break;
+            case Signal::none:
+                // proceed as normal
+                if (iframe % tick_interval_frames == 0) {
+                    board.tick();
+                }
+                break;
         }
 
         refresh();
@@ -64,41 +91,36 @@ void App::refresh() const
     doupdate();
 }
 
-bool App::handle_keystroke(int key)
+Signal App::handle_keystroke(int key)
 {
     // handle keystroke
     switch (key) {
         case 'h':
         case KEY_LEFT:
-            if (board.set_snake_direction(Direction::left) == 0) {
-                board.refresh();
-            }
+            board.set_snake_direction(Direction::left);
             break;
         case 'j':
         case KEY_DOWN:
-            if (board.set_snake_direction(Direction::down) == 0) {
-                board.refresh();
-            }
+            board.set_snake_direction(Direction::down);
             break;
         case 'k':
         case KEY_UP:
-            if (board.set_snake_direction(Direction::up) == 0) {
-                board.refresh();
-            }
+            board.set_snake_direction(Direction::up);
             break;
         case 'l':
         case KEY_RIGHT:
-            if (board.set_snake_direction(Direction::right) == 0) {
-                board.refresh();
-            }
+            board.set_snake_direction(Direction::right);
             break;
+        case 'z':  // new game
+            board.reset();
+            return Signal::reset;
         case 'r':  // refresh
-            refresh();
+            // We already refresh every frame...
             break;
         case 'q':  // quit
-            return false;
+            return Signal::quit;
     }
-    return true;
+    return Signal::none;
 }
 
 }  // namespace ngames::snake

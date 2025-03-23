@@ -82,25 +82,12 @@ namespace ngames::snake
 Board::Board(int rows, int cols, int start_y, int start_x, WINDOW* border_window)
     : Component(subwin(border_window, rows, cols, start_y, start_x)),
       rows(rows),
-      cols(cols),
-      snake(1, 1, Direction::left, 3),  // snake starts along top of board
-      active(true),
-      score(0)
+      cols(cols)
 {
     assert(rows >= MIN_ROWS);
     assert(cols >= MIN_COLS);
 
-    // check snake endpoints are inside board
-    for (const auto& [row, col] : {snake.chain.front(), snake.chain.back()}) {
-        assert(0 <= row && row < rows);
-        assert(0 <= col && col < cols);
-    }
-
-    // start snake pointing down
-    snake.direction = Direction::down;
-
-    // initialize apple at random location
-    apple = find_unoccupied();
+    reset();
 }
 
 void Board::refresh() const
@@ -186,6 +173,27 @@ bool Board::check_collision() const
         }
     }
     return false;
+}
+
+void Board::reset()
+{
+    // snake starts along top of board
+    snake = Snake(1, 1, Direction::left, INIT_SNAKE_LENGTH);
+
+    // check snake endpoints are inside board
+    for (const auto& [row, col] : {snake.chain.front(), snake.chain.back()}) {
+        assert(0 <= row && row < rows);
+        assert(0 <= col && col < cols);
+    }
+
+    // start snake pointing down
+    snake.direction = Direction::down;
+
+    // initialize apple at random location
+    apple = find_unoccupied();
+
+    active = true;
+    score = 0;
 }
 
 }  // namespace ngames::snake

@@ -116,6 +116,7 @@ bool App::handle_keystroke(int key)
             refresh();
             break;
         case 'r':  // refresh
+            clearok(curscr, true);
             refresh();
             break;
         case 'q':  // quit

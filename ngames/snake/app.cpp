@@ -115,7 +115,7 @@ Signal App::handle_keystroke(int key)
             board.reset();
             return Signal::reset;
         case 'r':  // refresh
-            // We already refresh every frame...
+            clearok(curscr, true);
             break;
         case 'q':  // quit
             return Signal::quit;

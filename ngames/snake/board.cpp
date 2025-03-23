@@ -128,7 +128,7 @@ int Board::set_snake_direction(Direction dir)
 std::pair<int, int> Board::find_unoccupied() const
 {
     // seed RNG with current time
-    std::srand(time(nullptr));
+    std::srand(clock());
 
     // create list tracking empty cells
     // NOTE: we encode the pair (row, col) as a single index: row * num_cols + col

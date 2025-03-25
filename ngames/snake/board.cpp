@@ -15,9 +15,9 @@ namespace
  * Draw the snake on the window.
  * @param window Window.
  * @param snake Snake instance.
- * @param active True if game is active.
+ * @param state Board state.
  */
-void draw_snake(WINDOW* window, const ngames::snake::Snake& snake, bool active)
+void draw_snake(WINDOW* window, const ngames::snake::Snake& snake, ngames::snake::BoardState state)
 {
     // draw snake body excluding head and tail
     const auto body_attr = A_BOLD;
@@ -50,8 +50,8 @@ void draw_snake(WINDOW* window, const ngames::snake::Snake& snake, bool active)
     }
     const auto [head_row, head_col] = snake.chain.front();
     auto head_attr = A_BOLD;
-    // if game end, make snake head flash red
-    if (!active) {
+    // if game lost, make snake head flash red
+    if (state == ngames::snake::BoardState::lose) {
         head_attr |= A_BLINK | COLOR_PAIR(ngames::snake::COLOR_PAIR_COLLISION);
     }
     wattron(window, head_attr);
@@ -62,11 +62,14 @@ void draw_snake(WINDOW* window, const ngames::snake::Snake& snake, bool active)
 /**
  * Draw the apple.
  * @param window Window.
- * @param row Cell row for the apple.
- * @param col Cell column for the apple.
+ * @param apple Apple location (row, cell) on the board.
  */
-void draw_apple(WINDOW* window, int row, int col)
+void draw_apple(WINDOW* window, const std::optional<std::pair<int, int>>& apple)
 {
+    if (!apple.has_value()) {
+        return;
+    }
+    const auto [row, col] = apple.value();
     const auto attr = A_BOLD | COLOR_PAIR(ngames::snake::COLOR_PAIR_APPLE);
     wattron(window, attr);
     mvwaddch(window, row, col, '*');
@@ -93,30 +96,37 @@ Board::Board(int rows, int cols, int start_y, int start_x, WINDOW* border_window
 void Board::refresh() const
 {
     werase(window);
-    draw_snake(window, snake, active);
-    draw_apple(window, apple.first, apple.second);
+    draw_snake(window, snake, state);
+    draw_apple(window, apple);
     wnoutrefresh(window);
 }
 
 void Board::tick()
 {
-    // if collision, the game ends
+    if (state != BoardState::active) {
+        return;
+    }
+    // if collision, player has lost
     if (check_collision()) {
-        active = false;
+        state = BoardState::lose;
         return;
     }
     // otherwise, move the snake forwards
     const bool grow_snake = snake.next_head() == apple;
     snake.step(grow_snake);
     if (grow_snake) {
-        apple = find_unoccupied();
         ++score;
+        apple = find_unoccupied();
+    }
+    // if no possible apple location, then player has won
+    if (!apple.has_value()) {
+        state = BoardState::win;
     }
 }
 
 int Board::set_snake_direction(Direction dir)
 {
-    if (!active) {
+    if (state != BoardState::active) {
         return 1;
     } else if (snake.chain.size() > 1 && snake.next_head(dir) == snake.chain[1]) {
         return 2;
@@ -125,7 +135,7 @@ int Board::set_snake_direction(Direction dir)
     return 0;
 }
 
-std::pair<int, int> Board::find_unoccupied() const
+std::optional<std::pair<int, int>> Board::find_unoccupied() const
 {
     // seed RNG with current time
     std::srand(clock());
@@ -147,7 +157,10 @@ std::pair<int, int> Board::find_unoccupied() const
             empty_idxs.push_back(idx);
         }
     }
-    assert(empty_idxs.size() > 0);
+
+    if (empty_idxs.empty()) {
+        return std::nullopt;
+    }
 
     // draw random index
     const int idx_idx = std::rand() % empty_idxs.size();
@@ -155,7 +168,7 @@ std::pair<int, int> Board::find_unoccupied() const
     const int row = idx / cols;
     const int col = idx % cols;
 
-    return {row, col};
+    return std::make_pair(row, col);
 }
 
 bool Board::check_collision() const
@@ -192,7 +205,7 @@ void Board::reset()
     // initialize apple at random location
     apple = find_unoccupied();
 
-    active = true;
+    state = BoardState::active;
     score = 0;
 }
 

@@ -5,9 +5,13 @@
 
 #include <ngames/common/component.hpp>
 
+#include <optional>
+
 
 namespace ngames::snake
 {
+
+enum BoardState { active, win, lose };
 
 /**
  * Front-end for the Snakes game. Manages game state and window viewed by the
@@ -53,7 +57,10 @@ public:
      */
     int set_snake_direction(Direction dir);
 
-    inline bool is_active() const { return active; }
+    /**
+     * Returns game state.
+     */
+    inline BoardState get_state() const { return state; }
 
     inline int get_score() const { return score; }
 
@@ -69,9 +76,9 @@ private:
     /**
      * Finds a random cell on the board that is not occupied by the snake. Used
      * for finding new locations for the apple after it has been eaten.
-     * @returns (row, col) of unoccupied cell.
+     * @returns (row, col) of unoccupied cell, or null if all cells are occupied.
      */
-    std::pair<int, int> find_unoccupied() const;
+    std::optional<std::pair<int, int>> find_unoccupied() const;
 
     /**
      * Returns `true` if the snake's future position will collide into itself
@@ -82,10 +89,10 @@ private:
     // Snake instance.
     Snake snake;
     // Apple location (row, cell) on the board.
-    std::pair<int, int> apple;
+    std::optional<std::pair<int, int>> apple;
 
-    // True if the game is active.
-    bool active;
+    // Whether the game is active.
+    BoardState state;
     // Player score.
     int score;
 };

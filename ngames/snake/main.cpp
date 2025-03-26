@@ -2,6 +2,8 @@
 
 #include <ngames/common/ncurses.hpp>
 
+#include <cstdlib>
+
 
 int main()
 {

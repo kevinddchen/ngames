@@ -1,5 +1,7 @@
 #include <ngames/snake/snake.hpp>
 
+#include <cassert>
+
 
 namespace ngames::snake
 {

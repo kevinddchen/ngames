@@ -2,6 +2,8 @@
 
 #include <utility>
 
+#include <cassert>
+
 
 namespace ngames::snake
 {
@@ -19,6 +21,8 @@ inline std::pair<int, int> dir2vec(Direction dir)
             return {0, -1};
         case Direction::right:
             return {0, 1};
+        default:
+            assert(false);
     }
 }
 

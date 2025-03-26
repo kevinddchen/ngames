@@ -12,7 +12,7 @@
 [[noreturn]] static void help_and_exit()
 {
     fprintf(stderr, "usage:\n");
-    fprintf(stderr, "  mines b                beginner     (9x9,   10 mines)\n");
+    fprintf(stderr, "  mines b                beginner     (9 x 9, 10 mines)\n");
     fprintf(stderr, "  mines i                intermediate (16x16, 40 mines)\n");
     fprintf(stderr, "  mines e                expert       (30x16, 99 mines)\n");
     fprintf(stderr, "  mines <r> <c> <m>      custom       (r x c,  m mines)\n");
@@ -27,13 +27,18 @@
 static int str_to_int(const char* str)
 {
     int i;
+    size_t pos;
     try {
-        i = std::atoi(str);
+        i = std::stoi(str, &pos);
     } catch (std::invalid_argument const&) {
-        fprintf(stderr, "Not a number: %s\n", str);
+        fprintf(stderr, "Not an integer: %s\n", str);
         help_and_exit();
     } catch (std::out_of_range const&) {
         fprintf(stderr, "Number too large: %s\n", str);
+        help_and_exit();
+    }
+    if (pos != std::strlen(str)) {
+        fprintf(stderr, "Not an integer: %s\n", str);
         help_and_exit();
     }
     return i;

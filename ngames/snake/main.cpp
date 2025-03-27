@@ -9,7 +9,7 @@ int main()
 {
     ngames::init_ncurses();
 
-    ngames::snake::App app(10, 10);
+    ngames::snake::App app(15, 21, 5.0);
     app.run();
 
     ngames::end_ncurses();

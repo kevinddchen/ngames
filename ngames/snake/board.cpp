@@ -192,17 +192,16 @@ bool Board::check_collision() const
 
 void Board::reset()
 {
-    // snake starts along top of board
-    snake = Snake(1, 1, Direction::left, INIT_SNAKE_LENGTH);
+    // snake starts at center top
+    const int snake_head_row = INIT_SNAKE_LENGTH - 1;
+    const int snake_head_col = (cols - 1) / 2;
+    snake = Snake(snake_head_row, snake_head_col, Direction::down, INIT_SNAKE_LENGTH);
 
     // check snake endpoints are inside board
     for (const auto& [row, col] : {snake.chain.front(), snake.chain.back()}) {
         assert(0 <= row && row < rows);
         assert(0 <= col && col < cols);
     }
-
-    // start snake pointing down
-    snake.direction = Direction::down;
 
     // initialize apple at random location
     apple = find_unoccupied();

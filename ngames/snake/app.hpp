@@ -23,8 +23,6 @@ class App
 public:
     // Frame rate
     static constexpr double FRAMES_PER_SEC = 30.0;
-    // Tick rate
-    static constexpr double TICKS_PER_SEC = 1.0;
 
     // Top margin, in number of chars
     static constexpr int MARGIN_TOP = 1;
@@ -35,8 +33,9 @@ public:
      * Create application.
      * @param rows Number of rows for the Snakes board.
      * @param cols Number of columns for the Snakes board.
+     * @param ticks_per_sec Tick rate.
      */
-    App(int rows, int cols);
+    App(int rows, int cols, double ticks_per_sec);
 
     /**
      * Run the application.
@@ -55,6 +54,8 @@ private:
      * @returns A `Signal` that may require special actions for the game loop.
      */
     Signal handle_keystroke(int key);
+
+    double ticks_per_sec;
 
     TextScore text_score;
     Border board_border;

@@ -52,7 +52,7 @@ void Board::refresh() const
     werase(window);
     auto head_attr = A_BOLD;
     // if game lost, make snake head flash red
-    if (state == BoardState::lose) {
+    if (state == State::lose) {
         head_attr |= A_BLINK | COLOR_PAIR(COLOR_PAIR_COLLISION);
     }
     snake.draw(window, head_attr);
@@ -62,12 +62,12 @@ void Board::refresh() const
 
 void Board::tick()
 {
-    if (state != BoardState::active) {
+    if (state != State::active) {
         return;
     }
     // if collision, player has lost
     if (check_collision()) {
-        state = BoardState::lose;
+        state = State::lose;
         return;
     }
     // otherwise, move the snake forwards
@@ -79,13 +79,13 @@ void Board::tick()
     }
     // if no possible apple location, then player has won
     if (!apple.has_value()) {
-        state = BoardState::win;
+        state = State::win;
     }
 }
 
 int Board::set_snake_direction(Direction dir)
 {
-    if (state != BoardState::active) {
+    if (state != State::active) {
         return 1;
     } else if (snake.chain.size() > 1 && snake.next_head(dir) == snake.chain[1]) {
         return 2;
@@ -163,7 +163,7 @@ void Board::reset()
     // initialize apple at random location
     apple = find_unoccupied();
 
-    state = BoardState::active;
+    state = State::active;
     score = 0;
 }
 

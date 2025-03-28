@@ -11,11 +11,6 @@ namespace ngames::snake
 {
 
 /**
- * Indicate special actions for the game loop.
- */
-enum Signal { none, reset, quit };
-
-/**
  * Snake application. Manages user input and game loop.
  */
 class App
@@ -43,6 +38,11 @@ public:
     void run();
 
 private:
+    /**
+     * Indicate special actions for the game loop.
+     */
+    enum Signal { none, reset, quit };
+
     /**
      * Refresh the windows of the application.
      */

@@ -48,7 +48,7 @@ void Board::print_cell(int row, int col) const
     if (is_flagged(row, col)) {
         auto attr = A_BOLD;
         // if game ended and flag is incorrect, use red background and blink
-        if (state != BoardState::active && !is_known_mine(row, col)) {
+        if (state != State::active && !is_known_mine(row, col)) {
             attr |= A_BLINK | COLOR_PAIR(COLOR_PAIR_MISTAKE);
         }
         wattron(window, attr);
@@ -87,7 +87,7 @@ void Board::print_cell(int row, int col) const
 
 int Board::click_cell(int row, int col)
 {
-    if (state != BoardState::active) {
+    if (state != State::active) {
         return 1;
     } else if (is_flagged(row, col)) {
         return 3;
@@ -114,7 +114,7 @@ void Board::open(int row, int col)
 
     // check if lost
     if (is_mine) {
-        state = BoardState::lose;
+        state = State::lose;
         populate_known_mine_array();
         return;
     }
@@ -122,7 +122,7 @@ void Board::open(int row, int col)
     neighbor_mine_counts[row][col] = neighbor_mine_count.value();
 
     if (check_win()) {
-        state = BoardState::win;
+        state = State::win;
         populate_known_mine_array();
         return;
     }
@@ -144,7 +144,7 @@ void Board::open_neighbors(int row, int col)
 
 int Board::toggle_flag(int row, int col)
 {
-    if (state != BoardState::active) {
+    if (state != State::active) {
         return 1;
     } else if (is_opened(row, col)) {
         return 2;
@@ -197,7 +197,7 @@ void Board::reset()
     game.reset();
 
     // initialize data
-    state = BoardState::active;
+    state = State::active;
     num_opened = 0;
     num_flags = 0;
     last_opened = std::nullopt;

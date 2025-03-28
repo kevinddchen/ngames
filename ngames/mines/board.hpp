@@ -11,8 +11,6 @@
 namespace ngames::mines
 {
 
-enum BoardState { active, win, lose };
-
 /**
  * Front-end for the Minesweeper game. Contains information about the game
  * known by the player, e.g. neighboring mine counts and flags, and maintains
@@ -21,6 +19,8 @@ enum BoardState { active, win, lose };
 class Board : public Component
 {
 public:
+    enum State { active, win, lose };
+
     /**
      * Create new Minesweeper game.
      * @param rows Number of rows.
@@ -76,7 +76,7 @@ public:
     /**
      * Returns game state.
      */
-    inline BoardState get_state() const { return state; }
+    inline State get_state() const { return state; }
 
     /**
      * Return number of flags used.
@@ -108,7 +108,7 @@ private:
      */
     inline bool can_open(int row, int col) const
     {
-        return state == BoardState::active && !is_opened(row, col) && !is_flagged(row, col);
+        return state == State::active && !is_opened(row, col) && !is_flagged(row, col);
     }
 
     /**
@@ -118,7 +118,7 @@ private:
      */
     inline bool can_chord(int row, int col) const
     {
-        return state == BoardState::active && is_opened(row, col) && count_neighbor_unopened(row, col) > 0 &&
+        return state == State::active && is_opened(row, col) && count_neighbor_unopened(row, col) > 0 &&
                get_neighbor_mine_count(row, col) == count_neighbor_flags(row, col);
     }
 
@@ -166,7 +166,7 @@ private:
     Minesweeper game;
 
     // Whether the game is active.
-    BoardState state;
+    State state;
     // Number of opened cells.
     int num_opened;
     // Number of flags used.

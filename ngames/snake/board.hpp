@@ -11,8 +11,6 @@
 namespace ngames::snake
 {
 
-enum BoardState { active, win, lose };
-
 /**
  * Front-end for the Snake game. Manages game state and window viewed by the
  * player.
@@ -20,6 +18,8 @@ enum BoardState { active, win, lose };
 class Board : public Component
 {
 public:
+    enum State { active, win, lose };
+
     static constexpr int MIN_ROWS = 5;
     static constexpr int MIN_COLS = 5;
 
@@ -60,7 +60,7 @@ public:
     /**
      * Returns game state.
      */
-    inline BoardState get_state() const { return state; }
+    inline State get_state() const { return state; }
 
     inline int get_score() const { return score; }
 
@@ -92,7 +92,7 @@ private:
     std::optional<std::pair<int, int>> apple;
 
     // Whether the game is active.
-    BoardState state;
+    State state;
     // Player score.
     int score;
 };

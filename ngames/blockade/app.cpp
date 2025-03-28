@@ -82,7 +82,7 @@ void App::refresh() const
     doupdate();
 }
 
-Signal App::handle_keystroke(int key)
+App::Signal App::handle_keystroke(int key)
 {
     // handle keystroke
     switch (key) {

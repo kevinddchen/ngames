@@ -9,11 +9,6 @@ namespace ngames::blockade
 {
 
 /**
- * Indicate special actions for the game loop.
- */
-enum Signal { none, reset, quit };
-
-/**
  * Blockade application. Manages user input and game loop.
  */
 class App
@@ -41,6 +36,11 @@ public:
     void run();
 
 private:
+    /**
+     * Indicate special actions for the game loop.
+     */
+    enum Signal { none, reset, quit };
+
     /**
      * Refresh the windows of the application.
      */

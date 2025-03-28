@@ -14,7 +14,7 @@ namespace ngames::snake
 enum BoardState { active, win, lose };
 
 /**
- * Front-end for the Snakes game. Manages game state and window viewed by the
+ * Front-end for the Snake game. Manages game state and window viewed by the
  * player.
  */
 class Board : public Component
@@ -26,7 +26,7 @@ public:
     static constexpr int INIT_SNAKE_LENGTH = 3;
 
     /**
-     * Create new Snakes game.
+     * Create new Snake game.
      * @param rows Number of rows.
      * @param cols Number of columns.
      * @param start_y y-coordinate of the top-left corner of the window.

@@ -17,7 +17,7 @@ constexpr short COLOR_PAIR_COLLISION = 2;
 constexpr short COLOR_PAIR_INSTRUCTIONS = 3;
 
 /**
- * Initialize custom colors for Snakes.
+ * Initialize custom colors for Snake.
  */
 inline void init_colors()
 {

@@ -14,54 +14,6 @@ namespace
 {
 
 /**
- * Draw the snake on the window.
- * @param window Window.
- * @param snake Snake instance.
- * @param state Board state.
- */
-void draw_snake(WINDOW* window, const ngames::snake::Snake& snake, ngames::snake::BoardState state)
-{
-    // draw snake body excluding head and tail
-    const auto body_attr = A_BOLD;
-    wattron(window, body_attr);
-    for (auto it = snake.chain.begin() + 1; it != snake.chain.end() - 1; ++it) {
-        const auto [row, col] = *it;
-        mvwaddch(window, row, col, '@');
-    }
-    wattroff(window, body_attr);
-
-    // tail is not bold
-    const auto [tail_row, tail_col] = snake.chain.back();
-    mvwaddch(window, tail_row, tail_col, '@');
-
-    // head is drawn specially
-    char head_char;
-    switch (snake.direction) {
-        case ngames::snake::Direction::up:
-            head_char = '^';
-            break;
-        case ngames::snake::Direction::down:
-            head_char = 'v';
-            break;
-        case ngames::snake::Direction::left:
-            head_char = '<';
-            break;
-        case ngames::snake::Direction::right:
-            head_char = '>';
-            break;
-    }
-    const auto [head_row, head_col] = snake.chain.front();
-    auto head_attr = A_BOLD;
-    // if game lost, make snake head flash red
-    if (state == ngames::snake::BoardState::lose) {
-        head_attr |= A_BLINK | COLOR_PAIR(ngames::snake::COLOR_PAIR_COLLISION);
-    }
-    wattron(window, head_attr);
-    mvwaddch(window, head_row, head_col, head_char);
-    wattroff(window, head_attr);
-}
-
-/**
  * Draw the apple.
  * @param window Window.
  * @param apple Apple location (row, cell) on the board.
@@ -98,7 +50,12 @@ Board::Board(int rows, int cols, int start_y, int start_x, WINDOW* border_window
 void Board::refresh() const
 {
     werase(window);
-    draw_snake(window, snake, state);
+    auto head_attr = A_BOLD;
+    // if game lost, make snake head flash red
+    if (state == BoardState::lose) {
+        head_attr |= A_BLINK | COLOR_PAIR(COLOR_PAIR_COLLISION);
+    }
+    snake.draw(window, head_attr);
     draw_apple(window, apple);
     wnoutrefresh(window);
 }

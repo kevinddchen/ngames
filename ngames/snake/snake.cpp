@@ -32,4 +32,37 @@ void Snake::step(bool grow)
     }
 }
 
+void Snake::draw(WINDOW* window, attr_t head_attr, attr_t body_attr) const
+{
+    // draw snake body excluding head
+    wattron(window, body_attr);
+    for (auto it = chain.begin() + 1; it != chain.end(); ++it) {
+        const auto [row, col] = *it;
+        mvwaddch(window, row, col, '@');
+    }
+    wattroff(window, body_attr);
+
+    // head is drawn specially
+    char head_char;
+    switch (direction) {
+        case ngames::snake::Direction::up:
+            head_char = '^';
+            break;
+        case ngames::snake::Direction::down:
+            head_char = 'v';
+            break;
+        case ngames::snake::Direction::left:
+            head_char = '<';
+            break;
+        case ngames::snake::Direction::right:
+            head_char = '>';
+            break;
+    }
+    const auto [head_row, head_col] = chain.front();
+
+    wattron(window, head_attr);
+    mvwaddch(window, head_row, head_col, head_char);
+    wattroff(window, head_attr);
+}
+
 }  // namespace ngames::snake

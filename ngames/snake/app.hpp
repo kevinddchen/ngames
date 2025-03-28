@@ -16,7 +16,7 @@ namespace ngames::snake
 enum Signal { none, reset, quit };
 
 /**
- * Snakes application. Manages user input and game loop.
+ * Snake application. Manages user input and game loop.
  */
 class App
 {
@@ -31,8 +31,8 @@ public:
 
     /**
      * Create application.
-     * @param rows Number of rows for the Snakes board.
-     * @param cols Number of columns for the Snakes board.
+     * @param rows Number of rows for the Snake board.
+     * @param cols Number of columns for the Snake board.
      * @param ticks_per_sec Tick rate.
      */
     App(int rows, int cols, double ticks_per_sec);

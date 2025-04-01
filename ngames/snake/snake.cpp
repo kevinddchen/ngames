@@ -6,7 +6,9 @@
 namespace ngames::snake
 {
 
-Snake::Snake(int head_row, int head_col, Direction direction, int length) : direction(direction)
+Snake::Snake(int head_row, int head_col, Direction direction, int length)
+    : direction(direction),
+      prev_direction(std::nullopt)
 {
     assert(length > 0);
 
@@ -17,10 +19,10 @@ Snake::Snake(int head_row, int head_col, Direction direction, int length) : dire
     }
 }
 
-std::pair<int, int> Snake::next_head(std::optional<Direction> dir) const
+std::pair<int, int> Snake::next_head() const
 {
     const auto [head_row, head_col] = chain.front();
-    const auto [drow, dcol] = dir2vec(dir.value_or(direction));
+    const auto [drow, dcol] = dir2vec(direction);
     return {head_row + drow, head_col + dcol};
 }
 
@@ -30,6 +32,7 @@ void Snake::step(bool grow)
     if (!grow) {
         chain.pop_back();
     }
+    prev_direction = direction;
 }
 
 void Snake::draw(WINDOW* window, attr_t head_attr, attr_t body_attr) const

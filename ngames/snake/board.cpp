@@ -84,7 +84,7 @@ int Board::set_snake_direction(Direction dir)
 {
     if (state != State::active) {
         return 1;
-    } else if (snake.chain.size() > 1 && snake.next_head(dir) == snake.chain[1]) {
+    } else if (snake.prev_direction.has_value() && dir == opposite_direction(snake.prev_direction.value())) {
         return 2;
     }
     snake.direction = dir;

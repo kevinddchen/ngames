@@ -2,7 +2,6 @@
 
 #include <ngames/snake/ui.hpp>
 
-#include <numeric>
 #include <vector>
 
 #include <cassert>
@@ -50,12 +49,10 @@ Board::Board(int rows, int cols, int start_y, int start_x, WINDOW* border_window
 void Board::refresh() const
 {
     werase(window);
-    auto head_attr = A_BOLD;
     // if game lost, make snake head flash red
-    if (state == State::lose) {
-        head_attr |= A_BLINK | COLOR_PAIR(COLOR_PAIR_COLLISION);
-    }
-    snake.draw(window, head_attr);
+    const auto default_head_attr = A_BOLD;
+    const auto lose_head_attr = default_head_attr | A_BLINK | COLOR_PAIR(COLOR_PAIR_COLLISION);
+    snake.draw(window, state == State::lose ? lose_head_attr : default_head_attr);
     draw_apple(window, apple);
     wnoutrefresh(window);
 }

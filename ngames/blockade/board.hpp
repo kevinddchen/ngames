@@ -4,13 +4,9 @@
 #include <ngames/snake/direction.hpp>
 #include <ngames/snake/snake.hpp>
 
-#include <optional>
-
 
 namespace ngames::blockade
 {
-
-enum Player { one, two };
 
 /**
  * Front-end for the Blockade game. Manages game state and window viewed by the
@@ -21,6 +17,10 @@ class Board : public Component
 public:
     static constexpr int MIN_ROWS = 5;
     static constexpr int MIN_COLS = 5;
+
+    enum Player { one, two };
+
+    enum State { active, win_one, win_two, tie };
 
     /**
      * Create new Blockade game.
@@ -56,6 +56,11 @@ public:
     int set_snake_direction(Player player, snake::Direction dir);
 
     /**
+     * Returns game state.
+     */
+    inline State get_state() const { return state; }
+
+    /**
      * Reset the game.
      */
     void reset();
@@ -64,10 +69,31 @@ public:
     const int cols;
 
 private:
+    /**
+     * Private version of `set_snake_direction` that takes in the `Snake` struct to be edited.
+     * @param snake Snake.
+     * @param dir Desired direction.
+     */
+    int set_snake_direction(snake::Snake& snake, snake::Direction dir);
+
+    /**
+     * Returns `true` if the snake's future position will collide into itself
+     * or a wall.
+     * @param snake Snake.
+     */
+    bool check_collision(const snake::Snake& snake) const;
+
     // Player 1 snake instance.
-    snake::Snake snake_1;
+    snake::Snake snake_one;
     // Player 2 snake instance.
-    snake::Snake snake_2;
+    snake::Snake snake_two;
+
+    // Whether the game is active.
+    State state;
+    // If player one has collided.
+    bool collide_one;
+    // If player two has collided.
+    bool collide_two;
 };
 
 }  // namespace ngames::blockade

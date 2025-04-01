@@ -18,12 +18,12 @@ namespace ngames::snake
 class Board : public Component
 {
 public:
-    enum State { active, win, lose };
-
     static constexpr int MIN_ROWS = 5;
     static constexpr int MIN_COLS = 5;
 
     static constexpr int INIT_SNAKE_LENGTH = 3;
+
+    enum State { active, win, lose };
 
     /**
      * Create new Snake game.

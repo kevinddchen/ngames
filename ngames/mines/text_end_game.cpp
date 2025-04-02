@@ -19,14 +19,14 @@ void TextEndGame::refresh() const
         case Board::State::active:
             break;
         case Board::State::win: {
-            const auto attr = A_BOLD | COLOR_PAIR(COLOR_PAIR_WIN);
+            constexpr auto attr = A_BOLD | COLOR_PAIR(COLOR_PAIR_WIN);
             wattron(window, attr);
             mvwprintw(window, 0, 0, "YOU HAVE WON!");
             wattroff(window, attr);
             break;
         }
         case Board::State::lose: {
-            const auto attr = A_BOLD | COLOR_PAIR(COLOR_PAIR_LOSS);
+            constexpr auto attr = A_BOLD | COLOR_PAIR(COLOR_PAIR_LOSS);
             wattron(window, attr);
             mvwprintw(window, 0, 0, "YOU HAVE LOST...");
             wattroff(window, attr);

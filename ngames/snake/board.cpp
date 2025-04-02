@@ -20,7 +20,7 @@ namespace
 void draw_apple(WINDOW* window, const std::pair<int, int>& apple)
 {
     const auto [row, col] = apple;
-    const auto attr = A_BOLD | COLOR_PAIR(ngames::snake::COLOR_PAIR_APPLE);
+    constexpr auto attr = A_BOLD | COLOR_PAIR(ngames::snake::COLOR_PAIR_APPLE);
     wattron(window, attr);
     mvwaddch(window, row, col, '*');
     wattroff(window, attr);
@@ -46,7 +46,7 @@ Board::Board(int rows, int cols, int start_y, int start_x, WINDOW* border_window
 void Board::reset()
 {
     // snake starts at center top
-    const int snake_head_row = INIT_SNAKE_LENGTH - 1;
+    constexpr int snake_head_row = INIT_SNAKE_LENGTH - 1;
     const int snake_head_col = (cols - 1) / 2;
     snake = Snake(snake_head_row, snake_head_col, Direction::down, INIT_SNAKE_LENGTH);
 
@@ -67,8 +67,8 @@ void Board::refresh() const
 {
     werase(window);
     // if game lost, make snake head flash red
-    const auto default_head_attr = A_BOLD;
-    const auto lose_head_attr = default_head_attr | A_BLINK | COLOR_PAIR(COLOR_PAIR_COLLISION);
+    constexpr auto default_head_attr = A_BOLD;
+    constexpr auto lose_head_attr = default_head_attr | A_BLINK | COLOR_PAIR(COLOR_PAIR_COLLISION);
     snake->draw(window, state == State::lose ? lose_head_attr : default_head_attr);
     if (apple.has_value()) {
         draw_apple(window, *apple);

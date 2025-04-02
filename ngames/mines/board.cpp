@@ -81,7 +81,7 @@ void Board::print_cell(int row, int col) const
     if (is_known_mine(row, col)) {
         auto attr = A_BOLD;
         // if last click, use red background and blink
-        if (auto [last_row, last_col] = last_opened.value(); last_row == row && last_col == col) {
+        if (last_opened.has_value() && row == last_opened->first && col == last_opened->second) {
             attr |= A_BLINK | COLOR_PAIR(COLOR_PAIR_MISTAKE);
         }
         wattron(window, attr);
@@ -90,7 +90,7 @@ void Board::print_cell(int row, int col) const
         return;
     }
     if (!is_opened(row, col)) {
-        const auto attr = COLOR_PAIR(COLOR_PAIR_UNOPENED);
+        constexpr auto attr = COLOR_PAIR(COLOR_PAIR_UNOPENED);
         wattron(window, attr);
         waddch(window, '#');
         wattroff(window, attr);

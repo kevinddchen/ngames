@@ -29,9 +29,9 @@ inline std::vector<std::pair<int, int>> get_neighbors(int row, int col, int num_
 
     // filter out those outside the bounds
     std::vector<std::pair<int, int>> neighbors;
-    for (auto& nb : neighbor_candidates) {
-        if (nb.first >= 0 && nb.first < num_rows && nb.second >= 0 && nb.second < num_cols) {
-            neighbors.push_back(std::move(nb));
+    for (const auto& [nb_row, nb_col] : neighbor_candidates) {
+        if (nb_row >= 0 && nb_row < num_rows && nb_col >= 0 && nb_col < num_cols) {
+            neighbors.emplace_back(nb_row, nb_col);
         }
     }
 

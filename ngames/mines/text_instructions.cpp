@@ -14,7 +14,7 @@ TextInstructions::TextInstructions(int start_y, int start_x)
 void TextInstructions::refresh() const
 {
     werase(window);
-    const auto attr = COLOR_PAIR(COLOR_PAIR_INSTRUCTIONS);
+    constexpr auto attr = COLOR_PAIR(COLOR_PAIR_INSTRUCTIONS);
     wattron(window, attr);
     mvwprintw(window, 0, 0, "move cursor     hjkl / arrow keys");
     mvwprintw(window, 1, 0, "toggle flag     f / right click");

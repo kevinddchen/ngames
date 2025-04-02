@@ -5,7 +5,6 @@
 #include <ncurses.h>
 
 #include <deque>
-#include <optional>
 
 
 namespace ngames::snake
@@ -26,8 +25,9 @@ struct Snake {
 
     /**
      * Returns the cell (row, col) in front of the snake.
+     * @param dir Override for direction.
      */
-    std::pair<int, int> next_head() const;
+    std::pair<int, int> next_head(const Direction* dir = nullptr) const;
 
     /**
      * Step the snake forward one cell. Does not check for any kind of collisions.
@@ -45,8 +45,6 @@ struct Snake {
 
     // Direction of snake.
     Direction direction;
-    // Direction of snake during previous step, if any.
-    std::optional<Direction> prev_direction;
 
     // Chain of cells (row, col) that make up the snake body. Head is front of
     // chain, and tail is back of chain.

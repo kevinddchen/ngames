@@ -19,6 +19,8 @@ namespace ngames::mines
 class Board : public Component
 {
 public:
+    static constexpr int UNSET_NEIGHBOR_MINE_COUNT = -1;
+
     enum State { active, win, lose };
 
     /**

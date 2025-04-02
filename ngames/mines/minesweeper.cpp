@@ -81,7 +81,7 @@ Minesweeper::Minesweeper(int rows, int cols, int mines) : rows(rows), cols(cols)
     reset();
 }
 
-bool Minesweeper::open(int row, int col, std::optional<int>& neighbor_mine_count)
+bool Minesweeper::open(int row, int col, int& neighbor_mine_count)
 {
     assert(active);                      // game must be active
     assert(0 <= row && row < rows);      // row must be valid

@@ -5,6 +5,8 @@
 
 #include <algorithm>
 
+#include <cassert>
+
 
 namespace ngames::mines
 {
@@ -104,7 +106,7 @@ int Board::click_cell(int row, int col)
 void Board::open(int row, int col)
 {
     // interact with backend
-    std::optional<int> neighbor_mine_count = std::nullopt;  // this is set if `is_mine` is false
+    int neighbor_mine_count = UNSET_NEIGHBOR_MINE_COUNT;  // this is set if `is_mine` is false
     const bool is_mine = game.open(row, col, neighbor_mine_count);
 
     // update state
@@ -119,7 +121,8 @@ void Board::open(int row, int col)
         return;
     }
 
-    neighbor_mine_counts[row][col] = neighbor_mine_count.value();
+    assert(neighbor_mine_count != UNSET_NEIGHBOR_MINE_COUNT);
+    neighbor_mine_counts[row][col] = neighbor_mine_count;
 
     if (check_win()) {
         state = State::win;
@@ -128,7 +131,7 @@ void Board::open(int row, int col)
     }
 
     // if no neighboring mines, recursively open all neighboring cells
-    if (neighbor_mine_count.value() == 0) {
+    if (neighbor_mine_count == 0) {
         open_neighbors(row, col);
     }
 }
@@ -207,7 +210,7 @@ void Board::reset()
         std::fill(is_known_mine_array[i].begin(), is_known_mine_array[i].end(), false);
         std::fill(is_opened_array[i].begin(), is_opened_array[i].end(), false);
         std::fill(is_flagged_array[i].begin(), is_flagged_array[i].end(), false);
-        std::fill(neighbor_mine_counts[i].begin(), neighbor_mine_counts[i].end(), -1);  // sentinel for unset value
+        std::fill(neighbor_mine_counts[i].begin(), neighbor_mine_counts[i].end(), UNSET_NEIGHBOR_MINE_COUNT);
     }
 }
 

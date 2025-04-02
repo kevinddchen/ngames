@@ -1,6 +1,5 @@
 #pragma once
 
-#include <optional>
 #include <vector>
 
 
@@ -39,7 +38,7 @@ public:
      *
      * @returns Whether the cell contains a mine.
      */
-    bool open(int row, int col, std::optional<int>& neighbor_mine_count);
+    bool open(int row, int col, int& neighbor_mine_count);
 
     /**
      * Returns true if cell contains a mine.

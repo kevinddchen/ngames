@@ -72,18 +72,14 @@ public:
 
 private:
     /**
-     * Private version of `set_snake_direction` that takes in the `Snake` struct to be edited.
-     * @param snake Snake.
-     * @param dir Desired direction.
-     */
-    int set_snake_direction(snake::Snake& snake, snake::Direction dir);
-
-    /**
-     * Returns `true` if the snake's future position will collide into itself
+     * Returns `true` if the snake's future position will collide into a snake
      * or a wall.
-     * @param snake Snake.
+     * @param player Player.
      */
-    bool check_collision(const snake::Snake& snake) const;
+    bool check_collision(Player player) const;
+
+    const snake::Snake& get_snake(Player player) const;
+    snake::Snake& get_snake(Player player);
 
     // Player 1 snake instance.
     std::optional<snake::Snake> snake_one;

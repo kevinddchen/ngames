@@ -3,6 +3,26 @@
 #include <ngames/blockade/ui.hpp>
 
 
+namespace
+{
+
+/**
+ * Return the opponent player.
+ * @param player Player.
+ */
+ngames::blockade::Board::Player get_opponent(ngames::blockade::Board::Player player)
+{
+    switch (player) {
+        case ngames::blockade::Board::Player::one:
+            return ngames::blockade::Board::Player::two;
+        case ngames::blockade::Board::Player::two:
+            return ngames::blockade::Board::Player::one;
+    }
+}
+
+}  // namespace
+
+
 namespace ngames::blockade
 {
 
@@ -47,10 +67,10 @@ void Board::tick()
         return;
     }
     // check for collisions
-    if (check_collision(*snake_one)) {
+    if (check_collision(Player::one)) {
         collide_one = true;
     }
-    if (check_collision(*snake_two)) {
+    if (check_collision(Player::two)) {
         collide_two = true;
     }
     // check for endgame
@@ -71,16 +91,7 @@ void Board::tick()
 
 int Board::set_snake_direction(Player player, snake::Direction dir)
 {
-    switch (player) {
-        case Player::one:
-            return set_snake_direction(*snake_one, dir);
-        case Player::two:
-            return set_snake_direction(*snake_two, dir);
-    }
-}
-
-int Board::set_snake_direction(snake::Snake& snake, snake::Direction dir)
-{
+    snake::Snake& snake = get_snake(player);
     if (state != State::active) {
         return 1;
     } else if (snake.chain.size() > 1 && snake.next_head(&dir) == snake.chain[1]) {
@@ -90,23 +101,46 @@ int Board::set_snake_direction(snake::Snake& snake, snake::Direction dir)
     return 0;
 }
 
-bool Board::check_collision(const snake::Snake& snake) const
+bool Board::check_collision(Player player) const
 {
-    const auto next = snake.next_head();
+    const snake::Snake& snake = get_snake(player);
+    const auto next_head = snake.next_head();
     // check collision with wall
-    if (next.first < 0 || next.first >= rows || next.second < 0 || next.second >= cols) {
+    if (next_head.first < 0 || next_head.first >= rows || next_head.second < 0 || next_head.second >= cols) {
         return true;
     }
     // check collision with both snakes.
-    // we exclude the snake tail since it will move away in time.
-    for (const auto& other_snake : {snake_one, snake_two}) {
-        for (auto it = other_snake->chain.begin(); it != other_snake->chain.end() - 1; ++it) {
-            if (next == *it) {
+    for (const auto& other_player : {Player::one, Player::two}) {
+        const snake::Snake& other_snake = get_snake(other_player);
+        for (auto it = other_snake.chain.begin(); it != other_snake.chain.end(); ++it) {
+            if (next_head == *it) {
                 return true;
             }
         }
     }
+    // check collision with other snake next head.
+    const Player opponent = get_opponent(player);
+    const snake::Snake& opponent_snake = get_snake(opponent);
+    if (next_head == opponent_snake.next_head()) {
+        return true;
+    }
     return false;
 }
+
+const snake::Snake& Board::get_snake(Player player) const
+{
+    switch (player) {
+        case Player::one:
+            return *snake_one;
+        case Player::two:
+            return *snake_two;
+    }
+}
+
+snake::Snake& Board::get_snake(Player player)
+{
+    return const_cast<snake::Snake&>(const_cast<const Board*>(this)->get_snake(player));
+}
+
 
 }  // namespace ngames::blockade

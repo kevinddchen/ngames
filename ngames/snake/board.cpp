@@ -148,15 +148,15 @@ std::optional<std::pair<int, int>> Board::find_unoccupied() const
 
 bool Board::check_collision() const
 {
-    const auto next = snake->next_head();
+    const auto next_head = snake->next_head();
     // check collision with wall
-    if (next.first < 0 || next.first >= rows || next.second < 0 || next.second >= cols) {
+    if (next_head.first < 0 || next_head.first >= rows || next_head.second < 0 || next_head.second >= cols) {
         return true;
     }
     // check collision with itself.
     // we exclude the snake tail since it will move away in time.
     for (auto it = snake->chain.begin(); it != snake->chain.end() - 1; ++it) {
-        if (next == *it) {
+        if (next_head == *it) {
             return true;
         }
     }

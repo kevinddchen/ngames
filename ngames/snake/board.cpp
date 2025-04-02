@@ -17,12 +17,9 @@ namespace
  * @param window Window.
  * @param apple Apple location (row, cell) on the board.
  */
-void draw_apple(WINDOW* window, const std::optional<std::pair<int, int>>& apple)
+void draw_apple(WINDOW* window, const std::pair<int, int>& apple)
 {
-    if (!apple.has_value()) {
-        return;
-    }
-    const auto [row, col] = apple.value();
+    const auto [row, col] = apple;
     const auto attr = A_BOLD | COLOR_PAIR(ngames::snake::COLOR_PAIR_APPLE);
     wattron(window, attr);
     mvwaddch(window, row, col, '*');
@@ -53,8 +50,8 @@ void Board::reset()
     const int snake_head_col = (cols - 1) / 2;
     snake = Snake(snake_head_row, snake_head_col, Direction::down, INIT_SNAKE_LENGTH);
 
-    // check snake endpoints are inside board
-    for (const auto& [row, col] : {snake.chain.front(), snake.chain.back()}) {
+    // check snake is inside board
+    for (const auto& [row, col] : snake->chain) {
         assert(0 <= row && row < rows);
         assert(0 <= col && col < cols);
     }
@@ -72,8 +69,10 @@ void Board::refresh() const
     // if game lost, make snake head flash red
     const auto default_head_attr = A_BOLD;
     const auto lose_head_attr = default_head_attr | A_BLINK | COLOR_PAIR(COLOR_PAIR_COLLISION);
-    snake.draw(window, state == State::lose ? lose_head_attr : default_head_attr);
-    draw_apple(window, apple);
+    snake->draw(window, state == State::lose ? lose_head_attr : default_head_attr);
+    if (apple.has_value()) {
+        draw_apple(window, *apple);
+    }
     wnoutrefresh(window);
 }
 
@@ -88,8 +87,8 @@ void Board::tick()
         return;
     }
     // otherwise, move the snake forwards
-    const bool grow_snake = snake.next_head() == apple;
-    snake.step(grow_snake);
+    const bool grow_snake = apple.has_value() && snake->next_head() == *apple;
+    snake->step(grow_snake);
     if (grow_snake) {
         ++score;
         apple = find_unoccupied();
@@ -104,10 +103,10 @@ int Board::set_snake_direction(Direction dir)
 {
     if (state != State::active) {
         return 1;
-    } else if (snake.prev_direction.has_value() && dir == opposite_direction(snake.prev_direction.value())) {
+    } else if (snake->prev_direction.has_value() && dir == opposite_direction(*snake->prev_direction)) {
         return 2;
     }
-    snake.direction = dir;
+    snake->direction = dir;
     return 0;
 }
 
@@ -121,7 +120,7 @@ std::optional<std::pair<int, int>> Board::find_unoccupied() const
     std::vector<bool> empty(rows * cols, true);
 
     // mark cells in the snake as `false`
-    for (const auto& [row, col] : snake.chain) {
+    for (const auto& [row, col] : snake->chain) {
         const int idx = row * cols + col;
         empty[idx] = false;
     }
@@ -149,14 +148,14 @@ std::optional<std::pair<int, int>> Board::find_unoccupied() const
 
 bool Board::check_collision() const
 {
-    const auto next = snake.next_head();
+    const auto next = snake->next_head();
     // check collision with wall
     if (next.first < 0 || next.first >= rows || next.second < 0 || next.second >= cols) {
         return true;
     }
     // check collision with itself.
     // we exclude the snake tail since it will move away in time.
-    for (auto it = snake.chain.begin(); it != snake.chain.end() - 1; ++it) {
+    for (auto it = snake->chain.begin(); it != snake->chain.end() - 1; ++it) {
         if (next == *it) {
             return true;
         }

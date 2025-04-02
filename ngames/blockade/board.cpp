@@ -36,8 +36,8 @@ void Board::refresh() const
     // if snake collided, make snake head flash red
     const auto default_head_attr = A_BOLD;
     const auto collide_head_attr = default_head_attr | A_BLINK | COLOR_PAIR(COLOR_PAIR_COLLISION);
-    snake_one.draw(window, collide_one ? collide_head_attr : default_head_attr);
-    snake_two.draw(window, collide_two ? collide_head_attr : default_head_attr);
+    snake_one->draw(window, collide_one ? collide_head_attr : default_head_attr);
+    snake_two->draw(window, collide_two ? collide_head_attr : default_head_attr);
     wnoutrefresh(window);
 }
 
@@ -47,10 +47,10 @@ void Board::tick()
         return;
     }
     // check for collisions
-    if (check_collision(snake_one)) {
+    if (check_collision(*snake_one)) {
         collide_one = true;
     }
-    if (check_collision(snake_two)) {
+    if (check_collision(*snake_two)) {
         collide_two = true;
     }
     // check for endgame
@@ -65,17 +65,17 @@ void Board::tick()
         return;
     }
     // otherwise, move the snakes forwards
-    snake_one.step(true);
-    snake_two.step(true);
+    snake_one->step(true);
+    snake_two->step(true);
 }
 
 int Board::set_snake_direction(Player player, snake::Direction dir)
 {
     switch (player) {
         case Player::one:
-            return set_snake_direction(snake_one, dir);
+            return set_snake_direction(*snake_one, dir);
         case Player::two:
-            return set_snake_direction(snake_two, dir);
+            return set_snake_direction(*snake_two, dir);
     }
 }
 
@@ -83,7 +83,7 @@ int Board::set_snake_direction(snake::Snake& snake, snake::Direction dir)
 {
     if (state != State::active) {
         return 1;
-    } else if (snake.prev_direction.has_value() && dir == opposite_direction(snake.prev_direction.value())) {
+    } else if (snake.prev_direction.has_value() && dir == opposite_direction(*snake.prev_direction)) {
         return 2;
     }
     snake.direction = dir;
@@ -100,7 +100,7 @@ bool Board::check_collision(const snake::Snake& snake) const
     // check collision with both snakes.
     // we exclude the snake tail since it will move away in time.
     for (const auto& other_snake : {snake_one, snake_two}) {
-        for (auto it = other_snake.chain.begin(); it != other_snake.chain.end() - 1; ++it) {
+        for (auto it = other_snake->chain.begin(); it != other_snake->chain.end() - 1; ++it) {
             if (next == *it) {
                 return true;
             }

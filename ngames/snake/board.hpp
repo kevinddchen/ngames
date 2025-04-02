@@ -87,7 +87,7 @@ private:
     bool check_collision() const;
 
     // Snake instance.
-    Snake snake;
+    std::optional<Snake> snake;
     // Apple location (row, cell) on the board.
     std::optional<std::pair<int, int>> apple;
 

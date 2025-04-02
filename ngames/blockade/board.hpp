@@ -4,6 +4,8 @@
 #include <ngames/snake/direction.hpp>
 #include <ngames/snake/snake.hpp>
 
+#include <optional>
+
 
 namespace ngames::blockade
 {
@@ -84,9 +86,9 @@ private:
     bool check_collision(const snake::Snake& snake) const;
 
     // Player 1 snake instance.
-    snake::Snake snake_one;
+    std::optional<snake::Snake> snake_one;
     // Player 2 snake instance.
-    snake::Snake snake_two;
+    std::optional<snake::Snake> snake_two;
 
     // Whether the game is active.
     State state;

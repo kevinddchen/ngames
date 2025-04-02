@@ -24,8 +24,6 @@ struct Snake {
      */
     Snake(int head_row, int head_col, Direction direction, int length);
 
-    Snake() {};
-
     /**
      * Returns the cell (row, col) in front of the snake.
      */

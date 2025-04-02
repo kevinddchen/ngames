@@ -26,6 +26,11 @@ public:
     Minesweeper(int rows, int cols, int mines);
 
     /**
+     * Reset the game.
+     */
+    void reset();
+
+    /**
      * Open a cell. First cell opened is guaranteed to not contain a mine.
      *
      * Throws an error if the game is not active or the cell has already been
@@ -49,11 +54,6 @@ public:
      * @param col Cell column.
      */
     bool is_mine(int row, int col) const;
-
-    /**
-     * Reset the game.
-     */
-    void reset();
 
 private:
     /**

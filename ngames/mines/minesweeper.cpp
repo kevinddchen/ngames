@@ -81,6 +81,21 @@ Minesweeper::Minesweeper(int rows, int cols, int mines) : rows(rows), cols(cols)
     reset();
 }
 
+void Minesweeper::reset()
+{
+    // initialize data
+    active = true;
+    num_opened = 0;
+
+    // initialize arrays
+    for (int i = 0; i < rows; ++i) {
+        std::fill(is_mine_array[i].begin(), is_mine_array[i].end(), false);
+        std::fill(is_opened_array[i].begin(), is_opened_array[i].end(), false);
+    }
+
+    populate_mines(is_mine_array, mines);
+}
+
 bool Minesweeper::open(int row, int col, int& neighbor_mine_count)
 {
     assert(active);                      // game must be active
@@ -132,21 +147,6 @@ int Minesweeper::count_neighbor_mines(int row, int col) const
         }
     }
     return count;
-}
-
-void Minesweeper::reset()
-{
-    // initialize data
-    active = true;
-    num_opened = 0;
-
-    // initialize arrays
-    for (int i = 0; i < rows; ++i) {
-        std::fill(is_mine_array[i].begin(), is_mine_array[i].end(), false);
-        std::fill(is_opened_array[i].begin(), is_opened_array[i].end(), false);
-    }
-
-    populate_mines(is_mine_array, mines);
 }
 
 }  // namespace ngames::mines

@@ -21,6 +21,11 @@ public:
     virtual ~Component();
 
     /**
+     * Refresh the window text.
+     */
+    virtual void refresh() const = 0;
+
+    /**
      * Return y-coordinate of top of component.
      */
     inline int top() const { return getbegy(window); }
@@ -39,11 +44,6 @@ public:
      * Return x-coordinate of right of component.
      */
     inline int right() const { return getbegx(window) + getmaxx(window); }
-
-    /**
-     * Refresh the window text.
-     */
-    virtual void refresh() const = 0;
 
     WINDOW* const window;
 };

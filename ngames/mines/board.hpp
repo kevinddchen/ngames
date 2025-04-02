@@ -35,6 +35,11 @@ public:
     Board(int rows, int cols, int mines, int start_y, int start_x, WINDOW* border_window);
 
     /**
+     * Reset the game.
+     */
+    void reset();
+
+    /**
      * Refresh the window displaying the board.
      */
     void refresh() const override;
@@ -84,11 +89,6 @@ public:
      * Return number of flags used.
      */
     inline int get_num_flags() const { return num_flags; }
-
-    /**
-     * Reset the game.
-     */
-    void reset();
 
     const int rows;
     const int cols;

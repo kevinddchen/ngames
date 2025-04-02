@@ -24,6 +24,16 @@ App::App(int rows, int cols, int mines)
     refresh();
 }
 
+void App::refresh() const
+{
+    text_mine_count.refresh();
+    board_border.refresh();
+    board.refresh();
+    text_end_game.refresh();
+    text_instructions.refresh();
+    doupdate();
+}
+
 void App::run()
 {
     while (true) {
@@ -33,16 +43,6 @@ void App::run()
             break;
         }
     }
-}
-
-void App::refresh() const
-{
-    text_mine_count.refresh();
-    board_border.refresh();
-    board.refresh();
-    text_end_game.refresh();
-    text_instructions.refresh();
-    doupdate();
 }
 
 bool App::handle_keystroke(int key)

@@ -35,6 +35,15 @@ App::App(int rows, int cols, double ticks_per_sec)
     refresh();
 }
 
+void App::refresh() const
+{
+    text_score.refresh();
+    board_border.refresh();
+    board.refresh();
+    text_instructions.refresh();
+    doupdate();
+}
+
 void App::run()
 {
     // How many ms pass between frames
@@ -78,15 +87,6 @@ void App::run()
 
         refresh();
     }
-}
-
-void App::refresh() const
-{
-    text_score.refresh();
-    board_border.refresh();
-    board.refresh();
-    text_instructions.refresh();
-    doupdate();
 }
 
 App::Signal App::handle_keystroke(int key)

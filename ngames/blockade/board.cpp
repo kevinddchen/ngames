@@ -17,6 +17,19 @@ Board::Board(int rows, int cols, int start_y, int start_x, WINDOW* border_window
     reset();
 }
 
+void Board::reset()
+{
+    // snake_one starts at top left
+    snake_one = snake::Snake(1, 1, snake::Direction::down, 1);
+
+    // snake_two starts at bottom right
+    snake_two = snake::Snake(rows - 2, cols - 2, snake::Direction::up, 1);
+
+    state = State::active;
+    collide_one = false;
+    collide_two = false;
+}
+
 void Board::refresh() const
 {
     werase(window);
@@ -94,19 +107,6 @@ bool Board::check_collision(const snake::Snake& snake) const
         }
     }
     return false;
-}
-
-void Board::reset()
-{
-    // snake_one starts at top left
-    snake_one = snake::Snake(1, 1, snake::Direction::down, 1);
-
-    // snake_two starts at bottom right
-    snake_two = snake::Snake(rows - 2, cols - 2, snake::Direction::up, 1);
-
-    state = State::active;
-    collide_one = false;
-    collide_two = false;
 }
 
 }  // namespace ngames::blockade

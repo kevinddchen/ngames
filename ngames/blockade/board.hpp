@@ -33,6 +33,11 @@ public:
     Board(int rows, int cols, int start_y, int start_x, WINDOW* border_window);
 
     /**
+     * Reset the game.
+     */
+    void reset();
+
+    /**
      * Refresh the window displaying the board.
      */
     void refresh() const override;
@@ -59,11 +64,6 @@ public:
      * Returns game state.
      */
     inline State get_state() const { return state; }
-
-    /**
-     * Reset the game.
-     */
-    void reset();
 
     const int rows;
     const int cols;

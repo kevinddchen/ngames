@@ -33,6 +33,26 @@ Board::Board(int rows, int cols, int mines, int start_y, int start_x, WINDOW* bo
     reset();
 }
 
+void Board::reset()
+{
+    // reset the game
+    game.reset();
+
+    // initialize data
+    state = State::active;
+    num_opened = 0;
+    num_flags = 0;
+    last_opened = std::nullopt;
+
+    // initialize arrays
+    for (int i = 0; i < rows; ++i) {
+        std::fill(is_known_mine_array[i].begin(), is_known_mine_array[i].end(), false);
+        std::fill(is_opened_array[i].begin(), is_opened_array[i].end(), false);
+        std::fill(is_flagged_array[i].begin(), is_flagged_array[i].end(), false);
+        std::fill(neighbor_mine_counts[i].begin(), neighbor_mine_counts[i].end(), UNSET_NEIGHBOR_MINE_COUNT);
+    }
+}
+
 void Board::refresh() const
 {
     werase(window);
@@ -191,26 +211,6 @@ void Board::populate_known_mine_array()
         for (int col = 0; col < cols; ++col) {
             is_known_mine_array[row][col] = game.is_mine(row, col);
         }
-    }
-}
-
-void Board::reset()
-{
-    // reset the game
-    game.reset();
-
-    // initialize data
-    state = State::active;
-    num_opened = 0;
-    num_flags = 0;
-    last_opened = std::nullopt;
-
-    // initialize arrays
-    for (int i = 0; i < rows; ++i) {
-        std::fill(is_known_mine_array[i].begin(), is_known_mine_array[i].end(), false);
-        std::fill(is_opened_array[i].begin(), is_opened_array[i].end(), false);
-        std::fill(is_flagged_array[i].begin(), is_flagged_array[i].end(), false);
-        std::fill(neighbor_mine_counts[i].begin(), neighbor_mine_counts[i].end(), UNSET_NEIGHBOR_MINE_COUNT);
     }
 }
 

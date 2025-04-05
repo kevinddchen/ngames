@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ngames/blockade/board.hpp>
+#include <ngames/blockade/text_end_game.hpp>
 #include <ngames/blockade/text_instructions.hpp>
 
 #include <ngames/common/border.hpp>
@@ -58,6 +59,7 @@ private:
 
     Border board_border;
     Board board;
+    TextEndGame text_end_game;
     TextInstructions text_instructions;
 };
 

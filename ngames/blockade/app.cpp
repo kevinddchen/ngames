@@ -23,7 +23,8 @@ App::App(int rows, int cols, double ticks_per_sec)
     : ticks_per_sec(ticks_per_sec),
       board_border(rows, cols, MARGIN_TOP, MARGIN_LEFT),
       board(rows, cols, board_border.inner_start_y(), board_border.inner_start_x(), board_border.window),
-      text_instructions(board_border.bottom() + 1, MARGIN_LEFT)
+      text_end_game(board, board_border.bottom(), MARGIN_LEFT),
+      text_instructions(text_end_game.bottom(), MARGIN_LEFT)
 {
     init_colors();
     curs_set(0);                  // hide cursor
@@ -38,6 +39,7 @@ void App::refresh() const
 {
     board_border.refresh();
     board.refresh();
+    text_end_game.refresh();
     text_instructions.refresh();
     doupdate();
 }

@@ -22,7 +22,8 @@ namespace ngames::blockade
 App::App(int rows, int cols, double ticks_per_sec)
     : ticks_per_sec(ticks_per_sec),
       board_border(rows, cols, MARGIN_TOP, MARGIN_LEFT),
-      board(rows, cols, board_border.inner_start_y(), board_border.inner_start_x(), board_border.window)
+      board(rows, cols, board_border.inner_start_y(), board_border.inner_start_x(), board_border.window),
+      text_instructions(board_border.bottom() + 1, MARGIN_LEFT)
 {
     init_colors();
     curs_set(0);                  // hide cursor
@@ -31,6 +32,14 @@ App::App(int rows, int cols, double ticks_per_sec)
 
     // initial print
     refresh();
+}
+
+void App::refresh() const
+{
+    board_border.refresh();
+    board.refresh();
+    text_instructions.refresh();
+    doupdate();
 }
 
 void App::run()
@@ -76,13 +85,6 @@ void App::run()
 
         refresh();
     }
-}
-
-void App::refresh() const
-{
-    board_border.refresh();
-    board.refresh();
-    doupdate();
 }
 
 App::Signal App::handle_keystroke(int key)

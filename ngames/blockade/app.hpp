@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ngames/blockade/board.hpp>
+#include <ngames/blockade/text_instructions.hpp>
 
 #include <ngames/common/border.hpp>
 
@@ -57,6 +58,7 @@ private:
 
     Border board_border;
     Board board;
+    TextInstructions text_instructions;
 };
 
 }  // namespace ngames::blockade

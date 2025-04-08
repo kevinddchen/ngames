@@ -2,7 +2,6 @@
 
 #include <ngames/snake/ui.hpp>
 
-#include <algorithm>
 #include <thread>
 
 

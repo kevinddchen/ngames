@@ -56,8 +56,8 @@ void App::run()
         const auto t_frame = now();
 
         // get user key
-        const auto key = wgetch(board.window);
-        const Signal signal = handle_keystroke(key);
+        const auto keys = get_keystrokes();
+        const Signal signal = handle_keystrokes(keys);
 
         // handle special actions, if any
         switch (signal) {
@@ -86,42 +86,88 @@ void App::run()
     }
 }
 
-App::Signal App::handle_keystroke(int key)
+std::array<int, 3> App::get_keystrokes() const
 {
-    // handle keystroke
-    switch (key) {
-        case 'a':
-            board.set_snake_direction(Board::Player::one, snake::Direction::left);
-            break;
-        case 's':
-            board.set_snake_direction(Board::Player::one, snake::Direction::down);
-            break;
-        case 'w':
-            board.set_snake_direction(Board::Player::one, snake::Direction::up);
-            break;
-        case 'd':
-            board.set_snake_direction(Board::Player::one, snake::Direction::right);
-            break;
-        case KEY_LEFT:
-            board.set_snake_direction(Board::Player::two, snake::Direction::left);
-            break;
-        case KEY_DOWN:
-            board.set_snake_direction(Board::Player::two, snake::Direction::down);
-            break;
-        case KEY_UP:
-            board.set_snake_direction(Board::Player::two, snake::Direction::up);
-            break;
-        case KEY_RIGHT:
-            board.set_snake_direction(Board::Player::two, snake::Direction::right);
-            break;
-        case 'z':  // new game
-            board.reset();
-            return Signal::reset;
-        case 'r':  // refresh
-            clearok(curscr, true);
-            break;
-        case 'q':  // quit
-            return Signal::quit;
+    std::array<int, 3> keys = {UNSET_KEY, UNSET_KEY, UNSET_KEY};
+
+    // pick first keystroke for each player
+    int key;
+    while ((key = wgetch(board.window)) != ERR) {
+        switch (key) {
+            case 'a':
+            case 's':
+            case 'w':
+            case 'd':
+                if (keys[0] == UNSET_KEY) {
+                    keys[0] = key;
+                }
+                break;
+            case KEY_LEFT:
+            case KEY_DOWN:
+            case KEY_UP:
+            case KEY_RIGHT:
+                if (keys[1] == UNSET_KEY) {
+                    keys[1] = key;
+                }
+                break;
+            case 'z':
+            case 'r':
+            case 'q':
+                if (keys[2] == UNSET_KEY) {
+                    keys[2] = key;
+                }
+                break;
+        }
+    }
+
+    return keys;
+}
+
+App::Signal App::handle_keystrokes(const std::array<int, 3>& keys)
+{
+    if (keys[0] != UNSET_KEY) {
+        switch (keys[0]) {
+            case 'a':
+                board.set_snake_direction(Board::Player::one, snake::Direction::left);
+                break;
+            case 's':
+                board.set_snake_direction(Board::Player::one, snake::Direction::down);
+                break;
+            case 'w':
+                board.set_snake_direction(Board::Player::one, snake::Direction::up);
+                break;
+            case 'd':
+                board.set_snake_direction(Board::Player::one, snake::Direction::right);
+                break;
+        }
+    }
+    if (keys[1] != UNSET_KEY) {
+        switch (keys[1]) {
+            case KEY_LEFT:
+                board.set_snake_direction(Board::Player::two, snake::Direction::left);
+                break;
+            case KEY_DOWN:
+                board.set_snake_direction(Board::Player::two, snake::Direction::down);
+                break;
+            case KEY_UP:
+                board.set_snake_direction(Board::Player::two, snake::Direction::up);
+                break;
+            case KEY_RIGHT:
+                board.set_snake_direction(Board::Player::two, snake::Direction::right);
+                break;
+        }
+    }
+    if (keys[2] != UNSET_KEY) {
+        switch (keys[2]) {
+            case 'z':  // new game
+                board.reset();
+                return Signal::reset;
+            case 'r':  // refresh
+                clearok(curscr, true);
+                break;
+            case 'q':  // quit
+                return Signal::quit;
+        }
     }
     return Signal::none;
 }

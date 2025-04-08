@@ -6,6 +6,8 @@
 
 #include <ngames/common/border.hpp>
 
+#include <array>
+
 
 namespace ngames::blockade
 {
@@ -38,6 +40,8 @@ public:
     void run();
 
 private:
+    static constexpr int UNSET_KEY = -1;
+
     /**
      * Indicate special actions for the game loop.
      */
@@ -49,11 +53,17 @@ private:
     void refresh() const;
 
     /**
-     * Perform action associated with given keystroke.
-     * @param key Key pressed.
+     * Get keystrokes for the frame.
+     * @returns Array of keystrokes: { player one, player two, control (e.g. reset) }. -1 means no keystroke.
+     */
+    std::array<int, 3> get_keystrokes() const;
+
+    /**
+     * Perform actions associated with given keystrokes for each player.
+     * @param keys Keys pressed.
      * @returns A `Signal` that may require special actions for the game loop.
      */
-    Signal handle_keystroke(int key);
+    Signal handle_keystrokes(const std::array<int, 3>& keys);
 
     double ticks_per_sec;
 

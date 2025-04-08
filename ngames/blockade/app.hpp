@@ -30,7 +30,7 @@ public:
      * @param cols Number of columns for the Blockade board.
      * @param ticks_per_sec Tick rate.
      */
-    App(int rows, int cols, double ticks_per_sec);
+    App(int rows = 15, int cols = 21, double ticks_per_sec = 1.0);
 
     /**
      * Run the application.
@@ -49,7 +49,7 @@ private:
     void refresh() const;
 
     /**
-     * Perform action associated with given keystroke or mouse event.
+     * Perform action associated with given keystroke.
      * @param key Key pressed.
      * @returns A `Signal` that may require special actions for the game loop.
      */

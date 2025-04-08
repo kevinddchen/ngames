@@ -46,20 +46,14 @@ void App::refresh() const
 
 void App::run()
 {
-    // How many ms pass between frames
-    constexpr std::chrono::duration<double, std::milli> frame_interval_ms(1000.0 / FRAMES_PER_SEC);
+    // How much time passes between frames
+    constexpr std::chrono::duration<double, std::milli> frame_interval(1000.0 / FRAMES_PER_SEC);
     // How many frames pass between ticks
-    const long tick_interval_frames = FRAMES_PER_SEC / ticks_per_sec;
-
-    auto t_start = now();
+    const int tick_interval_frames = FRAMES_PER_SEC / ticks_per_sec;
 
     bool loop = true;
     for (long iframe = 1; loop; ++iframe) {
-        // wait for duration of frame
-        const auto target_diff_ms = iframe * frame_interval_ms;
-        const auto t_curr = now();
-        const std::chrono::duration<double, std::milli> curr_diff_ms = t_curr - t_start;
-        std::this_thread::sleep_for(target_diff_ms - curr_diff_ms);
+        const auto t_frame = now();
 
         // get user key
         const auto key = wgetch(board.window);
@@ -70,7 +64,6 @@ void App::run()
             case Signal::reset:
                 board.reset();
                 // restart tick
-                t_start = now();
                 iframe = 0;
                 break;
             case Signal::quit:
@@ -86,6 +79,10 @@ void App::run()
         }
 
         refresh();
+
+        // wait until frame ends
+        const std::chrono::duration<double, std::milli> remaining_interval = frame_interval - (now() - t_frame);
+        std::this_thread::sleep_for(max(remaining_interval, std::chrono::duration<double, std::milli>::zero()));
     }
 }
 

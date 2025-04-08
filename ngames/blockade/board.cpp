@@ -54,10 +54,11 @@ void Board::refresh() const
 {
     werase(window);
     // if snake collided, make snake head flash red
-    constexpr auto default_head_attr = A_BOLD;
-    constexpr auto collide_head_attr = default_head_attr | A_BLINK | COLOR_PAIR(COLOR_PAIR_COLLISION);
-    snake_one->draw(window, collide_one ? collide_head_attr : default_head_attr);
-    snake_two->draw(window, collide_two ? collide_head_attr : default_head_attr);
+    constexpr auto snake_one_attr = COLOR_PAIR(COLOR_PAIR_PLAYER_ONE);
+    constexpr auto snake_two_attr = COLOR_PAIR(COLOR_PAIR_PLAYER_TWO);
+    constexpr auto collide_head_attr = A_BLINK | COLOR_PAIR(COLOR_PAIR_COLLISION);
+    snake_one->draw(window, collide_one ? collide_head_attr : snake_one_attr, snake_one_attr);
+    snake_two->draw(window, collide_two ? collide_head_attr : snake_two_attr, snake_two_attr);
     wnoutrefresh(window);
 }
 

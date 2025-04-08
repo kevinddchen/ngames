@@ -20,7 +20,7 @@ namespace
 void draw_apple(WINDOW* window, const std::pair<int, int>& apple)
 {
     const auto [row, col] = apple;
-    constexpr auto attr = A_BOLD | COLOR_PAIR(ngames::snake::COLOR_PAIR_APPLE);
+    constexpr auto attr = COLOR_PAIR(ngames::snake::COLOR_PAIR_APPLE);
     wattron(window, attr);
     mvwaddch(window, row, col, '*');
     wattroff(window, attr);
@@ -67,9 +67,8 @@ void Board::refresh() const
 {
     werase(window);
     // if game lost, make snake head flash red
-    constexpr auto default_head_attr = A_BOLD;
-    constexpr auto lose_head_attr = default_head_attr | A_BLINK | COLOR_PAIR(COLOR_PAIR_COLLISION);
-    snake->draw(window, state == State::lose ? lose_head_attr : default_head_attr);
+    constexpr auto lose_head_attr = A_BLINK | COLOR_PAIR(COLOR_PAIR_COLLISION);
+    snake->draw(window, state == State::lose ? lose_head_attr : 0);
     if (apple.has_value()) {
         draw_apple(window, *apple);
     }

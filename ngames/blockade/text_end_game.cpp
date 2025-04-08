@@ -1,5 +1,7 @@
 #include <ngames/blockade/text_end_game.hpp>
 
+#include <ngames/blockade/ui.hpp>
+
 
 namespace ngames::blockade
 {
@@ -17,14 +19,14 @@ void TextEndGame::refresh() const
         case Board::State::active:
             break;
         case Board::State::win_one: {
-            constexpr auto attr = A_BOLD;
+            constexpr auto attr = A_BOLD | COLOR_PAIR(COLOR_PAIR_PLAYER_ONE);
             wattron(window, attr);
             mvwprintw(window, 0, 0, "PLAYER ONE WINS!");
             wattroff(window, attr);
             break;
         }
         case Board::State::win_two: {
-            constexpr auto attr = A_BOLD;
+            constexpr auto attr = A_BOLD | COLOR_PAIR(COLOR_PAIR_PLAYER_TWO);
             wattron(window, attr);
             mvwprintw(window, 0, 0, "PLAYER TWO WINS!");
             wattroff(window, attr);

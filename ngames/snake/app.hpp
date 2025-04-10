@@ -16,9 +16,6 @@ namespace ngames::snake
 class App
 {
 public:
-    // Frame rate
-    static constexpr double FRAMES_PER_SEC = 30.0;
-
     // Top margin, in number of chars
     static constexpr int MARGIN_TOP = 1;
     // Left margin, in number of chars
@@ -28,9 +25,10 @@ public:
      * Create application.
      * @param rows Number of rows for the Snake board.
      * @param cols Number of columns for the Snake board.
-     * @param ticks_per_sec Tick rate.
+     * @param frames_per_tick A tick is an update of the game, and happens every `frames_per_tick`th frame.
+     * @param frames_per_sec Number of frames to render per second.
      */
-    App(int rows = 15, int cols = 21, double ticks_per_sec = 5.0);
+    App(int rows = 15, int cols = 21, int frames_per_tick = 8, double frames_per_sec = 30.0);
 
     /**
      * Run the application.
@@ -55,7 +53,8 @@ private:
      */
     Signal handle_keystroke(int key);
 
-    double ticks_per_sec;
+    int frames_per_tick;
+    double frames_per_sec;
 
     TextScore text_score;
     Border board_border;

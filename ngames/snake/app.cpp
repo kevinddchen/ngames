@@ -19,8 +19,9 @@ inline std::chrono::steady_clock::time_point now()
 namespace ngames::snake
 {
 
-App::App(int rows, int cols, double ticks_per_sec)
-    : ticks_per_sec(ticks_per_sec),
+App::App(int rows, int cols, int frames_per_tick, double frames_per_sec)
+    : frames_per_tick(frames_per_tick),
+      frames_per_sec(frames_per_sec),
       text_score(board, MARGIN_TOP, MARGIN_LEFT),
       board_border(rows, cols, text_score.bottom(), MARGIN_LEFT),
       board(rows, cols, board_border.inner_start_y(), board_border.inner_start_x(), board_border.window),
@@ -47,9 +48,7 @@ void App::refresh() const
 void App::run()
 {
     // How much time passes between frames
-    constexpr std::chrono::duration<double, std::milli> frame_interval(1000.0 / FRAMES_PER_SEC);
-    // How many frames pass between ticks
-    const int tick_interval_frames = FRAMES_PER_SEC / ticks_per_sec;
+    const std::chrono::duration<double, std::milli> frame_interval(1000.0 / frames_per_sec);
 
     bool loop = true;
     for (long iframe = 1; loop; ++iframe) {
@@ -72,7 +71,7 @@ void App::run()
                 break;
             case Signal::none:
                 // proceed as normal
-                if (iframe % tick_interval_frames == 0) {
+                if (iframe % frames_per_tick == 0) {
                     board.tick();
                 }
                 break;

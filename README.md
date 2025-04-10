@@ -4,6 +4,7 @@ Games in your terminal.
 The following games have been implemented:
 - `mines`: Minesweeper
 - `snake`: Snake
+- `blockade`: Blockade (a 2-player version of Snake)
 
 ## Installation
 

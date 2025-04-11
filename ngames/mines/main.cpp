@@ -5,6 +5,8 @@
 #include <stdexcept>
 #include <string>
 
+#include <cstring>
+
 
 /**
  * Print usage help text and then exit the program.

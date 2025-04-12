@@ -39,6 +39,8 @@ void TextEndGame::refresh() const
             wattroff(window, attr);
             break;
         }
+        default:
+            assert(false);
     }
     wnoutrefresh(window);
 }

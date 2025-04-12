@@ -2,6 +2,8 @@
 
 #include <ngames/mines/ui.hpp>
 
+#include <cassert>
+
 
 namespace ngames::mines
 {
@@ -32,6 +34,8 @@ void TextEndGame::refresh() const
             wattroff(window, attr);
             break;
         }
+        default:
+            assert(false);
     }
     wnoutrefresh(window);
 }

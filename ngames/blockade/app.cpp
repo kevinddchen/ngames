@@ -75,6 +75,8 @@ void App::run()
                     board.tick();
                 }
                 break;
+            default:
+                assert(false);
         }
 
         refresh();
@@ -116,6 +118,8 @@ std::array<int, 3> App::get_keystrokes() const
                     keys[2] = key;
                 }
                 break;
+            default:
+                assert(false);
         }
     }
 
@@ -138,6 +142,8 @@ App::Signal App::handle_keystrokes(const std::array<int, 3>& keys)
             case 'd':
                 board.set_snake_direction(Board::Player::one, snake::Direction::right);
                 break;
+            default:
+                assert(false);
         }
     }
     if (keys[1] != UNSET_KEY) {
@@ -154,6 +160,8 @@ App::Signal App::handle_keystrokes(const std::array<int, 3>& keys)
             case KEY_RIGHT:
                 board.set_snake_direction(Board::Player::two, snake::Direction::right);
                 break;
+            default:
+                assert(false);
         }
     }
     if (keys[2] != UNSET_KEY) {
@@ -166,6 +174,8 @@ App::Signal App::handle_keystrokes(const std::array<int, 3>& keys)
                 break;
             case 'q':  // quit
                 return Signal::quit;
+            default:
+                assert(false);
         }
     }
     return Signal::none;

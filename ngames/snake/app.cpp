@@ -75,6 +75,8 @@ void App::run()
                     board.tick();
                 }
                 break;
+            default:
+                assert(false);
         }
 
         refresh();
@@ -116,6 +118,8 @@ App::Signal App::handle_keystroke(int key)
             break;
         case 'q':  // quit
             return Signal::quit;
+        default:
+            assert(false);
     }
     return Signal::none;
 }

@@ -57,6 +57,8 @@ void Snake::draw(WINDOW* window, attr_t head_attr, attr_t body_attr) const
         case ngames::snake::Direction::right:
             head_char = '>';
             break;
+        default:
+            assert(false);
     }
     const auto [head_row, head_col] = chain.front();
 

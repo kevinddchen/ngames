@@ -17,6 +17,8 @@ ngames::blockade::Board::Player get_opponent(ngames::blockade::Board::Player pla
             return ngames::blockade::Board::Player::two;
         case ngames::blockade::Board::Player::two:
             return ngames::blockade::Board::Player::one;
+        default:
+            assert(false);
     }
 }
 
@@ -135,6 +137,8 @@ const snake::Snake& Board::get_snake(Player player) const
             return *snake_one;
         case Player::two:
             return *snake_two;
+        default:
+            assert(false);
     }
 }
 

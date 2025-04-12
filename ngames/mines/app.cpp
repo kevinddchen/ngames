@@ -2,6 +2,8 @@
 
 #include <ngames/mines/ui.hpp>
 
+#include <cassert>
+
 
 namespace ngames::mines
 {
@@ -121,6 +123,8 @@ bool App::handle_keystroke(int key)
             break;
         case 'q':  // quit
             return false;
+        default:
+            assert(false);
     }
     return true;
 }

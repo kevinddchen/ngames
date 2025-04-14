@@ -8,7 +8,7 @@
 namespace
 {
 
-inline std::chrono::steady_clock::time_point now()
+std::chrono::steady_clock::time_point now()
 {
     return std::chrono::steady_clock::now();
 }

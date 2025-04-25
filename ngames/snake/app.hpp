@@ -53,8 +53,8 @@ private:
      */
     Signal handle_keystroke(int key);
 
-    int frames_per_tick;
-    double frames_per_sec;
+    const int frames_per_tick;
+    const double frames_per_sec;
 
     TextScore text_score;
     Border board_border;

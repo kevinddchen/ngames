@@ -18,9 +18,6 @@ namespace ngames::blockade
 class App
 {
 public:
-    // Frame rate
-    static constexpr double FRAMES_PER_SEC = 30.0;
-
     // Top margin, in number of chars
     static constexpr int MARGIN_TOP = 1;
     // Left margin, in number of chars
@@ -66,8 +63,8 @@ private:
      */
     Signal handle_keystrokes(const std::array<int, 3>& keys);
 
-    int frames_per_tick;
-    double frames_per_sec;
+    const int frames_per_tick;
+    const double frames_per_sec;
 
     Border board_border;
     Board board;

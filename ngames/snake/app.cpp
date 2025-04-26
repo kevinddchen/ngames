@@ -94,8 +94,6 @@ App::Signal App::handle_keystroke(int key)
 {
     // handle keystroke
     switch (key) {
-        case ERR:  // unset key
-            break;
         case 'h':
         case KEY_LEFT:
             board.set_snake_direction(Direction::left);
@@ -121,7 +119,7 @@ App::Signal App::handle_keystroke(int key)
         case 'q':  // quit
             return Signal::quit;
         default:
-            assert(false);
+            break;
     }
     return Signal::none;
 }

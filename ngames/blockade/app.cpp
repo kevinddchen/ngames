@@ -119,7 +119,7 @@ std::array<int, 3> App::get_keystrokes() const
                 }
                 break;
             default:
-                assert(false);
+                break;
         }
     }
 

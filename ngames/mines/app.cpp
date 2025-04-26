@@ -124,7 +124,7 @@ bool App::handle_keystroke(int key)
         case 'q':  // quit
             return false;
         default:
-            assert(false);
+            break;
     }
     return true;
 }

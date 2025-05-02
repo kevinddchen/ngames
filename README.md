@@ -31,7 +31,7 @@ After building, run a game,
 ./bin/<name>
 ```
 
-The games typically use Vim `hjkl` controls or arrow keys to move.
-The `q` key will quit the game.
-The `z` key will reset the game.
-The `r` key will refresh the display, e.g. if something caused the game to render incorrectly.
+- The games typically use Vim `hjkl` controls or arrow keys to move.
+- The `q` key will quit the game.
+- The `z` key will reset the game.
+- The `r` key will refresh the display, e.g. if something caused the game to render incorrectly.

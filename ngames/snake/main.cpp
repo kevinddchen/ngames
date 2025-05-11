@@ -1,4 +1,5 @@
 #include <ngames/snake/app.hpp>
+#include <ngames/snake/ui.hpp>
 
 #include <ngames/common/ncurses.hpp>
 
@@ -8,6 +9,7 @@
 int main()
 {
     ngames::init_ncurses();
+    ngames::snake::init_colors();
 
     ngames::snake::App app;
     app.run();

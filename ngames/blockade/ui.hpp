@@ -1,13 +1,10 @@
 #pragma once
 
-#include <ncurses.h>
+#include <ngames/common/ncurses.hpp>
 
 
 namespace ngames::blockade
 {
-
-// New grey color
-constexpr short COLOR_GREY = 8;  // new color id
 
 // Color pair for player one
 constexpr short COLOR_PAIR_PLAYER_ONE = 1;
@@ -23,11 +20,6 @@ constexpr short COLOR_PAIR_INSTRUCTIONS = 4;
  */
 inline void init_colors()
 {
-    start_color();
-
-    // define grey color
-    init_color(COLOR_GREY, 500, 500, 500);
-
     // define color pairs
     init_pair(COLOR_PAIR_PLAYER_ONE, COLOR_GREEN, COLOR_BLACK);
     init_pair(COLOR_PAIR_PLAYER_TWO, COLOR_RED, COLOR_BLACK);

@@ -1,16 +1,13 @@
 #pragma once
 
-#include <ncurses.h>
+#include <ngames/common/ncurses.hpp>
 
 
 namespace ngames::mines
 {
 
-// New grey color
-constexpr short COLOR_GREY = 8;  // new color id
-
 // Color pair for mistakes
-constexpr short COLOR_PAIR_MISTAKE = 9;  // new color pair id
+constexpr short COLOR_PAIR_MISTAKE = 9;
 // Color pair for unopened cell
 constexpr short COLOR_PAIR_UNOPENED = 8;  // use same color as cell 8, i.e. grey text
 // Color pair for winning text
@@ -25,11 +22,6 @@ constexpr short COLOR_PAIR_INSTRUCTIONS = 8;  // use same color as cell 8, i.e. 
  */
 inline void init_colors()
 {
-    start_color();
-
-    // define grey color
-    init_color(COLOR_GREY, 500, 500, 500);
-
     // define color pairs for cell numbers
     init_pair(1, COLOR_BLUE, COLOR_BLACK);
     init_pair(2, COLOR_GREEN, COLOR_BLACK);

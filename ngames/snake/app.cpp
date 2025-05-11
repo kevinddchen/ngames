@@ -1,7 +1,5 @@
 #include <ngames/snake/app.hpp>
 
-#include <ngames/snake/ui.hpp>
-
 #include <thread>
 
 
@@ -27,7 +25,6 @@ App::App(int rows, int cols, int frames_per_tick, double frames_per_sec)
       board(rows, cols, board_border.inner_start_y(), board_border.inner_start_x(), board_border.window),
       text_instructions(board_border.bottom() + 1, MARGIN_LEFT)
 {
-    init_colors();
     curs_set(0);                  // hide cursor
     keypad(board.window, true);   // allow arrow keys
     nodelay(board.window, true);  // user input is non-blocking

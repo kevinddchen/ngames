@@ -1,7 +1,5 @@
 #include <ngames/blockade/app.hpp>
 
-#include <ngames/blockade/ui.hpp>
-
 #include <thread>
 
 
@@ -27,7 +25,6 @@ App::App(int rows, int cols, int frames_per_tick, double frames_per_sec)
       text_end_game(board, board_border.bottom(), MARGIN_LEFT),
       text_instructions(text_end_game.bottom(), MARGIN_LEFT)
 {
-    init_colors();
     curs_set(0);                  // hide cursor
     keypad(board.window, true);   // allow arrow keys
     nodelay(board.window, true);  // user input is non-blocking

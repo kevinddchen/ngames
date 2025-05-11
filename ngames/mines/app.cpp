@@ -1,7 +1,5 @@
 #include <ngames/mines/app.hpp>
 
-#include <ngames/mines/ui.hpp>
-
 #include <cassert>
 
 
@@ -17,7 +15,6 @@ App::App(int rows, int cols, int mines)
       text_end_game(board, board_border.bottom(), MARGIN_LEFT),
       text_instructions(text_end_game.bottom(), MARGIN_LEFT)
 {
-    init_colors();
     keypad(board.window, true);                            // allow arrow keys
     mousemask(BUTTON1_RELEASED | BUTTON3_RELEASED, NULL);  // allow mouse
     mouseinterval(0);                                      // do not wait to distinguish clicks; more reactive interface

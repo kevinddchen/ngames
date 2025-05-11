@@ -1,4 +1,5 @@
 #include <ngames/mines/app.hpp>
+#include <ngames/mines/ui.hpp>
 
 #include <ngames/common/ncurses.hpp>
 
@@ -121,6 +122,7 @@ int main(int argc, char** argv)
     const Args args = get_args(argc, argv);
 
     ngames::init_ncurses();
+    ngames::mines::init_colors();
 
     ngames::mines::App app(args.rows, args.cols, args.mines);
     app.run();
